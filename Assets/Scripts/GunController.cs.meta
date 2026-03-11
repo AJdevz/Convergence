@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 747250ee0e55d174fa34e9ffb27908fd
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - bullet: {fileID: 8631868946549108887, guid: 4ee7d76d7047768469cca0ad613bb452, type: 3}
+  - muzzleFlash: {fileID: 19885060, guid: 2574ca206a571a342a7fab69fdfb87aa, type: 3}
+  - firePoint: {instanceID: 0}
+  - assaultRifleModel: {instanceID: 0}
+  - shotgunModel: {instanceID: 0}
+  - sniperModel: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

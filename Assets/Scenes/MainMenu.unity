@@ -1985,7 +1985,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1545822206}
+      - m_Target: {fileID: 1545822208}
         m_TargetAssemblyTypeName: StartMenuController, Assembly-CSharp
         m_MethodName: SelectMode
         m_Mode: 3
@@ -2189,7 +2189,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1545822206}
+      - m_Target: {fileID: 1545822208}
         m_TargetAssemblyTypeName: StartMenuController, Assembly-CSharp
         m_MethodName: BackToMainMenuFromMode
         m_Mode: 1
@@ -2257,7 +2257,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &420595476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2334,10 +2334,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1240386501}
-  - {fileID: 1206288454}
-  - {fileID: 2075347725}
-  - {fileID: 492823101}
-  - {fileID: 823145624}
   m_Father: {fileID: 401514533}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2417,7 +2413,7 @@ RectTransform:
   - {fileID: 255177082}
   - {fileID: 232446323}
   - {fileID: 733662366}
-  m_Father: {fileID: 420595479}
+  m_Father: {fileID: 1240386501}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2468,7 +2464,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1545822206}
+      - m_Target: {fileID: 1545822208}
         m_TargetAssemblyTypeName: StartMenuController, Assembly-CSharp
         m_MethodName: SelectGun
         m_Mode: 3
@@ -2986,7 +2982,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1545822206}
+      - m_Target: {fileID: 1545822208}
         m_TargetAssemblyTypeName: StartMenuController, Assembly-CSharp
         m_MethodName: QuitGame
         m_Mode: 1
@@ -3098,17 +3094,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
---- !u!114 &653831202 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 263117240097897464, guid: ae4ca86294340844a8663745ec13c352, type: 3}
-  m_PrefabInstance: {fileID: 1363932464}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &720293390
 GameObject:
   m_ObjectHideFlags: 0
@@ -3743,7 +3728,7 @@ RectTransform:
   - {fileID: 193817797}
   - {fileID: 1815914850}
   - {fileID: 305597350}
-  m_Father: {fileID: 420595479}
+  m_Father: {fileID: 1240386501}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3794,7 +3779,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1545822206}
+      - m_Target: {fileID: 1545822208}
         m_TargetAssemblyTypeName: StartMenuController, Assembly-CSharp
         m_MethodName: BackToMainMenuFromGun
         m_Mode: 1
@@ -4565,7 +4550,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1545822206}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: StartMenuController, Assembly-CSharp
         m_MethodName: SelectGun
         m_Mode: 3
@@ -4891,7 +4876,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1545822206}
+      - m_Target: {fileID: 1545822208}
         m_TargetAssemblyTypeName: StartMenuController, Assembly-CSharp
         m_MethodName: OpenModeMenu
         m_Mode: 1
@@ -5175,7 +5160,7 @@ RectTransform:
   - {fileID: 177969885}
   - {fileID: 822289715}
   - {fileID: 947923367}
-  m_Father: {fileID: 420595479}
+  m_Father: {fileID: 1240386501}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5226,7 +5211,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1545822206}
+      - m_Target: {fileID: 1545822208}
         m_TargetAssemblyTypeName: StartMenuController, Assembly-CSharp
         m_MethodName: SelectGun
         m_Mode: 3
@@ -5367,7 +5352,11 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1206288454}
+  - {fileID: 2075347725}
+  - {fileID: 492823101}
+  - {fileID: 823145624}
   m_Father: {fileID: 420595479}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -5700,7 +5689,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1545822206}
+      - m_Target: {fileID: 1545822208}
         m_TargetAssemblyTypeName: StartMenuController, Assembly-CSharp
         m_MethodName: SelectMode
         m_Mode: 3
@@ -6243,11 +6232,11 @@ PrefabInstance:
     - target: {fileID: 2005238435808035545, guid: ae4ca86294340844a8663745ec13c352, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1545822206}
+      objectReference: {fileID: 0}
     - target: {fileID: 2005238435808035545, guid: ae4ca86294340844a8663745ec13c352, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1545822206}
+      objectReference: {fileID: 0}
     - target: {fileID: 2005238435808035545, guid: ae4ca86294340844a8663745ec13c352, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -6299,7 +6288,7 @@ PrefabInstance:
     - target: {fileID: 2632540353026522778, guid: ae4ca86294340844a8663745ec13c352, type: 3}
       propertyPath: m_TargetGraphic
       value: 
-      objectReference: {fileID: 653831202}
+      objectReference: {fileID: 0}
     - target: {fileID: 2632540353026522778, guid: ae4ca86294340844a8663745ec13c352, type: 3}
       propertyPath: m_Colors.m_FadeDuration
       value: 0.1
@@ -6331,7 +6320,7 @@ PrefabInstance:
     - target: {fileID: 2632540353026522778, guid: ae4ca86294340844a8663745ec13c352, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1545822206}
+      objectReference: {fileID: 0}
     - target: {fileID: 2632540353026522778, guid: ae4ca86294340844a8663745ec13c352, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -6379,7 +6368,7 @@ PrefabInstance:
     - target: {fileID: 4620877375303237024, guid: ae4ca86294340844a8663745ec13c352, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1545822206}
+      objectReference: {fileID: 0}
     - target: {fileID: 4620877375303237024, guid: ae4ca86294340844a8663745ec13c352, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -6485,17 +6474,20 @@ PrefabInstance:
       value: StartMenuCanvas
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 981462095322104497, guid: ae4ca86294340844a8663745ec13c352, type: 3}
+    - {fileID: 62760657896502997, guid: ae4ca86294340844a8663745ec13c352, type: 3}
+    - {fileID: 967763432447904841, guid: ae4ca86294340844a8663745ec13c352, type: 3}
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 4685730459909112269, guid: ae4ca86294340844a8663745ec13c352, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1828748644}
     - targetCorrespondingSourceObject: {fileID: 4685730459909112269, guid: ae4ca86294340844a8663745ec13c352, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1654978393}
     - targetCorrespondingSourceObject: {fileID: 4685730459909112269, guid: ae4ca86294340844a8663745ec13c352, type: 3}
       insertIndex: -1
       addedObject: {fileID: 420595479}
+    - targetCorrespondingSourceObject: {fileID: 4685730459909112269, guid: ae4ca86294340844a8663745ec13c352, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1828748644}
     - targetCorrespondingSourceObject: {fileID: 670262513347137566, guid: ae4ca86294340844a8663745ec13c352, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1376360951}
@@ -6594,7 +6586,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1545822206}
+      - m_Target: {fileID: 1545822208}
         m_TargetAssemblyTypeName: StartMenuController, Assembly-CSharp
         m_MethodName: OpenGunMenu
         m_Mode: 1
@@ -6789,7 +6781,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1545822206}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: StartMenuController, Assembly-CSharp
         m_MethodName: SelectGun
         m_Mode: 3
@@ -7043,7 +7035,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1545822206}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: StartMenuController, Assembly-CSharp
         m_MethodName: SelectGun
         m_Mode: 3
@@ -7326,7 +7318,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1545822206}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
         m_MethodName: BackToMainMenu
         m_Mode: 1
@@ -7421,7 +7413,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1545822207}
-  - component: {fileID: 1545822206}
+  - component: {fileID: 1545822208}
   m_Layer: 0
   m_Name: MenuController
   m_TagString: Untagged
@@ -7429,7 +7421,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1545822206
+--- !u!4 &1545822207
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545822205}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 585.26135, y: 289.38385, z: -55.30506}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1545822208
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7448,21 +7455,6 @@ MonoBehaviour:
   MainMenuBackground: {fileID: 890358985}
   GunCanvasBackground: {fileID: 1240386500}
   ModeCanvasBackground: {fileID: 1171086182}
---- !u!4 &1545822207
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1545822205}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 585.26135, y: 289.38385, z: -55.30506}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1577975520
 GameObject:
   m_ObjectHideFlags: 0
@@ -7692,7 +7684,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1654978390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8755,7 +8747,7 @@ RectTransform:
   - {fileID: 725393630}
   - {fileID: 1514959176}
   - {fileID: 629133179}
-  m_Father: {fileID: 420595479}
+  m_Father: {fileID: 1240386501}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -8806,7 +8798,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1545822206}
+      - m_Target: {fileID: 1545822208}
         m_TargetAssemblyTypeName: StartMenuController, Assembly-CSharp
         m_MethodName: SelectGun
         m_Mode: 3
@@ -8868,7 +8860,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 388db75d7c6a11b4bb1fdd04f6b3e8e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverScale: 1.1
+  hoverScale: 0.9
   normalScale: 1
   leftEffect: {fileID: 1514959175}
   rightEffect: {fileID: 629133178}

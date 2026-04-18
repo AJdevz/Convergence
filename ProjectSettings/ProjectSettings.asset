@@ -745,7 +745,13 @@ PlayerSettings:
   XboxOneOverrideIdentityPublisher: 
   vrEditorSettings: {}
   cloudServicesEnabled:
+    Build: 0
+    Game Performance: 0
+    Legacy Analytics: 0
+    Purchasing: 0
+    UDP: 0
     UNet: 1
+    Unity Ads: 0
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 
@@ -767,10 +773,10 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: e2977919-eb16-47bc-b1f7-82d59bb66b8b
+  cloudProjectId: 30a3f520-3907-433b-b807-2a9980725376
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: BrawlShooters
+  projectName: Convergence
   organizationId: aj_king11
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0

@@ -31,6 +31,8 @@ public class BulletController : MonoBehaviour
             // Apply damage to the enemy
             other.gameObject.GetComponent<EnemyHealth>().TakeDamage(GiveDamage);
 
+            VFXManager.Instance.PlayVFX(VFXManager.Instance.bloodEffect, transform.position);
+
             // Destroy the bullet on impact
             Destroy(gameObject);
         }

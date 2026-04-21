@@ -1697,12 +1697,13 @@ MonoBehaviour:
   isBoss: 0
   waveHealthIncrease: 20
   levelHealthIncrease: 10
+  healthBarPrefab: {fileID: 9176267920048675078, guid: 23d25a1ed3a1299418d0622650bdc7f3, type: 3}
   xpDropPrefab: {fileID: 1493365865480228, guid: 8c7f1d862b57898438b2fe630133ed38, type: 3}
   bossXpDropPrefab: {fileID: 1493365865480228, guid: fcea58dc8b0871b459fb048a9a1806c2, type: 3}
   healthDropPrefab: {fileID: 1493365865480228, guid: b97f49433f6d8974d8bd4daa015396ac, type: 3}
   normalXpAmount: 10
   bossXpAmount: 250
-  healthDropChance: 0.2
+  healthDropChance: 0.05
 --- !u!54 &-2144021184692974337
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -1733,7 +1733,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -360.98004, y: -430.6}
+  m_AnchoredPosition: {x: -389, y: -462.8}
   m_SizeDelta: {x: 190.0399, y: 56.798}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &375363253
@@ -1821,7 +1821,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -73.428955, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2053,11 +2053,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGun: 1
-  damage: 20
+  damage: 40
   isFiring: 0
   bullet: {fileID: 8631868946549108887, guid: 4ee7d76d7047768469cca0ad613bb452, type: 3}
   shootSpeed: 300
-  timeBetweenShots: 0.8
+  timeBetweenShots: 0.5
   muzzleFlash: {fileID: 2081928898}
   firePoint: {fileID: 1818859913}
   shotgunPellets: 6
@@ -2168,6 +2168,52 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &458056309
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 458056311}
+  - component: {fileID: 458056310}
+  m_Layer: 0
+  m_Name: VFXManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &458056310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458056309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 715080eb4eba1e849ba003466c30fba1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloodEffect: {fileID: 166404, guid: 05377925e345b0b4f87fc17886d47a24, type: 3}
+  levelUpEffect: {fileID: 1540333649370906, guid: 0176d8fa8a34969428e932c069c39341, type: 3}
+--- !u!4 &458056311
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458056309}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1234.2263, y: 610.811, z: -1421.0348}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &499287017
 GameObject:
   m_ObjectHideFlags: 0
@@ -3106,11 +3152,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGun: 0
-  damage: 20
+  damage: 40
   isFiring: 0
   bullet: {fileID: 8631868946549108887, guid: 4ee7d76d7047768469cca0ad613bb452, type: 3}
   shootSpeed: 300
-  timeBetweenShots: 0.2
+  timeBetweenShots: 0.15
   muzzleFlash: {fileID: 926842387}
   firePoint: {fileID: 822417111}
   shotgunPellets: 8
@@ -3256,7 +3302,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.8768, y: -531}
+  m_AnchoredPosition: {x: 0, y: -524.2}
   m_SizeDelta: {x: 1919.7438, y: 20.9821}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &690717380
@@ -4655,7 +4701,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   currentHealth: 5
-  flashLength: 0.1
+  flashLength: 0.07
   redFlashImage: {fileID: 189675725}
   greenFlashImage: {fileID: 252697495}
   endGamePanel: {fileID: 1567928847}
@@ -6016,7 +6062,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 352.45, y: -430.6}
+  m_AnchoredPosition: {x: 352.45, y: -462.8}
   m_SizeDelta: {x: 207.1035, y: 50.003}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1225132774
@@ -6889,12 +6935,12 @@ MonoBehaviour:
   isFiring: 0
   bullet: {fileID: 8631868946549108887, guid: 4ee7d76d7047768469cca0ad613bb452, type: 3}
   shootSpeed: 300
-  timeBetweenShots: 1.2
+  timeBetweenShots: 0.8
   muzzleFlash: {fileID: 1202126611}
   firePoint: {fileID: 2048068577}
   shotgunPellets: 1
   shotgunSpread: 1
-  sniperDamageMultiplier: 12
+  sniperDamageMultiplier: 20
   assaultRifleModel: {fileID: 681375793}
   shotgunModel: {fileID: 447599473}
   sniperModel: {fileID: 1393329639}
@@ -7377,7 +7423,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -434}
+  m_AnchoredPosition: {x: 0, y: -466.19998}
   m_SizeDelta: {x: 400, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1475802450
@@ -9882,3 +9928,4 @@ SceneRoots:
   - {fileID: 79242775}
   - {fileID: 249451893}
   - {fileID: 1341586729}
+  - {fileID: 458056311}

@@ -58,6 +58,17 @@ public class XPManager : MonoBehaviour
             xpBar.UpdateXP(playerXP); // Reset the XP bar to 0
         }
 
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        if (player != null)
+        {
+            VFXManager.Instance.PlayVFX(
+                VFXManager.Instance.levelUpEffect,
+                player.transform,
+                new Vector3(0, 1.5f, 0) // offset so it's around the body
+            );
+        }
+
         UpdateLevelUI();
 
         if (upgradeMenuScript != null)

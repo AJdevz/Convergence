@@ -106,6 +106,14 @@ public class ZombieMerge : MonoBehaviour
 
         Vector3 mergePosition = targetZombie.transform.position;
 
+        if (VFXManager.Instance != null)
+        {
+            VFXManager.Instance.PlayVFX(
+                VFXManager.Instance.levelUpEffect,
+                mergePosition
+            );
+        }
+
         // Play merge sound
         if (mergeSound != null)
         {

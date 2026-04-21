@@ -11,6 +11,11 @@ public class EnemyHealth : MonoBehaviour
     public int waveHealthIncrease = 20;
     public int levelHealthIncrease = 10;
 
+    [Header("Health Bar")]
+    public GameObject healthBarPrefab;
+
+    private EnemyHealthBar healthBarInstance;
+
     [Header("Drops")]
     public GameObject xpDropPrefab;
     public GameObject bossXpDropPrefab;
@@ -30,7 +35,11 @@ public class EnemyHealth : MonoBehaviour
 
     void Start()
     {
-        SpawnEnemies spawnManager = FindFirstObjectByType<SpawnEnemies>();
+            Debug.Log("=== ENEMY HEALTH DEBUG ===");
+            Debug.Log("Enemy: " + gameObject.name);
+            Debug.Log("healthBarPrefab reference = " + healthBarPrefab);
+
+            SpawnEnemies spawnManager = FindFirstObjectByType<SpawnEnemies>();
 
         if (spawnManager != null)
             currentWave = spawnManager.waveNumber;
@@ -38,6 +47,28 @@ public class EnemyHealth : MonoBehaviour
             currentWave = 1;
 
         ApplyScaling();
+
+        if (healthBarPrefab != null)
+        {
+            GameObject bar = Instantiate(healthBarPrefab, transform);
+            bar.transform.localPosition = new Vector3(0, 2.5f, 0);
+            bar.transform.localRotation = Quaternion.identity; 
+
+            healthBarInstance = bar.GetComponent<EnemyHealthBar>();
+
+            if (healthBarInstance != null)
+            {
+                healthBarInstance.Setup(transform, currentHealth);
+            }
+            else
+            {
+                Debug.LogError("EnemyHealthBar script missing on prefab!");
+            }
+        }
+        else
+        {
+            Debug.LogError("HealthBarPrefab is NULL");
+        }
     }
 
     void ApplyScaling()
@@ -60,9 +91,12 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (isDead) return; // 🔥 Prevent double death
+        if (isDead) return;
 
         currentHealth -= damage;
+
+        if (healthBarInstance != null)
+            healthBarInstance.UpdateHealth(currentHealth);
 
         if (currentHealth <= 0)
             Die();
@@ -77,7 +111,11 @@ public class EnemyHealth : MonoBehaviour
 
         OnEnemyDeath?.Invoke();
 
+        if (healthBarInstance != null)
+            Destroy(healthBarInstance.gameObject);
+
         Destroy(gameObject);
+
     }
 
     void DropLoot()

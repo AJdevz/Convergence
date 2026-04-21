@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class VFXManager : MonoBehaviour
 {
@@ -9,14 +9,27 @@ public class VFXManager : MonoBehaviour
 
     void Awake()
     {
-        Instance = this;
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
     }
 
+    // ✅ WORLD POSITION (for bullets, explosions)
     public void PlayVFX(GameObject vfx, Vector3 position)
     {
         if (vfx == null) return;
 
         GameObject effect = Instantiate(vfx, position, Quaternion.identity);
+        Destroy(effect, 2f);
+    }
+
+    // ✅ ATTACHED (for player effects like level up)
+    public void PlayVFX(GameObject vfx, Transform parent, Vector3 offset)
+    {
+        if (vfx == null || parent == null) return;
+
+        GameObject effect = Instantiate(vfx, parent);
+        effect.transform.localPosition = offset;
+
         Destroy(effect, 2f);
     }
 }

@@ -236,7 +236,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82bee557f3d296d459d306878b5132b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tickImage: {fileID: 1124518065}
+  musicSource: {fileID: 1625314368}
+  mutedIcon: {fileID: 1124518062}
+  unmutedIcon: {fileID: 965689914}
 --- !u!1 &99953272
 GameObject:
   m_ObjectHideFlags: 0
@@ -3861,7 +3863,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &893829316
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4219,7 +4221,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &965689915
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5126,7 +5128,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1124518063
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7951,7 +7953,7 @@ GameObject:
   - component: {fileID: 1625314368}
   m_Layer: 0
   m_Name: Audio Source
-  m_TagString: Untagged
+  m_TagString: Music
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

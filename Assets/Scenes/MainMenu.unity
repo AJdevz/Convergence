@@ -8485,7 +8485,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82bee557f3d296d459d306878b5132b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tickImage: {fileID: 611976814}
+  musicSource: {fileID: 1773776847}
+  mutedIcon: {fileID: 611976811}
+  unmutedIcon: {fileID: 83931479}
 --- !u!4 &1892811738
 Transform:
   m_ObjectHideFlags: 0

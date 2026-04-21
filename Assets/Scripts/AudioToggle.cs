@@ -3,26 +3,34 @@ using UnityEngine.UI;
 
 public class AudioToggle : MonoBehaviour
 {
-    private bool isMuted = false; // Track mute state
-    public Image tickImage; 
+    private bool isMuted;
+
+    public AudioSource musicSource; // drag your music AudioSource here
+
+    public GameObject mutedIcon;
+    public GameObject unmutedIcon;
 
     void Start()
     {
-        // Load previous mute state
         isMuted = PlayerPrefs.GetInt("Muted", 0) == 1;
-        ApplyAudioSettings();
+        ApplyState();
     }
 
     public void ToggleAudio()
     {
-        isMuted = !isMuted; // Toggle mute state
-        PlayerPrefs.SetInt("Muted", isMuted ? 1 : 0); // Save mute state
-        ApplyAudioSettings();
+        isMuted = !isMuted;
+        PlayerPrefs.SetInt("Muted", isMuted ? 1 : 0);
+        ApplyState();
     }
 
-    void ApplyAudioSettings()
+    void ApplyState()
     {
-        AudioListener.volume = isMuted ? 0 : 1; // Apply volume setting
-        tickImage.gameObject.SetActive(isMuted); // Show/hide tick
+        if (musicSource != null)
+        {
+            musicSource.mute = isMuted;
+        }
+
+        mutedIcon.SetActive(isMuted);
+        unmutedIcon.SetActive(!isMuted);
     }
 }

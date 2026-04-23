@@ -4,40 +4,40 @@ using UnityEngine;
 
 public class BulletController : MonoBehaviour
 {
-    [Header("Base Stats")]
+    [Header("Base")]
     public float speed;
     public float lifeTime;
     public int GiveDamage;
 
-    [Header("Upgrade Flags")]
+    [Header("Flags")]
     public bool explosiveShots;
     public bool chainLightning;
     public bool piercing;
     public bool freezeEffect;
 
+    [Header("Stats")]
+    public float explosionRadius;
+    public int chainCount;
+    public float chainRange = 9f;
+    public int pierceCount;
+    public float freezeStrength;
+    public float freezeDuration;
     public float lifestealPercent;
 
-    [Header("Explosion")]
+    [Header("Scaling")]
+    public float explosionMultiplier;
+    public float chainMultiplier;
+
+    [Header("Refs")]
     [SerializeField] LayerMask enemyLayer;
-    public float explosionRadius = 3f;
-    public int explosionDamage = 20;
-
-    [Header("Chain Lightning")]
-    public int chainCount = 3;
-    public float chainRange = 9f;
-
-    [Header("Piercing")]
-    public int pierceCount = 2;
-    private int currentPierce;
-    private HashSet<GameObject> hitEnemies = new HashSet<GameObject>();
-
-    [Header("Freeze Effect")]
-    public float freezeStrength = 0.5f;
-    public float freezeDuration = 2f;
-
     public LineRenderer lightningLinePrefab;
     public GameObject explosionPrefab;
     public GameObject explosionRadiusVisual;
+
+    private int currentPierce;
+    private HashSet<GameObject> hitEnemies = new HashSet<GameObject>();
+
+    private bool hasChained = false;
 
     void Start()
     {
@@ -66,51 +66,39 @@ public class BulletController : MonoBehaviour
             // 💥 Base Damage
             enemy.TakeDamage(GiveDamage);
 
-            // 🩸 VFX
-            if (VFXManager.Instance != null)
-                VFXManager.Instance.PlayVFX(VFXManager.Instance.bloodEffect, transform.position);
-
             // 💥 Explosion
             if (explosiveShots)
-            {
                 Explode();
-            }
 
-            // ⚡ Chain Lightning
-            if (chainLightning)
+            // ⚡ Chain Lightning (ALWAYS works now)
+            if (chainLightning && !hasChained)
             {
+                hasChained = true;
                 StartCoroutine(ChainLightning(enemy.transform));
             }
 
-            // ❄️ Freeze (simple version placeholder)
+            // ❄️ Freeze
             if (freezeEffect)
             {
                 EnemyController enemyMove = other.gameObject.GetComponent<EnemyController>();
-
                 if (enemyMove != null)
-                {
                     enemyMove.ApplySlow(freezeStrength, freezeDuration);
-                }
             }
         }
 
-        // 🧩 Piercing logic
-        // 🧩 Piercing logic
-        // 🧩 Piercing logic (FIXED)
+        // 🧠 TRACK HIT AFTER abilities
         if (hitEnemies.Contains(other.gameObject))
-        {
-            return; // already hit this enemy, ignore
-        }
+            return;
 
         hitEnemies.Add(other.gameObject);
 
+        // 🧩 Piercing logic
         if (piercing && currentPierce > 0)
         {
             currentPierce--;
-            return; // keep flying
+            return;
         }
 
-        // no pierce left → destroy
         Destroy(gameObject);
     }
 
@@ -153,15 +141,10 @@ public class BulletController : MonoBehaviour
 
             if (enemy != null)
             {
-                enemy.TakeDamage(explosionDamage); // 💥 FULL DAMAGE ALWAYS
+                int finalDamage = Mathf.RoundToInt(GiveDamage * explosionMultiplier);
+                enemy.TakeDamage(finalDamage);
             }
         }
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, explosionRadius);
     }
 
     // ⚡ Chain Lightning Function
@@ -169,9 +152,8 @@ public class BulletController : MonoBehaviour
     {
         Transform currentTarget = firstTarget;
 
-        // 🧠 Track already hit enemies (VERY IMPORTANT)
-        HashSet<Transform> hitTargets = new HashSet<Transform>();
-        hitTargets.Add(firstTarget);
+        HashSet<GameObject> hitTargets = new HashSet<GameObject>();
+        hitTargets.Add(firstTarget.gameObject);
 
         for (int i = 0; i < chainCount; i++)
         {
@@ -179,8 +161,7 @@ public class BulletController : MonoBehaviour
 
             Collider[] hits = Physics.OverlapSphere(currentTarget.position, chainRange);
 
-            Transform nextTarget = null;
-            float closestDistance = Mathf.Infinity;
+            List<Transform> validTargets = new List<Transform>();
 
             foreach (Collider hit in hits)
             {
@@ -188,21 +169,29 @@ public class BulletController : MonoBehaviour
 
                 Transform t = hit.transform;
 
-                // 🚫 skip already hit targets
-                if (hitTargets.Contains(t)) continue;
+                if (hitTargets.Contains(t.gameObject)) continue;
 
+                validTargets.Add(t);
+            }
+
+            if (validTargets.Count == 0) yield break;
+
+            Transform nextTarget = null;
+            float closest = Mathf.Infinity;
+
+            foreach (Transform t in validTargets)
+            {
                 float dist = Vector3.Distance(currentTarget.position, t.position);
-
-                if (dist < closestDistance)
+                if (dist < closest)
                 {
-                    closestDistance = dist;
+                    closest = dist;
                     nextTarget = t;
                 }
             }
 
-            if (nextTarget == null) yield break;
+            if (nextTarget == null) yield break; // ✅ safety fix
 
-            // ⚡ LIGHTNING VFX
+            // ⚡ VFX
             if (lightningLinePrefab != null)
             {
                 LineRenderer line = Instantiate(lightningLinePrefab);
@@ -218,33 +207,30 @@ public class BulletController : MonoBehaviour
                     float t = j / (float)(segments - 1);
                     Vector3 point = Vector3.Lerp(start, end, t);
 
-                    // ⚡ Stronger zig-zag
                     if (j != 0 && j != segments - 1)
                     {
                         point += new Vector3(
-                            Random.Range(-0.7f, 0.7f),
-                            Random.Range(-0.3f, 0.3f),
-                            Random.Range(-0.7f, 0.7f)
+                            Random.Range(-1f, 1f),
+                            Random.Range(-0.5f, 0.5f),
+                            Random.Range(-1f, 1f)
                         );
                     }
 
                     line.SetPosition(j, point);
                 }
 
-                Destroy(line.gameObject, 0.08f);
+                Destroy(line.gameObject, 0.2f);
             }
 
-            // 💥 DAMAGE (better scaling)
+            // 💥 DAMAGE
             EnemyHealth enemy = nextTarget.GetComponent<EnemyHealth>();
             if (enemy != null)
             {
-                int chainDamage = Mathf.RoundToInt(GiveDamage * (1f + (chainCount * 0.1f)));
-                enemy.TakeDamage(chainDamage);
+                int finalDamage = Mathf.RoundToInt(GiveDamage * chainMultiplier);
+                enemy.TakeDamage(finalDamage);
             }
 
-            // ✅ mark as hit
-            hitTargets.Add(nextTarget);
-
+            hitTargets.Add(nextTarget.gameObject);
             currentTarget = nextTarget;
 
             yield return new WaitForSeconds(0.04f);

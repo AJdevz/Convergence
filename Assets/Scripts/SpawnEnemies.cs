@@ -11,7 +11,7 @@ public class SpawnEnemies : MonoBehaviour
     [Header("Wave Settings")]
     public int enemiesPerWave = 0;
     public int waveNumber = 1;
-    public float minSpawnDistance = 20f;
+    public float minSpawnDistance = 40f;
     public float spawnHeight = 1f;
 
     [Header("References")]

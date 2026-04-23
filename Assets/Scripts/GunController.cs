@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -7,55 +6,60 @@ public class GunController : MonoBehaviour
 {
     public enum GunType { AssaultRifle, Shotgun, Sniper }
     public GunType currentGun = GunType.AssaultRifle;
-    public int damage = 20; // Default damage
 
-    public bool isFiring;
+    [Header("Base Stats (per gun source values)")]
+    public int baseDamage = 20;
+    public float baseTimeBetweenShots = 0.2f;
 
+    [Header("Runtime Stats (modified by upgrades)")]
+    public int damage;
+    public float timeBetweenShots;
+
+    [Header("Core")]
     public BulletController bullet;
     public float shootSpeed;
-    public float timeBetweenShots;
     private float shotCounter;
+    public Transform firePoint;
     public ParticleSystem muzzleFlash;
 
-    public Transform firePoint;
-
+    [Header("Gun Types")]
     public int shotgunPellets = 6;
     public float shotgunSpread = 8f;
     public int sniperDamageMultiplier = 12;
 
+    [Header("Models")]
     public GameObject assaultRifleModel;
     public GameObject shotgunModel;
     public GameObject sniperModel;
 
-    // 🎵 Audio setup
+    [Header("Audio")]
     public AudioSource audioSource;
     public AudioMixerGroup gunMixerGroup;
     public AudioClip assaultRifleSound;
     public AudioClip shotgunSound;
     public AudioClip sniperSound;
 
+    [Header("Upgrades")]
     public bool explosiveShots;
     public bool chainLightning;
     public bool piercing;
     public bool freezeEffect;
 
-    public float lifestealPercent;
-
-    [Header("Upgrade Scaling")]
+    [Header("Upgrade Values")]
     public float explosionRadius = 3f;
-    public int explosionDamage = 20;
-
     public int chainCount = 3;
-
     public int pierceCount = 2;
-
     public float freezeStrength = 0.5f;
     public float freezeDuration = 2f;
+    public float lifestealPercent;
 
+    [Header("Scaling")]
+    public float explosionMultiplier = 0.5f;
+    public float chainMultiplier = 0.5f;
 
     void Awake()
     {
-        // Load the saved gun selection from PlayerPrefs first
+        // Load selected gun FIRST (this is important)
         int savedGunIndex = PlayerPrefs.GetInt("SelectedGun", -1);
 
         if (savedGunIndex != -1)
@@ -64,32 +68,37 @@ public class GunController : MonoBehaviour
         }
         else if (GameManager.Instance != null)
         {
-            // fallback to GameManager if PlayerPrefs not set
             currentGun = GameManager.Instance.SelectedGun;
         }
 
-        // Make sure audioSource is assigned
+        // ONLY set base stats once (no reset spam)
+        damage = baseDamage;
+        timeBetweenShots = baseTimeBetweenShots;
+
         if (audioSource != null)
-        {
             audioSource.outputAudioMixerGroup = gunMixerGroup;
-        }
 
         UpdateGunModel();
     }
 
+    public void ResetStats()
+    {
+        damage = baseDamage;
+        timeBetweenShots = baseTimeBetweenShots;
+    }
+
     void Update()
     {
-        if (Input.GetMouseButton(0)) // Left click or hold
+        if (Input.GetMouseButton(0))
         {
-            if (shotCounter <= 0) // Only fire if enough time has passed
+            if (shotCounter <= 0)
             {
                 FireWeapon();
-                shotCounter = timeBetweenShots; // Reset the cooldown
+                shotCounter = timeBetweenShots;
             }
         }
 
-        if (shotCounter > 0)
-            shotCounter -= Time.deltaTime;
+        shotCounter -= Time.deltaTime;
     }
 
     void FireWeapon()
@@ -98,30 +107,27 @@ public class GunController : MonoBehaviour
         {
             case GunType.AssaultRifle:
                 FireSingleBullet();
-                PlayGunSound(assaultRifleSound);
+                PlaySound(assaultRifleSound);
                 break;
 
             case GunType.Shotgun:
                 FireShotgun();
-                PlayGunSound(shotgunSound);
+                PlaySound(shotgunSound);
                 break;
 
             case GunType.Sniper:
                 FireSniper();
-                PlayGunSound(sniperSound);
+                PlaySound(sniperSound);
                 break;
         }
     }
 
     void FireSingleBullet()
     {
-        BulletController newBullet = Instantiate(bullet, firePoint.position, firePoint.rotation);
-
-        newBullet.speed = shootSpeed;
-        newBullet.GiveDamage = damage;
-
-        ApplyUpgradesToBullet(newBullet); // 🔥 THIS IS THE KEY
-
+        BulletController b = Instantiate(bullet, firePoint.position, firePoint.rotation);
+        b.speed = shootSpeed;
+        b.GiveDamage = damage;
+        ApplyUpgrades(b);
         muzzleFlash.Play();
     }
 
@@ -129,87 +135,58 @@ public class GunController : MonoBehaviour
     {
         for (int i = 0; i < shotgunPellets; i++)
         {
-            Quaternion spreadAngle = Quaternion.Euler(0, Random.Range(-shotgunSpread, shotgunSpread), 0);
+            Quaternion spread = Quaternion.Euler(0, Random.Range(-shotgunSpread, shotgunSpread), 0);
 
-            BulletController newBullet = Instantiate(bullet, firePoint.position, firePoint.rotation * spreadAngle);
+            BulletController b = Instantiate(bullet, firePoint.position, firePoint.rotation * spread);
+            b.speed = shootSpeed;
+            b.GiveDamage = damage;
 
-            newBullet.speed = shootSpeed;
-            newBullet.GiveDamage = damage;
-
-            ApplyUpgradesToBullet(newBullet); // 🔥 IMPORTANT
-
-            muzzleFlash.Play();
+            ApplyUpgrades(b);
         }
-    }
-
-    void FireSniper()
-    {
-        BulletController newBullet = Instantiate(bullet, firePoint.position, firePoint.rotation);
-
-        newBullet.speed = shootSpeed;
-        newBullet.GiveDamage = damage * sniperDamageMultiplier;
-
-        ApplyUpgradesToBullet(newBullet); // 🔥 IMPORTANT
 
         muzzleFlash.Play();
     }
 
-    void PlayGunSound(AudioClip gunSound)
+    void FireSniper()
     {
-        if (audioSource != null && gunSound != null)
-        {
-            audioSource.PlayOneShot(gunSound, 0.05f); // Adjust volume if needed
-        }
+        BulletController b = Instantiate(bullet, firePoint.position, firePoint.rotation);
+        b.speed = shootSpeed;
+        b.GiveDamage = damage * sniperDamageMultiplier;
+
+        ApplyUpgrades(b);
+        muzzleFlash.Play();
     }
 
-    // Call this to change the gun from menus
-    public void SetGunType(int gunTypeIndex)
+    void PlaySound(AudioClip clip)
     {
-        currentGun = (GunType)gunTypeIndex;
-
-        // Save selection to PlayerPrefs
-        PlayerPrefs.SetInt("SelectedGun", gunTypeIndex);
-
-        // Update GameManager persistent data
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.SelectedGun = currentGun;
-        }
-
-        UpdateGunModel();
-        Debug.Log("Gun changed to: " + currentGun);
+        if (audioSource && clip)
+            audioSource.PlayOneShot(clip, 0.05f);
     }
 
     void UpdateGunModel()
     {
-        if (assaultRifleModel) assaultRifleModel.SetActive(currentGun == GunType.AssaultRifle);
-        if (shotgunModel) shotgunModel.SetActive(currentGun == GunType.Shotgun);
-        if (sniperModel) sniperModel.SetActive(currentGun == GunType.Sniper);
+        assaultRifleModel.SetActive(currentGun == GunType.AssaultRifle);
+        shotgunModel.SetActive(currentGun == GunType.Shotgun);
+        sniperModel.SetActive(currentGun == GunType.Sniper);
     }
 
-    void ApplyUpgradesToBullet(BulletController newBullet)
+    public void ApplyUpgrades(BulletController b)
     {
-        // 🔥 Flags
-        newBullet.explosiveShots = explosiveShots;
-        newBullet.chainLightning = chainLightning;
-        newBullet.piercing = piercing;
-        newBullet.freezeEffect = freezeEffect;
+        b.explosiveShots = explosiveShots;
+        b.chainLightning = chainLightning;
+        b.piercing = piercing;
+        b.freezeEffect = freezeEffect;
 
-        // 🩸 Stats
-        newBullet.lifestealPercent = lifestealPercent;
+        b.lifestealPercent = lifestealPercent;
 
-        // 💥 Explosion scaling
-        newBullet.explosionRadius = explosionRadius;
-        newBullet.explosionDamage = explosionDamage;
+        b.explosionRadius = explosionRadius;
+        b.chainCount = chainCount;
+        b.pierceCount = pierceCount;
 
-        // ⚡ Chain scaling
-        newBullet.chainCount = chainCount;
+        b.freezeStrength = freezeStrength;
+        b.freezeDuration = freezeDuration;
 
-        // 🧩 Piercing scaling
-        newBullet.pierceCount = pierceCount;
-
-        // ❄️ Freeze scaling
-        newBullet.freezeStrength = freezeStrength;
-        newBullet.freezeDuration = freezeDuration;
+        b.explosionMultiplier = explosionMultiplier;
+        b.chainMultiplier = chainMultiplier;
     }
 }

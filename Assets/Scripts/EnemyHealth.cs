@@ -31,6 +31,11 @@ public class EnemyHealth : MonoBehaviour
     private int currentWave;
     private bool isDead = false; // ✅ Death protection
 
+    [Header("Damage Popup Buffer")]
+    private int pendingDamage = 0;
+    private float damageTimer = 0f;
+    public float damageCombineWindow = 0.15f;
+
     public event Action OnEnemyDeath;
 
     void Start()
@@ -95,27 +100,68 @@ public class EnemyHealth : MonoBehaviour
 
         currentHealth -= damage;
 
+        pendingDamage += damage;
+
+        // 💀 IF THIS HIT KILLS → SHOW ONCE
+        if (currentHealth <= 0)
+        {
+            ShowDamageNumber(); // 👈 just call once
+            pendingDamage = 0;
+
+            Die();
+            return;
+        }
+
+        damageTimer = damageCombineWindow;
+
         if (healthBarInstance != null)
             healthBarInstance.UpdateHealth(currentHealth);
+    }
 
-        if (currentHealth <= 0)
-            Die();
+    void Update()
+    {
+        if (pendingDamage > 0)
+        {
+            damageTimer -= Time.deltaTime;
+
+            if (damageTimer <= 0f)
+            {
+                ShowDamageNumber(); // ✅ FIXED CALL
+                pendingDamage = 0;
+            }
+        }
+    }
+
+    void ShowDamageNumber()
+    {
+        if (DamageNumberManager.Instance == null) return;
+
+        if (pendingDamage <= 0) return; // 🚫 prevents 0
+
+        Vector3 spawnPos = transform.position;
+
+        Collider col = GetComponentInChildren<Collider>();
+        if (col != null)
+            spawnPos = col.bounds.center + Vector3.up * col.bounds.extents.y;
+
+        // optional offset tweak (top-down feel)
+        spawnPos += new Vector3(-0.3f, 0.5f, 0f);
+
+        DamageNumberManager.Instance.ShowDamage(pendingDamage, spawnPos);
     }
 
     void Die()
     {
-        if (isDead) return; // 🔥 Double safety
+        if (isDead) return;
         isDead = true;
 
         DropLoot();
-
         OnEnemyDeath?.Invoke();
 
         if (healthBarInstance != null)
             Destroy(healthBarInstance.gameObject);
 
         Destroy(gameObject);
-
     }
 
     void DropLoot()

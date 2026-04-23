@@ -40,13 +40,6 @@ public class PlayerController : MonoBehaviour
             // Rotate the player to face the point where the ray intersects the plane
             transform.LookAt(new Vector3(pointToLook.x, transform.position.y, pointToLook.z));
         }
-
-        // Handle shooting with left mouse button
-        if (Input.GetMouseButtonDown(0))
-            theGun.isFiring = true; // Start firing
-
-        if (Input.GetMouseButtonUp(0))
-            theGun.isFiring = false; // Stop firing
     }
 
     private void FixedUpdate()

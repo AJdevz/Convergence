@@ -588,13 +588,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGun: 1
+  baseDamage: 20
+  baseTimeBetweenShots: 0.2
   damage: 5
-  isFiring: 0
+  timeBetweenShots: 0.4
   bullet: {fileID: 0}
   shootSpeed: 200
-  timeBetweenShots: 0.4
-  muzzleFlash: {fileID: 2081928898}
   firePoint: {fileID: 1120709997}
+  muzzleFlash: {fileID: 2081928898}
   shotgunPellets: 8
   shotgunSpread: 15
   sniperDamageMultiplier: 3
@@ -610,13 +611,14 @@ MonoBehaviour:
   chainLightning: 0
   piercing: 0
   freezeEffect: 0
-  lifestealPercent: 0
   explosionRadius: 3
-  explosionDamage: 20
   chainCount: 3
   pierceCount: 2
   freezeStrength: 0.5
   freezeDuration: 2
+  lifestealPercent: 0
+  explosionMultiplier: 0.5
+  chainMultiplier: 0.5
 --- !u!65 &150892868
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -707,6 +709,203 @@ Transform:
   - {fileID: 1120709997}
   m_Father: {fileID: 1897883549}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &153587043
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 153587044}
+  - component: {fileID: 153587049}
+  - component: {fileID: 153587048}
+  - component: {fileID: 153587047}
+  - component: {fileID: 153587046}
+  - component: {fileID: 153587045}
+  m_Layer: 5
+  m_Name: OutlineColor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &153587044
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153587043}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1148256008}
+  m_Father: {fileID: 277810777}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -500, y: 0}
+  m_SizeDelta: {x: 420, y: 520}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &153587045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153587043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 153587046}
+          m_TargetAssemblyTypeName: UIScaling, Assembly-CSharp
+          m_MethodName: PointerEnter
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 153587046}
+          m_TargetAssemblyTypeName: UIScaling, Assembly-CSharp
+          m_MethodName: PointerExit
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &153587046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153587043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 388db75d7c6a11b4bb1fdd04f6b3e8e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  normalScale: 1
+  leftEffect: {fileID: 0}
+  rightEffect: {fileID: 0}
+  fadeSpeed: 5
+--- !u!114 &153587047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153587043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 0, g: 0, b: 0, a: 0.78431374}
+    m_HighlightedColor: {r: 0, g: 0, b: 0, a: 0.39215687}
+    m_PressedColor: {r: 0, g: 0, b: 0, a: 0.6862745}
+    m_SelectedColor: {r: 0, g: 0, b: 0, a: 0.7254902}
+    m_DisabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 153587048}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1974422676}
+        m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
+        m_MethodName: UpgradeDamage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &153587048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153587043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &153587049
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153587043}
+  m_CullTransparentMesh: 1
 --- !u!1 &189675725
 GameObject:
   m_ObjectHideFlags: 0
@@ -926,7 +1125,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Test
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
@@ -953,8 +1152,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1440,9 +1639,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1148256008}
-  - {fileID: 1123918966}
-  - {fileID: 1438440526}
+  - {fileID: 153587044}
+  - {fileID: 1438063191}
+  - {fileID: 488249661}
   - {fileID: 1471011380}
   m_Father: {fileID: 1416859310}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1464,7 +1663,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.011764706, g: 0.015686275, b: 0.03137255, a: 0.88235295}
+  m_Color: {r: 0.011764706, g: 0.015686275, b: 0.03137255, a: 0.62352943}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2059,13 +2258,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGun: 1
-  damage: 40
-  isFiring: 0
+  baseDamage: 20
+  baseTimeBetweenShots: 0.5
+  damage: 20
+  timeBetweenShots: 0.5
   bullet: {fileID: 8631868946549108887, guid: 4ee7d76d7047768469cca0ad613bb452, type: 3}
   shootSpeed: 300
-  timeBetweenShots: 0.5
-  muzzleFlash: {fileID: 1711529829}
   firePoint: {fileID: 1818859913}
+  muzzleFlash: {fileID: 1711529829}
   shotgunPellets: 6
   shotgunSpread: 8
   sniperDamageMultiplier: 12
@@ -2081,13 +2281,14 @@ MonoBehaviour:
   chainLightning: 0
   piercing: 0
   freezeEffect: 0
-  lifestealPercent: 0
   explosionRadius: 1
-  explosionDamage: 50
   chainCount: 3
-  pierceCount: 0
+  pierceCount: 1
   freezeStrength: 0.1
   freezeDuration: 2
+  lifestealPercent: 0
+  explosionMultiplier: 0.5
+  chainMultiplier: 0.5
 --- !u!82 &447599479
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2231,6 +2432,203 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &488249660
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 488249661}
+  - component: {fileID: 488249666}
+  - component: {fileID: 488249665}
+  - component: {fileID: 488249664}
+  - component: {fileID: 488249663}
+  - component: {fileID: 488249662}
+  m_Layer: 5
+  m_Name: OutlineColor (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &488249661
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 488249660}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1438440526}
+  m_Father: {fileID: 277810777}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 500, y: 0}
+  m_SizeDelta: {x: 420, y: 520}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &488249662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 488249660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 488249663}
+          m_TargetAssemblyTypeName: UIScaling, Assembly-CSharp
+          m_MethodName: PointerEnter
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 488249663}
+          m_TargetAssemblyTypeName: UIScaling, Assembly-CSharp
+          m_MethodName: PointerExit
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &488249663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 488249660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 388db75d7c6a11b4bb1fdd04f6b3e8e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  normalScale: 1
+  leftEffect: {fileID: 0}
+  rightEffect: {fileID: 0}
+  fadeSpeed: 5
+--- !u!114 &488249664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 488249660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 0, g: 0, b: 0, a: 0.78431374}
+    m_HighlightedColor: {r: 0, g: 0, b: 0, a: 0.39215687}
+    m_PressedColor: {r: 0, g: 0, b: 0, a: 0.6862745}
+    m_SelectedColor: {r: 0, g: 0, b: 0, a: 0.7254902}
+    m_DisabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 488249665}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1974422676}
+        m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
+        m_MethodName: UpgradeDamage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &488249665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 488249660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &488249666
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 488249660}
+  m_CullTransparentMesh: 1
 --- !u!1 &499287017
 GameObject:
   m_ObjectHideFlags: 0
@@ -2584,6 +2982,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &565321729
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 565321731}
+  - component: {fileID: 565321730}
+  m_Layer: 0
+  m_Name: DamageNumberManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &565321730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 565321729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 181370250b253b74a81d24efcbad8d05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageTextPrefab: {fileID: 8827591544416419047, guid: facd86b1577dc9b438a303e85974a97e, type: 3}
+  worldCanvas: {fileID: 1529706147}
+--- !u!4 &565321731
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 565321729}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 322.5985, y: 454.58505, z: -1406.4373}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &600348497
 GameObject:
   m_ObjectHideFlags: 0
@@ -2874,13 +3318,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGun: 0
+  baseDamage: 20
+  baseTimeBetweenShots: 0.2
   damage: 5
-  isFiring: 0
+  timeBetweenShots: 0.1
   bullet: {fileID: 0}
   shootSpeed: 200
-  timeBetweenShots: 0.1
-  muzzleFlash: {fileID: 0}
   firePoint: {fileID: 624520318}
+  muzzleFlash: {fileID: 0}
   shotgunPellets: 6
   shotgunSpread: 15
   sniperDamageMultiplier: 3
@@ -2896,13 +3341,14 @@ MonoBehaviour:
   chainLightning: 0
   piercing: 0
   freezeEffect: 0
-  lifestealPercent: 0
   explosionRadius: 3
-  explosionDamage: 20
   chainCount: 3
   pierceCount: 2
   freezeStrength: 0.5
   freezeDuration: 2
+  lifestealPercent: 0
+  explosionMultiplier: 0.5
+  chainMultiplier: 0.5
 --- !u!1 &673226020
 GameObject:
   m_ObjectHideFlags: 0
@@ -3180,13 +3626,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGun: 0
+  baseDamage: 40
+  baseTimeBetweenShots: 0.2
   damage: 40
-  isFiring: 0
+  timeBetweenShots: 0.2
   bullet: {fileID: 8631868946549108887, guid: 4ee7d76d7047768469cca0ad613bb452, type: 3}
   shootSpeed: 300
-  timeBetweenShots: 0.15
-  muzzleFlash: {fileID: 1201063201}
   firePoint: {fileID: 822417111}
+  muzzleFlash: {fileID: 1201063201}
   shotgunPellets: 8
   shotgunSpread: 15
   sniperDamageMultiplier: 3
@@ -3202,13 +3649,14 @@ MonoBehaviour:
   chainLightning: 0
   piercing: 0
   freezeEffect: 0
-  lifestealPercent: 0
   explosionRadius: 1
-  explosionDamage: 50
   chainCount: 3
-  pierceCount: 0
+  pierceCount: 1
   freezeStrength: 0.1
   freezeDuration: 2
+  lifestealPercent: 0
+  explosionMultiplier: 0.5
+  chainMultiplier: 0.5
 --- !u!82 &681375799
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3549,7 +3997,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: test
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
@@ -3576,8 +4024,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -5060,7 +5508,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 713022100}
-  m_Father: {fileID: 277810777}
+  m_Father: {fileID: 1438063191}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5088,11 +5536,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.09411765, g: 0.11764706, b: 0.13725491, a: 0.78431374}
-    m_HighlightedColor: {r: 0.09411765, g: 0.11764706, b: 0.13725491, a: 0.39215687}
-    m_PressedColor: {r: 0.09411765, g: 0.11764706, b: 0.13725491, a: 0.6862745}
-    m_SelectedColor: {r: 0.011764706, g: 0.015686275, b: 0.03137255, a: 0.7254902}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_NormalColor: {r: 0.20784314, g: 0.20784314, b: 0.20784314, a: 0.78431374}
+    m_HighlightedColor: {r: 0.20784315, g: 0.20784315, b: 0.20784315, a: 0.39215687}
+    m_PressedColor: {r: 0.20784315, g: 0.20784315, b: 0.20784315, a: 0.6862745}
+    m_SelectedColor: {r: 0.20784315, g: 0.20784315, b: 0.20784315, a: 0.7254902}
+    m_DisabledColor: {r: 0.20784315, g: 0.20784315, b: 0.20784315, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -5674,11 +6122,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 213788389}
-  m_Father: {fileID: 277810777}
+  m_Father: {fileID: 153587044}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -500, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 400, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1148256010
@@ -5702,11 +6150,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.09411765, g: 0.11764706, b: 0.13725491, a: 0.78431374}
-    m_HighlightedColor: {r: 0.09411765, g: 0.11764706, b: 0.13725491, a: 0.39215687}
-    m_PressedColor: {r: 0.09411765, g: 0.11764706, b: 0.13725491, a: 0.6862745}
-    m_SelectedColor: {r: 0.011764706, g: 0.015686275, b: 0.03137255, a: 0.7254902}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_NormalColor: {r: 0.20754719, g: 0.20754719, b: 0.20754719, a: 0.78431374}
+    m_HighlightedColor: {r: 0.20784315, g: 0.20784315, b: 0.20784315, a: 0.39215687}
+    m_PressedColor: {r: 0.20784315, g: 0.20784315, b: 0.20784315, a: 0.6862745}
+    m_SelectedColor: {r: 0.20784315, g: 0.20784315, b: 0.20784315, a: 0.7254902}
+    m_DisabledColor: {r: 0.20784315, g: 0.20784315, b: 0.20784315, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -6605,13 +7053,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGun: 2
+  baseDamage: 20
+  baseTimeBetweenShots: 0.2
   damage: 5
-  isFiring: 0
+  timeBetweenShots: 0.3
   bullet: {fileID: 0}
   shootSpeed: 200
-  timeBetweenShots: 0.3
-  muzzleFlash: {fileID: 1202126611}
   firePoint: {fileID: 778338237}
+  muzzleFlash: {fileID: 1202126611}
   shotgunPellets: 1
   shotgunSpread: 1
   sniperDamageMultiplier: 8
@@ -6627,13 +7076,14 @@ MonoBehaviour:
   chainLightning: 0
   piercing: 0
   freezeEffect: 0
-  lifestealPercent: 0
   explosionRadius: 3
-  explosionDamage: 20
   chainCount: 3
   pierceCount: 2
   freezeStrength: 0.5
   freezeDuration: 2
+  lifestealPercent: 0
+  explosionMultiplier: 0.5
+  chainMultiplier: 0.5
 --- !u!65 &1343472668
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7019,16 +7469,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGun: 2
-  damage: 20
-  isFiring: 0
+  baseDamage: 600
+  baseTimeBetweenShots: 0.9
+  damage: 600
+  timeBetweenShots: 0.9
   bullet: {fileID: 8631868946549108887, guid: 4ee7d76d7047768469cca0ad613bb452, type: 3}
   shootSpeed: 300
-  timeBetweenShots: 0.8
-  muzzleFlash: {fileID: 1312861390}
   firePoint: {fileID: 2048068577}
+  muzzleFlash: {fileID: 1312861390}
   shotgunPellets: 1
   shotgunSpread: 1
-  sniperDamageMultiplier: 20
+  sniperDamageMultiplier: 0
   assaultRifleModel: {fileID: 681375793}
   shotgunModel: {fileID: 447599473}
   sniperModel: {fileID: 1393329639}
@@ -7041,13 +7492,14 @@ MonoBehaviour:
   chainLightning: 0
   piercing: 0
   freezeEffect: 0
-  lifestealPercent: 0
   explosionRadius: 1
-  explosionDamage: 50
   chainCount: 3
-  pierceCount: 0
+  pierceCount: 1
   freezeStrength: 0.1
   freezeDuration: 2
+  lifestealPercent: 0
+  explosionMultiplier: 0.5
+  chainMultiplier: 0.5
 --- !u!82 &1393329645
 AudioSource:
   m_ObjectHideFlags: 0
@@ -7351,6 +7803,203 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1438063190
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1438063191}
+  - component: {fileID: 1438063196}
+  - component: {fileID: 1438063195}
+  - component: {fileID: 1438063194}
+  - component: {fileID: 1438063193}
+  - component: {fileID: 1438063192}
+  m_Layer: 5
+  m_Name: OutlineColor (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1438063191
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438063190}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1123918966}
+  m_Father: {fileID: 277810777}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 420, y: 520}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1438063192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438063190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1438063193}
+          m_TargetAssemblyTypeName: UIScaling, Assembly-CSharp
+          m_MethodName: PointerEnter
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1438063193}
+          m_TargetAssemblyTypeName: UIScaling, Assembly-CSharp
+          m_MethodName: PointerExit
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &1438063193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438063190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 388db75d7c6a11b4bb1fdd04f6b3e8e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.1
+  normalScale: 1
+  leftEffect: {fileID: 0}
+  rightEffect: {fileID: 0}
+  fadeSpeed: 5
+--- !u!114 &1438063194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438063190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 0, g: 0, b: 0, a: 0.78431374}
+    m_HighlightedColor: {r: 0, g: 0, b: 0, a: 0.39215687}
+    m_PressedColor: {r: 0, g: 0, b: 0, a: 0.6862745}
+    m_SelectedColor: {r: 0, g: 0, b: 0, a: 0.7254902}
+    m_DisabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1438063195}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1974422676}
+        m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
+        m_MethodName: UpgradeDamage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1438063195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438063190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1438063196
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438063190}
+  m_CullTransparentMesh: 1
 --- !u!1 &1438440525
 GameObject:
   m_ObjectHideFlags: 0
@@ -7385,11 +8034,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1924793270}
-  m_Father: {fileID: 277810777}
+  m_Father: {fileID: 488249661}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 500, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 400, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1438440527
@@ -7475,11 +8124,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.09411765, g: 0.11764706, b: 0.13725491, a: 0.78431374}
-    m_HighlightedColor: {r: 0.09411765, g: 0.11764706, b: 0.13725491, a: 0.39215687}
-    m_PressedColor: {r: 0.09411765, g: 0.11764706, b: 0.13725491, a: 0.6862745}
-    m_SelectedColor: {r: 0.011764706, g: 0.015686275, b: 0.03137255, a: 0.7254902}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_NormalColor: {r: 0.20784314, g: 0.20784314, b: 0.20784314, a: 0.78431374}
+    m_HighlightedColor: {r: 0.20784315, g: 0.20784315, b: 0.20784315, a: 0.39215687}
+    m_PressedColor: {r: 0.20784315, g: 0.20784315, b: 0.20784315, a: 0.6862745}
+    m_SelectedColor: {r: 0.20784315, g: 0.20784315, b: 0.20784315, a: 0.7254902}
+    m_DisabledColor: {r: 0.20784315, g: 0.20784315, b: 0.20784315, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -7806,13 +8455,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGun: 1
+  baseDamage: 20
+  baseTimeBetweenShots: 0.2
   damage: 5
-  isFiring: 0
+  timeBetweenShots: 0.4
   bullet: {fileID: 0}
   shootSpeed: 200
-  timeBetweenShots: 0.4
-  muzzleFlash: {fileID: 0}
   firePoint: {fileID: 791691342}
+  muzzleFlash: {fileID: 0}
   shotgunPellets: 8
   shotgunSpread: 15
   sniperDamageMultiplier: 3
@@ -7828,13 +8478,14 @@ MonoBehaviour:
   chainLightning: 0
   piercing: 0
   freezeEffect: 0
-  lifestealPercent: 0
   explosionRadius: 3
-  explosionDamage: 20
   chainCount: 3
   pierceCount: 2
   freezeStrength: 0.5
   freezeDuration: 2
+  lifestealPercent: 0
+  explosionMultiplier: 0.5
+  chainMultiplier: 0.5
 --- !u!65 &1500257000
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8150,6 +8801,107 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1529442222}
   m_CullTransparentMesh: 1
+--- !u!1 &1529706146
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1529706147}
+  - component: {fileID: 1529706150}
+  - component: {fileID: 1529706149}
+  - component: {fileID: 1529706148}
+  m_Layer: 5
+  m_Name: GlobalUICanvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1529706147
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1529706146}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.02, y: 0.02, z: 0.02}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1920, y: 1080}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1529706148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1529706146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &1529706149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1529706146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 1
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0.5
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 1
+--- !u!223 &1529706150
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1529706146}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &1545268378
 GameObject:
   m_ObjectHideFlags: 0
@@ -9333,7 +10085,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: test
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
@@ -9360,8 +10112,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -9477,9 +10229,14 @@ MonoBehaviour:
   button1: {fileID: 1148256010}
   button2: {fileID: 1123918968}
   button3: {fileID: 1438440529}
+  button1Image: {fileID: 0}
+  button2Image: {fileID: 0}
+  button3Image: {fileID: 0}
   button1Text: {fileID: 213788390}
   button2Text: {fileID: 713022101}
   button3Text: {fileID: 1924793271}
+  baseDamage: 20
+  baseTimeBetweenShots: 0.2
   maxLevel: 10
 --- !u!114 &1974422677
 MonoBehaviour:
@@ -9850,13 +10607,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGun: 2
+  baseDamage: 20
+  baseTimeBetweenShots: 0.2
   damage: 5
-  isFiring: 0
+  timeBetweenShots: 0.6
   bullet: {fileID: 0}
   shootSpeed: 200
-  timeBetweenShots: 0.6
-  muzzleFlash: {fileID: 0}
   firePoint: {fileID: 510409174}
+  muzzleFlash: {fileID: 0}
   shotgunPellets: 1
   shotgunSpread: 1
   sniperDamageMultiplier: 3
@@ -9872,13 +10630,14 @@ MonoBehaviour:
   chainLightning: 0
   piercing: 0
   freezeEffect: 0
-  lifestealPercent: 0
   explosionRadius: 3
-  explosionDamage: 20
   chainCount: 3
   pierceCount: 2
   freezeStrength: 0.5
   freezeDuration: 2
+  lifestealPercent: 0
+  explosionMultiplier: 0.5
+  chainMultiplier: 0.5
 --- !u!65 &2060708851
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10085,13 +10844,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGun: 0
+  baseDamage: 20
+  baseTimeBetweenShots: 0.2
   damage: 5
-  isFiring: 0
+  timeBetweenShots: 0.1
   bullet: {fileID: 0}
   shootSpeed: 200
-  timeBetweenShots: 0.1
-  muzzleFlash: {fileID: 926842387}
   firePoint: {fileID: 273537181}
+  muzzleFlash: {fileID: 926842387}
   shotgunPellets: 6
   shotgunSpread: 15
   sniperDamageMultiplier: 3
@@ -10107,13 +10867,14 @@ MonoBehaviour:
   chainLightning: 0
   piercing: 0
   freezeEffect: 0
-  lifestealPercent: 0
   explosionRadius: 3
-  explosionDamage: 20
   chainCount: 3
   pierceCount: 2
   freezeStrength: 0.5
   freezeDuration: 2
+  lifestealPercent: 0
+  explosionMultiplier: 0.5
+  chainMultiplier: 0.5
 --- !u!65 &2137891861
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10905,3 +11666,5 @@ SceneRoots:
   - {fileID: 8563128353036963490}
   - {fileID: 5510961406760078756}
   - {fileID: 649682092143385377}
+  - {fileID: 1529706147}
+  - {fileID: 565321731}

@@ -307,8 +307,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseHealth: 100
   isBoss: 0
-  waveHealthIncrease: 50
-  levelHealthIncrease: 25
+  waveHealthIncrease: 25
+  levelHealthIncrease: 0
   healthBarPrefab: {fileID: 9176267920048675078, guid: 23d25a1ed3a1299418d0622650bdc7f3, type: 3}
   xpDropPrefab: {fileID: 1493365865480228, guid: 8c7f1d862b57898438b2fe630133ed38, type: 3}
   bossXpDropPrefab: {fileID: 1493365865480228, guid: fcea58dc8b0871b459fb048a9a1806c2, type: 3}
@@ -316,6 +316,7 @@ MonoBehaviour:
   normalXpAmount: 10
   bossXpAmount: 250
   healthDropChance: 0.2
+  damageCombineWindow: 0.15
 --- !u!54 &3746889752719164951
 Rigidbody:
   m_ObjectHideFlags: 0

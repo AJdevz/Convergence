@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,35 +7,57 @@ public class EnemyController : MonoBehaviour
     private Rigidbody enemyRB;
     public float moveSpeed;
 
-    private PlayerController thePlayer; // Changed to private to avoid accidental reassignments
+    private float originalSpeed;
+    private float slowTimer = 0f;
+
+    private PlayerController thePlayer;
 
     void Start()
     {
         enemyRB = GetComponent<Rigidbody>();
         thePlayer = Object.FindFirstObjectByType<PlayerController>();
+
+        originalSpeed = moveSpeed;
     }
 
     void Update()
     {
         if (thePlayer == null)
         {
-            // Player is dead or missing, stop movement
             enemyRB.linearVelocity = Vector3.zero;
             return;
         }
 
         transform.LookAt(thePlayer.transform.position);
+
+        // ❄️ Handle slow timer
+        if (slowTimer > 0)
+        {
+            slowTimer -= Time.deltaTime;
+
+            if (slowTimer <= 0)
+            {
+                moveSpeed = originalSpeed; // reset speed
+            }
+        }
     }
 
     void FixedUpdate()
     {
-        if (thePlayer != null) // Check if player exists before moving
+        if (thePlayer != null)
         {
             enemyRB.linearVelocity = transform.forward * moveSpeed;
         }
         else
         {
-            enemyRB.linearVelocity = Vector3.zero; // Stop movement if player is gone
+            enemyRB.linearVelocity = Vector3.zero;
         }
+    }
+
+    // ❄️ THIS IS CALLED FROM BULLET
+    public void ApplySlow(float slowPercent, float duration)
+    {
+        moveSpeed = originalSpeed * (1f - slowPercent);
+        slowTimer = duration;
     }
 }

@@ -1,24 +1,30 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class UpgradeMenu : MonoBehaviour
 {
-    public GameObject upgradePanel; // Assign in Inspector
+    public GameObject upgradePanel;
+    public UpgradeManager upgradeManager;
 
     void Start()
     {
-        // Make sure the panel is initially hidden
         upgradePanel.SetActive(false);
     }
 
     public void OpenUpgradeMenu()
     {
-        upgradePanel.SetActive(true); // Show the upgrade menu
-        Time.timeScale = 0; // Pause the game when the upgrade menu opens
+        upgradePanel.SetActive(true);
+        Time.timeScale = 0;
+
+        // 🔥 Generate new upgrades when opened
+        if (upgradeManager != null)
+        {
+            upgradeManager.GenerateUpgradeChoices();
+        }
     }
 
     public void CloseUpgradeMenu()
     {
-        upgradePanel.SetActive(false); // Hide the upgrade menu
-        Time.timeScale = 1; // Unpause the game when the upgrade menu closes
+        upgradePanel.SetActive(false);
+        Time.timeScale = 1;
     }
 }

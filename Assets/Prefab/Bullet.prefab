@@ -102,8 +102,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 100
-  lifeTime: 1
+  lifeTime: 2
   GiveDamage: 10
+  explosiveShots: 1
+  chainLightning: 0
+  piercing: 0
+  freezeEffect: 0
+  lifestealPercent: 0
+  explosionRadius: 2
+  explosionDamage: 500
+  chainCount: 1
+  chainRange: 200
+  pierceCount: 2
+  lightningLinePrefab: {fileID: 7961688624200268157, guid: cab6fde1421b1304aa9e7c6000095283, type: 3}
+  explosionPrefab: {fileID: 9106730110709380649, guid: 6325d30a7f6fda04a958c4d0fa0dce6a, type: 3}
+  explosionRadiusVisual: {fileID: 5645463785733973714, guid: 1f1e38f34c92ec6429db03f12b569f71, type: 3}
 --- !u!54 &-7060907816626180290
 Rigidbody:
   m_ObjectHideFlags: 0

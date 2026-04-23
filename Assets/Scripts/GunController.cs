@@ -34,6 +34,24 @@ public class GunController : MonoBehaviour
     public AudioClip shotgunSound;
     public AudioClip sniperSound;
 
+    public bool explosiveShots;
+    public bool chainLightning;
+    public bool piercing;
+    public bool freezeEffect;
+
+    public float lifestealPercent;
+
+    [Header("Upgrade Scaling")]
+    public float explosionRadius = 3f;
+    public int explosionDamage = 20;
+
+    public int chainCount = 3;
+
+    public int pierceCount = 2;
+
+    public float freezeStrength = 0.5f;
+
+
     void Awake()
     {
         // Load the saved gun selection from PlayerPrefs first
@@ -97,8 +115,12 @@ public class GunController : MonoBehaviour
     void FireSingleBullet()
     {
         BulletController newBullet = Instantiate(bullet, firePoint.position, firePoint.rotation);
+
         newBullet.speed = shootSpeed;
         newBullet.GiveDamage = damage;
+
+        ApplyUpgradesToBullet(newBullet); // 🔥 THIS IS THE KEY
+
         muzzleFlash.Play();
     }
 
@@ -107,9 +129,14 @@ public class GunController : MonoBehaviour
         for (int i = 0; i < shotgunPellets; i++)
         {
             Quaternion spreadAngle = Quaternion.Euler(0, Random.Range(-shotgunSpread, shotgunSpread), 0);
+
             BulletController newBullet = Instantiate(bullet, firePoint.position, firePoint.rotation * spreadAngle);
+
             newBullet.speed = shootSpeed;
             newBullet.GiveDamage = damage;
+
+            ApplyUpgradesToBullet(newBullet); // 🔥 IMPORTANT
+
             muzzleFlash.Play();
         }
     }
@@ -117,8 +144,12 @@ public class GunController : MonoBehaviour
     void FireSniper()
     {
         BulletController newBullet = Instantiate(bullet, firePoint.position, firePoint.rotation);
+
         newBullet.speed = shootSpeed;
         newBullet.GiveDamage = damage * sniperDamageMultiplier;
+
+        ApplyUpgradesToBullet(newBullet); // 🔥 IMPORTANT
+
         muzzleFlash.Play();
     }
 
@@ -153,5 +184,14 @@ public class GunController : MonoBehaviour
         if (assaultRifleModel) assaultRifleModel.SetActive(currentGun == GunType.AssaultRifle);
         if (shotgunModel) shotgunModel.SetActive(currentGun == GunType.Shotgun);
         if (sniperModel) sniperModel.SetActive(currentGun == GunType.Sniper);
+    }
+
+    void ApplyUpgradesToBullet(BulletController newBullet)
+    {
+        newBullet.explosiveShots = explosiveShots;
+        newBullet.chainLightning = chainLightning;
+        newBullet.piercing = piercing;
+        newBullet.freezeEffect = freezeEffect;
+        newBullet.lifestealPercent = lifestealPercent;
     }
 }

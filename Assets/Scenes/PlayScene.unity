@@ -616,6 +616,7 @@ MonoBehaviour:
   chainCount: 3
   pierceCount: 2
   freezeStrength: 0.5
+  freezeDuration: 2
 --- !u!65 &150892868
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2081,11 +2082,12 @@ MonoBehaviour:
   piercing: 0
   freezeEffect: 0
   lifestealPercent: 0
-  explosionRadius: 3
-  explosionDamage: 20
+  explosionRadius: 1
+  explosionDamage: 50
   chainCount: 3
-  pierceCount: 2
-  freezeStrength: 0.5
+  pierceCount: 0
+  freezeStrength: 0.1
+  freezeDuration: 2
 --- !u!82 &447599479
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2900,6 +2902,7 @@ MonoBehaviour:
   chainCount: 3
   pierceCount: 2
   freezeStrength: 0.5
+  freezeDuration: 2
 --- !u!1 &673226020
 GameObject:
   m_ObjectHideFlags: 0
@@ -3200,11 +3203,12 @@ MonoBehaviour:
   piercing: 0
   freezeEffect: 0
   lifestealPercent: 0
-  explosionRadius: 3
-  explosionDamage: 20
+  explosionRadius: 1
+  explosionDamage: 50
   chainCount: 3
-  pierceCount: 2
-  freezeStrength: 0.5
+  pierceCount: 0
+  freezeStrength: 0.1
+  freezeDuration: 2
 --- !u!82 &681375799
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6629,6 +6633,7 @@ MonoBehaviour:
   chainCount: 3
   pierceCount: 2
   freezeStrength: 0.5
+  freezeDuration: 2
 --- !u!65 &1343472668
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7037,11 +7042,12 @@ MonoBehaviour:
   piercing: 0
   freezeEffect: 0
   lifestealPercent: 0
-  explosionRadius: 3
-  explosionDamage: 20
+  explosionRadius: 1
+  explosionDamage: 50
   chainCount: 3
-  pierceCount: 2
-  freezeStrength: 0.5
+  pierceCount: 0
+  freezeStrength: 0.1
+  freezeDuration: 2
 --- !u!82 &1393329645
 AudioSource:
   m_ObjectHideFlags: 0
@@ -7828,6 +7834,7 @@ MonoBehaviour:
   chainCount: 3
   pierceCount: 2
   freezeStrength: 0.5
+  freezeDuration: 2
 --- !u!65 &1500257000
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9871,6 +9878,7 @@ MonoBehaviour:
   chainCount: 3
   pierceCount: 2
   freezeStrength: 0.5
+  freezeDuration: 2
 --- !u!65 &2060708851
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10105,6 +10113,7 @@ MonoBehaviour:
   chainCount: 3
   pierceCount: 2
   freezeStrength: 0.5
+  freezeDuration: 2
 --- !u!65 &2137891861
 BoxCollider:
   m_ObjectHideFlags: 0

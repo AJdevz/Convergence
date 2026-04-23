@@ -18,17 +18,22 @@ public class BulletController : MonoBehaviour
     public float lifestealPercent;
 
     [Header("Explosion")]
+    [SerializeField] LayerMask enemyLayer;
     public float explosionRadius = 3f;
     public int explosionDamage = 20;
 
     [Header("Chain Lightning")]
     public int chainCount = 3;
-    public float chainRange = 500f;
+    public float chainRange = 9f;
 
     [Header("Piercing")]
     public int pierceCount = 2;
-
     private int currentPierce;
+    private HashSet<GameObject> hitEnemies = new HashSet<GameObject>();
+
+    [Header("Freeze Effect")]
+    public float freezeStrength = 0.5f;
+    public float freezeDuration = 2f;
 
     public LineRenderer lightningLinePrefab;
     public GameObject explosionPrefab;
@@ -84,44 +89,63 @@ public class BulletController : MonoBehaviour
 
                 if (enemyMove != null)
                 {
-                    enemyMove.ApplySlow(0.5f, 2f); // 50% slow for 2 seconds
+                    enemyMove.ApplySlow(freezeStrength, freezeDuration);
                 }
             }
         }
 
         // 🧩 Piercing logic
+        // 🧩 Piercing logic
+        // 🧩 Piercing logic (FIXED)
+        if (hitEnemies.Contains(other.gameObject))
+        {
+            return; // already hit this enemy, ignore
+        }
+
+        hitEnemies.Add(other.gameObject);
+
         if (piercing && currentPierce > 0)
         {
             currentPierce--;
-            return; // DON'T destroy bullet yet
+            return; // keep flying
         }
 
+        // no pierce left → destroy
         Destroy(gameObject);
     }
 
+    // 💥 Explosion Function
     // 💥 Explosion Function
     void Explode()
     {
         float radius = explosionRadius;
 
-        // 💥 VFX
+        // 💥 VFX (scaled properly)
         if (explosionPrefab != null)
-            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        {
+            GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
 
-        // 🌐 VISUAL RING
+            float scale = radius * 2f; // match radius
+            explosion.transform.localScale = new Vector3(scale, scale, scale);
+
+            Destroy(explosion, 1f);
+        }
+
+        // 🌐 VISUAL RING (matches EXACT radius)
         if (explosionRadiusVisual != null)
         {
             GameObject ring = Instantiate(explosionRadiusVisual, transform.position, Quaternion.identity);
+
             float scale = radius * 2f;
             ring.transform.localScale = new Vector3(scale, 0.1f, scale);
-            Destroy(ring, 0.25f);
+
+            Destroy(ring, 0.3f);
         }
 
-        // 💥 DEBUG (IMPORTANT FOR TESTING)
         Debug.Log("Explosion radius: " + radius);
 
         // 💣 DAMAGE
-        Collider[] hits = Physics.OverlapSphere(transform.position, radius);
+        Collider[] hits = Physics.OverlapSphere(transform.position, radius, enemyLayer);
 
         foreach (Collider hit in hits)
         {
@@ -129,9 +153,15 @@ public class BulletController : MonoBehaviour
 
             if (enemy != null)
             {
-                enemy.TakeDamage(explosionDamage);
+                enemy.TakeDamage(explosionDamage); // 💥 FULL DAMAGE ALWAYS
             }
         }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, explosionRadius);
     }
 
     // ⚡ Chain Lightning Function
@@ -139,9 +169,12 @@ public class BulletController : MonoBehaviour
     {
         Transform currentTarget = firstTarget;
 
+        // 🧠 Track already hit enemies (VERY IMPORTANT)
+        HashSet<Transform> hitTargets = new HashSet<Transform>();
+        hitTargets.Add(firstTarget);
+
         for (int i = 0; i < chainCount; i++)
         {
-            // 🛑 STOP if target is destroyed
             if (currentTarget == null) yield break;
 
             Collider[] hits = Physics.OverlapSphere(currentTarget.position, chainRange);
@@ -151,31 +184,30 @@ public class BulletController : MonoBehaviour
 
             foreach (Collider hit in hits)
             {
-                if (hit.CompareTag("Enemy") && hit.transform != currentTarget)
-                {
-                    float dist = Vector3.Distance(currentTarget.position, hit.transform.position);
+                if (!hit.CompareTag("Enemy")) continue;
 
-                    if (dist < closestDistance)
-                    {
-                        closestDistance = dist;
-                        nextTarget = hit.transform;
-                    }
+                Transform t = hit.transform;
+
+                // 🚫 skip already hit targets
+                if (hitTargets.Contains(t)) continue;
+
+                float dist = Vector3.Distance(currentTarget.position, t.position);
+
+                if (dist < closestDistance)
+                {
+                    closestDistance = dist;
+                    nextTarget = t;
                 }
             }
 
-            // 🛑 STOP if no valid target
             if (nextTarget == null) yield break;
 
-            // 🛑 EXTRA safety check
-            if (nextTarget == null || currentTarget == null) yield break;
-
-            // ⚡ VFX (safe)
+            // ⚡ LIGHTNING VFX
             if (lightningLinePrefab != null)
             {
                 LineRenderer line = Instantiate(lightningLinePrefab);
 
-                // number of zigzag points
-                int segments = 6;
+                int segments = 7;
                 line.positionCount = segments;
 
                 Vector3 start = currentTarget.position;
@@ -184,36 +216,38 @@ public class BulletController : MonoBehaviour
                 for (int j = 0; j < segments; j++)
                 {
                     float t = j / (float)(segments - 1);
-
                     Vector3 point = Vector3.Lerp(start, end, t);
 
-                    // ⚡ ADD ZIGZAG OFFSET
+                    // ⚡ Stronger zig-zag
                     if (j != 0 && j != segments - 1)
                     {
                         point += new Vector3(
-                            Random.Range(-0.5f, 0.5f),
-                            Random.Range(-0.2f, 0.2f),
-                            Random.Range(-0.5f, 0.5f)
+                            Random.Range(-0.7f, 0.7f),
+                            Random.Range(-0.3f, 0.3f),
+                            Random.Range(-0.7f, 0.7f)
                         );
                     }
 
                     line.SetPosition(j, point);
                 }
 
-                Destroy(line.gameObject, 0.1f);
+                Destroy(line.gameObject, 0.08f);
             }
 
-            // 💥 Damage
+            // 💥 DAMAGE (better scaling)
             EnemyHealth enemy = nextTarget.GetComponent<EnemyHealth>();
             if (enemy != null)
             {
-                float chainDamageMultiplier = 0.75f + (chainCount * 0.05f);
-                enemy.TakeDamage(Mathf.RoundToInt(GiveDamage * chainDamageMultiplier));
+                int chainDamage = Mathf.RoundToInt(GiveDamage * (1f + (chainCount * 0.1f)));
+                enemy.TakeDamage(chainDamage);
             }
+
+            // ✅ mark as hit
+            hitTargets.Add(nextTarget);
 
             currentTarget = nextTarget;
 
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.04f);
         }
     }
 }

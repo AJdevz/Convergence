@@ -50,6 +50,7 @@ public class GunController : MonoBehaviour
     public int pierceCount = 2;
 
     public float freezeStrength = 0.5f;
+    public float freezeDuration = 2f;
 
 
     void Awake()
@@ -188,10 +189,27 @@ public class GunController : MonoBehaviour
 
     void ApplyUpgradesToBullet(BulletController newBullet)
     {
+        // 🔥 Flags
         newBullet.explosiveShots = explosiveShots;
         newBullet.chainLightning = chainLightning;
         newBullet.piercing = piercing;
         newBullet.freezeEffect = freezeEffect;
+
+        // 🩸 Stats
         newBullet.lifestealPercent = lifestealPercent;
+
+        // 💥 Explosion scaling
+        newBullet.explosionRadius = explosionRadius;
+        newBullet.explosionDamage = explosionDamage;
+
+        // ⚡ Chain scaling
+        newBullet.chainCount = chainCount;
+
+        // 🧩 Piercing scaling
+        newBullet.pierceCount = pierceCount;
+
+        // ❄️ Freeze scaling
+        newBullet.freezeStrength = freezeStrength;
+        newBullet.freezeDuration = freezeDuration;
     }
 }

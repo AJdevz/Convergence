@@ -231,6 +231,7 @@ GameObject:
   - component: {fileID: 8975684296697542264}
   - component: {fileID: 5046049936257338695}
   - component: {fileID: 7864987742030242244}
+  - component: {fileID: 2162320184558418642}
   m_Layer: 6
   m_Name: ZombieMerge
   m_TagString: Enemy
@@ -493,6 +494,23 @@ MonoBehaviour:
   mergeSound: {fileID: 8300000, guid: 35fbad8cdde724f11ba6481f1e64af71, type: 3}
   spawnVolume: 1
   mergeVolume: 1
+--- !u!114 &2162320184558418642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 332356240984641808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a498808adc5d44c48af7e81ff8944b5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitEmissionColor: {r: 5, g: 5, b: 5, a: 5}
+  flashDuration: 0.1
+  knockbackForce: 12
+  useBlood: 1
+  bloodIncreasePerHit: 0.15
 --- !u!1 &332421512899438282
 GameObject:
   m_ObjectHideFlags: 0

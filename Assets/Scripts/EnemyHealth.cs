@@ -40,10 +40,6 @@ public class EnemyHealth : MonoBehaviour
 
     void Start()
     {
-            Debug.Log("=== ENEMY HEALTH DEBUG ===");
-            Debug.Log("Enemy: " + gameObject.name);
-            Debug.Log("healthBarPrefab reference = " + healthBarPrefab);
-
             SpawnEnemies spawnManager = FindFirstObjectByType<SpawnEnemies>();
 
         if (spawnManager != null)
@@ -96,6 +92,7 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        Debug.Log("Enemy took damage: " + damage);
         if (isDead) return;
 
         currentHealth -= damage;

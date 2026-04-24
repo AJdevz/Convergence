@@ -59,40 +59,67 @@ public class BulletController : MonoBehaviour
     {
         if (!other.gameObject.CompareTag("Enemy")) return;
 
-        EnemyHealth enemy = other.gameObject.GetComponent<EnemyHealth>();
+        EnemyHealth enemy = other.gameObject.GetComponentInParent<EnemyHealth>();
 
         if (enemy != null)
         {
-            // 💥 Base Damage
             enemy.TakeDamage(GiveDamage);
 
-            // 💥 Explosion
+            // 🎯 TRUE IMPACT DIRECTION (bullet → enemy)
+            Vector3 dir = enemy.transform.position - transform.position;
+
+            // keep horizontal push, but allow slight lift
+            dir.y = 0f;
+
+            if (dir.sqrMagnitude > 0.001f)
+                dir.Normalize();
+
+            // 🔥 FEEDBACK
+            EnemyHitFeedback feedback = enemy.GetComponentInParent<EnemyHitFeedback>();
+
+            if (feedback != null)
+            {
+                feedback.PlayHitFeedback(dir);
+
+                if (CameraShake.Instance != null)
+                    CameraShake.Instance.Shake(0.12f, 0.35f);
+            }
+
+            // 💥 KNOCKBACK (STRONG + CONSISTENT)
+            EnemyController controller = enemy.GetComponentInParent<EnemyController>();
+
+            if (controller != null)
+            {
+                controller.ApplyRepelFromPlayer();
+            }
+
+            // 💣 EXPLOSIVE
             if (explosiveShots)
                 Explode();
 
-            // ⚡ Chain Lightning (ALWAYS works now)
+            // ⚡ CHAIN
             if (chainLightning && !hasChained)
             {
                 hasChained = true;
                 DoChain(enemy.transform);
             }
 
-            // ❄️ Freeze
+            // ❄️ SLOW
             if (freezeEffect)
             {
-                EnemyController enemyMove = other.gameObject.GetComponent<EnemyController>();
+                EnemyController enemyMove = other.gameObject.GetComponentInParent<EnemyController>();
                 if (enemyMove != null)
                     enemyMove.ApplySlow(freezeStrength, freezeDuration);
             }
         }
 
-        // 🧠 TRACK HIT AFTER abilities
+        // 🧠 TRACK HIT
         if (hitEnemies.Contains(other.gameObject))
             return;
 
         hitEnemies.Add(other.gameObject);
 
-        // 🧩 Piercing logic
+        // 🧩 PIERCE
         if (piercing && currentPierce > 0)
         {
             currentPierce--;
@@ -103,36 +130,26 @@ public class BulletController : MonoBehaviour
     }
 
     // 💥 Explosion Function
-    // 💥 Explosion Function
     void Explode()
     {
         float radius = explosionRadius;
 
-        // 💥 VFX (scaled properly)
         if (explosionPrefab != null)
         {
             GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-
-            float scale = radius * 2f; // match radius
+            float scale = radius * 2f;
             explosion.transform.localScale = new Vector3(scale, scale, scale);
-
             Destroy(explosion, 1f);
         }
 
-        // 🌐 VISUAL RING (matches EXACT radius)
         if (explosionRadiusVisual != null)
         {
             GameObject ring = Instantiate(explosionRadiusVisual, transform.position, Quaternion.identity);
-
             float scale = radius * 2f;
             ring.transform.localScale = new Vector3(scale, 0.1f, scale);
-
             Destroy(ring, 0.3f);
         }
 
-        Debug.Log("Explosion radius: " + radius);
-
-        // 💣 DAMAGE
         Collider[] hits = Physics.OverlapSphere(transform.position, radius, enemyLayer);
 
         foreach (Collider hit in hits)
@@ -143,6 +160,13 @@ public class BulletController : MonoBehaviour
             {
                 int finalDamage = Mathf.RoundToInt(GiveDamage * explosionMultiplier);
                 enemy.TakeDamage(finalDamage);
+
+                EnemyHitFeedback feedback = hit.GetComponentInParent<EnemyHitFeedback>();
+                if (feedback != null)
+                {
+                    Vector3 dir = (hit.transform.position - transform.position).normalized;
+                    feedback.PlayHitFeedback(dir);
+                }
             }
         }
     }
@@ -166,40 +190,44 @@ public class BulletController : MonoBehaviour
             Transform nextTarget = null;
             float closest = Mathf.Infinity;
 
-            // 🔥 STRICT FILTERING
             for (int h = 0; h < hits.Length; h++)
             {
                 Collider hit = hits[h];
 
-                if (!hit.CompareTag("Enemy")) continue;
+                EnemyHealth eh = hit.GetComponentInParent<EnemyHealth>();
+                if (eh == null) continue;
 
-                GameObject enemyObj = hit.gameObject;
+                GameObject enemyObj = eh.gameObject;
 
                 if (hitTargets.Contains(enemyObj)) continue;
 
-                float dist = Vector3.Distance(currentTarget.position, hit.transform.position);
+                float dist = Vector3.Distance(currentTarget.position, enemyObj.transform.position);
 
                 if (dist < closest)
                 {
                     closest = dist;
-                    nextTarget = hit.transform;
+                    nextTarget = enemyObj.transform;
                 }
             }
 
-            // ❌ STOP IF NO VALID TARGET
             if (nextTarget == null) return;
 
             hitTargets.Add(nextTarget.gameObject);
 
-            // 💥 DAMAGE
-            EnemyHealth hp = nextTarget.GetComponent<EnemyHealth>();
+            EnemyHealth hp = nextTarget.GetComponentInParent<EnemyHealth>();
             if (hp != null)
             {
                 int dmg = Mathf.RoundToInt(GiveDamage * chainMultiplier);
                 hp.TakeDamage(dmg);
+
+                EnemyHitFeedback feedback = nextTarget.GetComponentInParent<EnemyHitFeedback>();
+                if (feedback != null)
+                {
+                    Vector3 dir = (nextTarget.position - currentTarget.position).normalized;
+                    feedback.PlayHitFeedback(dir);
+                }
             }
 
-            // ⚡ ZIG ZAG LIGHTNING
             if (lightningLinePrefab != null)
             {
                 LineRenderer line = Instantiate(lightningLinePrefab);
@@ -222,6 +250,7 @@ public class BulletController : MonoBehaviour
                     if (j != 0 && j != segments - 1)
                     {
                         float zigzag = Mathf.Sin(t * 10f) * 0.35f;
+
                         point += right * zigzag;
 
                         point += new Vector3(

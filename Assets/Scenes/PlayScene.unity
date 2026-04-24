@@ -2261,9 +2261,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGun: 1
-  baseDamage: 20
+  baseDamage: 30
   baseTimeBetweenShots: 0.5
-  damage: 20
+  damage: 30
   timeBetweenShots: 0.5
   bullet: {fileID: 8631868946549108887, guid: 4ee7d76d7047768469cca0ad613bb452, type: 3}
   shootSpeed: 300
@@ -2420,6 +2420,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bloodEffect: {fileID: 166404, guid: 05377925e345b0b4f87fc17886d47a24, type: 3}
   levelUpEffect: {fileID: 1540333649370906, guid: 0176d8fa8a34969428e932c069c39341, type: 3}
+  hitFlashEffect: {fileID: 0}
 --- !u!4 &458056311
 Transform:
   m_ObjectHideFlags: 0
@@ -3352,6 +3353,58 @@ MonoBehaviour:
   lifestealPercent: 0
   explosionMultiplier: 0.5
   chainMultiplier: 0.5
+--- !u!1 &640835283
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 640835285}
+  - component: {fileID: 640835284}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &640835284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640835283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6eb37249eb323a43a6e77fd18af34ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sfxSource: {fileID: 0}
+  hitEnemy: {fileID: 0}
+  zombie: {fileID: 0}
+  explosion: {fileID: 0}
+  lightning: {fileID: 0}
+  heal: {fileID: 0}
+  xpCollect: {fileID: 0}
+  nextWave: {fileID: 0}
+--- !u!4 &640835285
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640835283}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 623.3356, y: 967.63434, z: -1563.0057}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &673226020
 GameObject:
   m_ObjectHideFlags: 0
@@ -3629,9 +3682,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGun: 0
-  baseDamage: 40
+  baseDamage: 80
   baseTimeBetweenShots: 0.2
-  damage: 40
+  damage: 80
   timeBetweenShots: 0.2
   bullet: {fileID: 8631868946549108887, guid: 4ee7d76d7047768469cca0ad613bb452, type: 3}
   shootSpeed: 300
@@ -4643,6 +4696,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
+  - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4739,6 +4793,18 @@ MonoBehaviour:
   target: {fileID: 1090348730}
   offset: {x: 0, y: 35, z: 0}
   smoothSpeed: 10
+--- !u!114 &963194230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a35ff49d947af54b985b8006297afa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &965689914
 GameObject:
   m_ObjectHideFlags: 0
@@ -11687,3 +11753,4 @@ SceneRoots:
   - {fileID: 649682092143385377}
   - {fileID: 1529706147}
   - {fileID: 565321731}
+  - {fileID: 640835285}

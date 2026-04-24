@@ -4,8 +4,10 @@ public class VFXManager : MonoBehaviour
 {
     public static VFXManager Instance;
 
+    [Header("VFX")]
     public GameObject bloodEffect;
     public GameObject levelUpEffect;
+    public GameObject hitFlashEffect; // optional extra
 
     void Awake()
     {
@@ -13,7 +15,6 @@ public class VFXManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    // ✅ WORLD POSITION (for bullets, explosions)
     public void PlayVFX(GameObject vfx, Vector3 position)
     {
         if (vfx == null) return;
@@ -22,7 +23,6 @@ public class VFXManager : MonoBehaviour
         Destroy(effect, 2f);
     }
 
-    // ✅ ATTACHED (for player effects like level up)
     public void PlayVFX(GameObject vfx, Transform parent, Vector3 offset)
     {
         if (vfx == null || parent == null) return;

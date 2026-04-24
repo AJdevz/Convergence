@@ -5,7 +5,7 @@ using UnityEngine.UIElements; // Unused, can be removed
 
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed; // Speed at which the player moves
+    public float moveSpeed;
     private Rigidbody myRigidBody; // Reference to the Rigidbody component
     private Vector3 moveInput; // Stores player input direction
     private Vector3 moveVelocity; // Stores calculated movement velocity

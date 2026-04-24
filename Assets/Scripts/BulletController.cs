@@ -225,9 +225,9 @@ public class BulletController : MonoBehaviour
                         point += right * zigzag;
 
                         point += new Vector3(
-                            Random.Range(-0.1f, 0.1f),
-                            Random.Range(-0.05f, 0.05f),
-                            Random.Range(-0.1f, 0.1f)
+                            Random.Range(-3f, 3f),
+                            Random.Range(-3f, 3f),
+                            Random.Range(-3f, 3f)
                         );
                     }
 

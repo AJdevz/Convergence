@@ -45,7 +45,8 @@ public class UpgradeManager : MonoBehaviour
         ChainLightning,
         Piercing,
         Freeze,
-        Lifesteal
+        Lifesteal,
+        XPMagnet,
     }
 
     void Start()
@@ -155,6 +156,7 @@ public class UpgradeManager : MonoBehaviour
             case UpgradeType.Piercing: return new Color(0.7f, 0.7f, 0.7f);
             case UpgradeType.Freeze: return new Color(0.4f, 0.7f, 1f);
             case UpgradeType.Lifesteal: return new Color(0.6f, 0.1f, 0.6f);
+            case UpgradeType.XPMagnet: return new Color(0.9f, 0.9f, 0.2f);
             default: return Color.white;
         }
     }
@@ -171,6 +173,7 @@ public class UpgradeManager : MonoBehaviour
             case UpgradeType.Piercing: return "[PEN]";
             case UpgradeType.Freeze: return "[ICE]";
             case UpgradeType.Lifesteal: return "[VAMP]";
+            case UpgradeType.XPMagnet: return "[MAG]";
             default: return "";
         }
     }
@@ -186,6 +189,7 @@ public class UpgradeManager : MonoBehaviour
             case UpgradeType.Piercing: return "Pierce Count";
             case UpgradeType.Freeze: return "Freeze Strength";
             case UpgradeType.Lifesteal: return "Lifesteal";
+            case UpgradeType.XPMagnet: return "XP Magnet Range";
             default: return "";
         }
     }
@@ -298,6 +302,11 @@ public class UpgradeManager : MonoBehaviour
                     return $"<color=#ff5555>{(int)(current * 100)}%</color> → <color=#55ff55>{(int)(next * 100)}%</color>";
                 }
 
+            case UpgradeType.XPMagnet:
+                {
+                    return $"Range +10 per level";
+                }
+
             default:
                 return "";
         }
@@ -367,6 +376,23 @@ public class UpgradeManager : MonoBehaviour
             case UpgradeType.Lifesteal:
                 gun.lifestealPercent += 0.02f;
                 break;
+
+            case UpgradeType.XPMagnet:
+                {
+                    XPMagnet magnet = FindFirstObjectByType<XPMagnet>();
+
+                    if (magnet != null)
+                    {
+                        magnet.magnetLevel++;
+                        Debug.Log("Magnet Level UP → " + magnet.magnetLevel);
+                    }
+                    else
+                    {
+                        Debug.LogError("NO XPMagnet FOUND");
+                    }
+
+                    break;
+                }
         }
 
         CloseUpgradeMenu();

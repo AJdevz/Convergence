@@ -4,10 +4,58 @@ public class XPCollect : MonoBehaviour
 {
     private int xpAmount;
 
-    private void Start()
+    private Transform player;
+    private XPMagnet magnet;
+
+    void Start()
     {
-        // Get XP value from the prefab itself
-        xpAmount = PlayerPrefs.GetInt(gameObject.name + "_XPAmount", 10); // Default to 10 if no value is set
+        xpAmount = PlayerPrefs.GetInt(gameObject.name + "_XPAmount", 10);
+
+        InvokeRepeating(nameof(FindPlayer), 0f, 0.5f);
+    }
+
+    void FindPlayer()
+    {
+        if (player != null) return;
+
+        GameObject p = GameObject.FindGameObjectWithTag("Player");
+
+        if (p != null)
+        {
+            player = p.transform;
+            magnet = p.GetComponent<XPMagnet>();
+
+            if (magnet != null)
+            {
+                Debug.Log("Magnet FOUND");
+                CancelInvoke(nameof(FindPlayer));
+            }
+        }
+    }
+
+    void Update()
+    {
+        if (magnet != null)
+        {
+            Debug.Log("Magnet Level: " + magnet.magnetLevel);
+            Debug.Log("Range: " + magnet.GetRange());
+        }
+
+        if (player == null || magnet == null) return;
+
+        float range = magnet.GetRange();
+        float dist = Vector3.Distance(transform.position, player.position);
+
+        if (dist <= range)
+        {
+            float speed = magnet.pullSpeed;
+
+            transform.position = Vector3.MoveTowards(
+                transform.position,
+                player.position,
+                speed * Time.deltaTime
+            );
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -22,6 +70,6 @@ public class XPCollect : MonoBehaviour
     public void SetXP(int amount)
     {
         xpAmount = amount;
-        PlayerPrefs.SetInt(gameObject.name + "_XPAmount", amount); // Save XP value dynamically
+        PlayerPrefs.SetInt(gameObject.name + "_XPAmount", amount);
     }
 }

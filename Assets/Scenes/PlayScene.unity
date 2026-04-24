@@ -443,6 +443,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100468, guid: cf78ac9b09f3f284f8988b9e77af54bb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1090348726}
+    - targetCorrespondingSourceObject: {fileID: 100468, guid: cf78ac9b09f3f284f8988b9e77af54bb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1090348732}
     - targetCorrespondingSourceObject: {fileID: 125956, guid: cf78ac9b09f3f284f8988b9e77af54bb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1897883551}
@@ -5334,6 +5337,22 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 444644, guid: cf78ac9b09f3f284f8988b9e77af54bb, type: 3}
   m_PrefabInstance: {fileID: 107127600}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1090348732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1090348721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e3cb9c31fe1f474394a60acea2fec0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseRange: 0
+  rangePerLevel: 5
+  pullSpeed: 60
+  magnetLevel: 0
 --- !u!1 &1108971452
 GameObject:
   m_ObjectHideFlags: 0
@@ -7479,7 +7498,7 @@ MonoBehaviour:
   muzzleFlash: {fileID: 1312861390}
   shotgunPellets: 1
   shotgunSpread: 1
-  sniperDamageMultiplier: 0
+  sniperDamageMultiplier: 1
   assaultRifleModel: {fileID: 681375793}
   shotgunModel: {fileID: 447599473}
   sniperModel: {fileID: 1393329639}
@@ -10229,9 +10248,9 @@ MonoBehaviour:
   button1: {fileID: 1148256010}
   button2: {fileID: 1123918968}
   button3: {fileID: 1438440529}
-  button1Image: {fileID: 0}
-  button2Image: {fileID: 0}
-  button3Image: {fileID: 0}
+  button1Image: {fileID: 153587048}
+  button2Image: {fileID: 1438063195}
+  button3Image: {fileID: 488249665}
   button1Text: {fileID: 213788390}
   button2Text: {fileID: 713022101}
   button3Text: {fileID: 1924793271}

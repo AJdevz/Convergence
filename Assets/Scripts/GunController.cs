@@ -11,7 +11,7 @@ public class GunController : MonoBehaviour
     public int baseDamage = 20;
     public float baseTimeBetweenShots = 0.2f;
 
-    [Header("Runtime Stats (modified by upgrades)")]
+    [Header("Runtime Stats")]
     public int damage;
     public float timeBetweenShots;
 
@@ -39,39 +39,35 @@ public class GunController : MonoBehaviour
     public AudioClip shotgunSound;
     public AudioClip sniperSound;
 
-    [Header("Upgrades")]
+    [Header("Upgrades (toggles + values)")]
     public bool explosiveShots;
     public bool chainLightning;
     public bool piercing;
     public bool freezeEffect;
 
-    [Header("Upgrade Values")]
     public float explosionRadius = 3f;
     public int chainCount = 1;
     public int pierceCount = 2;
     public float freezeStrength = 0.5f;
     public float freezeDuration = 2f;
     public float lifestealPercent;
+    public float freezeChance = 0f;
 
-    [Header("Scaling")]
+    [Header("Scaling (STACKING SYSTEM)")]
+    public float damageMultiplier = 1f;
+    public float fireRateMultiplier = 1f;
     public float explosionMultiplier = 0.5f;
     public float chainMultiplier = 0.5f;
 
     void Awake()
     {
-        // Load selected gun FIRST (this is important)
         int savedGunIndex = PlayerPrefs.GetInt("SelectedGun", -1);
 
         if (savedGunIndex != -1)
-        {
             currentGun = (GunType)savedGunIndex;
-        }
         else if (GameManager.Instance != null)
-        {
             currentGun = GameManager.Instance.SelectedGun;
-        }
 
-        // ONLY set base stats once (no reset spam)
         damage = baseDamage;
         timeBetweenShots = baseTimeBetweenShots;
 
@@ -83,18 +79,23 @@ public class GunController : MonoBehaviour
 
     public void ResetStats()
     {
+        damageMultiplier = 1f;
+        fireRateMultiplier = 1f;
+
         damage = baseDamage;
         timeBetweenShots = baseTimeBetweenShots;
     }
 
     void Update()
     {
+        float finalFireRate = timeBetweenShots;
+
         if (Input.GetMouseButton(0))
         {
-            if (shotCounter <= 0)
+            if (shotCounter <= 0f)
             {
                 FireWeapon();
-                shotCounter = timeBetweenShots;
+                shotCounter = finalFireRate;
             }
         }
 
@@ -126,7 +127,8 @@ public class GunController : MonoBehaviour
     {
         BulletController b = Instantiate(bullet, firePoint.position, firePoint.rotation);
         b.speed = shootSpeed;
-        b.GiveDamage = damage;
+        b.GiveDamage = Mathf.RoundToInt(damage * damageMultiplier);
+
         ApplyUpgrades(b);
         muzzleFlash.Play();
     }
@@ -139,7 +141,7 @@ public class GunController : MonoBehaviour
 
             BulletController b = Instantiate(bullet, firePoint.position, firePoint.rotation * spread);
             b.speed = shootSpeed;
-            b.GiveDamage = damage;
+            b.GiveDamage = Mathf.RoundToInt(damage * damageMultiplier);
 
             ApplyUpgrades(b);
         }
@@ -151,7 +153,7 @@ public class GunController : MonoBehaviour
     {
         BulletController b = Instantiate(bullet, firePoint.position, firePoint.rotation);
         b.speed = shootSpeed;
-        b.GiveDamage = damage * sniperDamageMultiplier;
+        b.GiveDamage = Mathf.RoundToInt(damage * sniperDamageMultiplier * damageMultiplier);
 
         ApplyUpgrades(b);
         muzzleFlash.Play();
@@ -185,8 +187,37 @@ public class GunController : MonoBehaviour
 
         b.freezeStrength = freezeStrength;
         b.freezeDuration = freezeDuration;
+        b.freezeChance = freezeChance;
 
         b.explosionMultiplier = explosionMultiplier;
         b.chainMultiplier = chainMultiplier;
+    }
+
+    public int GetCurrentDamage()
+    {
+        return Mathf.RoundToInt(baseDamage * damageMultiplier);
+    }
+
+    public void RecalculateStats()
+    {
+        damage = Mathf.RoundToInt(baseDamage * damageMultiplier);
+
+        timeBetweenShots = baseTimeBetweenShots * fireRateMultiplier;
+
+        // safety clamp (prevents insane spam bugs)
+        float minFireRate = GetFireRateClamp();
+
+        timeBetweenShots = Mathf.Max(timeBetweenShots, minFireRate);
+    }
+
+    public float GetFireRateClamp()
+    {
+        switch (currentGun)
+        {
+            case GunType.AssaultRifle: return 0.05f;
+            case GunType.Shotgun: return 0.1f;
+            case GunType.Sniper: return 0.2f;
+            default: return 0.05f;
+        }
     }
 }

@@ -111,9 +111,10 @@ MonoBehaviour:
   explosionRadius: 1
   chainCount: 1
   chainRange: 200
-  pierceCount: 1
+  pierceCount: 0
   freezeStrength: 0.1
   freezeDuration: 2
+  freezeChance: 0
   lifestealPercent: 0
   explosionMultiplier: 0.5
   chainMultiplier: 0.5

@@ -1,16 +1,23 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
     private Rigidbody enemyRB;
+
+    [Header("Base Movement")]
     public float moveSpeed;
 
-    private float originalSpeed;
-    private float slowTimer = 0f;
-
     private PlayerController thePlayer;
+
+    // =========================
+    // 🧊 STATUS SYSTEM (NEW)
+    // =========================
+    private float slowMultiplier = 1f;
+    private float freezeMultiplier = 1f;
+
+    private float slowTimer;
+    private bool isFrozen;
 
     [Header("Repel Settings")]
     public float repelDistance = 2.5f;
@@ -26,7 +33,6 @@ public class EnemyController : MonoBehaviour
     {
         enemyRB = GetComponent<Rigidbody>();
         thePlayer = Object.FindFirstObjectByType<PlayerController>();
-        originalSpeed = moveSpeed;
     }
 
     void Update()
@@ -34,33 +40,31 @@ public class EnemyController : MonoBehaviour
         if (thePlayer == null) return;
 
         transform.LookAt(thePlayer.transform.position);
+
+        // 🎧 Growl system
+        growlTimer -= Time.deltaTime;
+        if (growlTimer <= 0f)
         {
-            if (thePlayer == null) return;
+            SoundManager.Instance?.PlayZombieGrowl();
+            growlTimer = Random.Range(3f, 6f);
+        }
 
-            growlTimer -= Time.deltaTime;
+        // ⏳ Slow timer
+        if (slowTimer > 0)
+        {
+            slowTimer -= Time.deltaTime;
 
-            if (growlTimer <= 0f)
-            {
-                SoundManager.Instance?.PlayZombieGrowl();
-                growlTimer = Random.Range(3f, 6f); // random delay
-            }
+            if (slowTimer <= 0)
+                slowMultiplier = 1f;
+        }
 
-            transform.LookAt(thePlayer.transform.position);
+        // ⏳ Repel timer
+        if (isRepelling)
+        {
+            repelTimer -= Time.deltaTime;
 
-            if (slowTimer > 0)
-            {
-                slowTimer -= Time.deltaTime;
-                if (slowTimer <= 0)
-                    moveSpeed = originalSpeed;
-            }
-
-            if (isRepelling)
-            {
-                repelTimer -= Time.deltaTime;
-
-                if (repelTimer <= 0f)
-                    isRepelling = false;
-            }
+            if (repelTimer <= 0f)
+                isRepelling = false;
         }
     }
 
@@ -79,12 +83,24 @@ public class EnemyController : MonoBehaviour
             return;
         }
 
-        // NORMAL CHASE
+        // ❄️ FREEZE OVERRIDE
+        if (isFrozen)
+        {
+            enemyRB.linearVelocity = Vector3.zero;
+            return;
+        }
+
+        // 🧠 NORMAL CHASE
         Vector3 moveDir = (thePlayer.transform.position - transform.position).normalized;
-        enemyRB.linearVelocity = moveDir * moveSpeed;
+
+        float finalSpeed = moveSpeed * slowMultiplier * freezeMultiplier;
+
+        enemyRB.linearVelocity = moveDir * finalSpeed;
     }
 
-    // 💥 SIMPLE REPEL FROM PLAYER (MAIN FIX)
+    // =========================
+    // 💥 REPULSION
+    // =========================
     public void ApplyRepelFromPlayer()
     {
         if (thePlayer == null) return;
@@ -99,9 +115,32 @@ public class EnemyController : MonoBehaviour
         repelTimer = repelTime;
     }
 
+    // =========================
+    // 🧊 SLOW SYSTEM (FIXED)
+    // =========================
     public void ApplySlow(float slowPercent, float duration)
     {
-        moveSpeed = originalSpeed * (1f - slowPercent);
+        slowMultiplier = 1f - slowPercent;
         slowTimer = duration;
+    }
+
+    // =========================
+    // ❄️ FREEZE SYSTEM (FIXED)
+    // =========================
+    public void Freeze(float duration)
+    {
+        StopCoroutine("FreezeRoutine");
+        StartCoroutine(FreezeRoutine(duration));
+    }
+
+    IEnumerator FreezeRoutine(float duration)
+    {
+        isFrozen = true;
+        freezeMultiplier = 0f;
+
+        yield return new WaitForSeconds(duration);
+
+        freezeMultiplier = 1f;
+        isFrozen = false;
     }
 }

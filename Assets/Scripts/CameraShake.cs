@@ -8,7 +8,7 @@ public class CameraShake : MonoBehaviour
     private float shakeDuration;
     private float shakeMagnitude;
 
-    private Vector3 currentOffset;
+    private Vector3 currentOffset = Vector3.zero;
 
     void Awake()
     {
@@ -42,6 +42,7 @@ public class CameraShake : MonoBehaviour
         shakeMagnitude = magnitude;
     }
 
+    // ✅ THIS is what your CameraFollow NEEDS
     public Vector3 GetOffset()
     {
         return currentOffset;

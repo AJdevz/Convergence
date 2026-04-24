@@ -1682,8 +1682,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 20
-  repelDistance: 1
-  repelTime: 0.1
+  repelDistance: 0.5
+  repelTime: 0.05
 --- !u!114 &3236374407976370856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1769,10 +1769,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitEmissionColor: {r: 5, g: 5, b: 5, a: 5}
-  flashDuration: 0.3
-  knockbackForce: 30
+  flashDuration: 0.1
+  knockbackForce: 10
   useBlood: 1
-  bloodIncreasePerHit: 0.15
+  bloodIncreasePerHit: 1.74
 --- !u!1 &1852629789817652
 GameObject:
   m_ObjectHideFlags: 0

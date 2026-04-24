@@ -76,18 +76,25 @@ public class EnemyHealth : MonoBehaviour
     {
         int playerLevel = XPManager.Instance != null ? XPManager.Instance.playerLevel : 1;
 
-        // Wave scaling (Wave 1 = base health)
-        int waveBonus = (currentWave - 1) * waveHealthIncrease;
+        float wave = currentWave;
+        float level = playerLevel;
 
-        // Player level scaling (Level 1 = no bonus)
-        int levelBonus = (playerLevel - 1) * levelHealthIncrease;
+        float baseHp = baseHealth;
 
-        int scaledHealth = baseHealth + waveBonus + levelBonus;
+        float linear = 1f + (wave - 1) * 0.12f;
+        float exponential = Mathf.Pow(1.15f, wave - 1);
+        float levelScale = 1f + (level - 1) * 0.05f;
+
+        float burstProtection = 1f + Mathf.Log10(wave) * 0.6f;
+
+        float scaled = baseHp * linear * exponential * levelScale * burstProtection;
 
         if (isBoss)
-            scaledHealth *= 3;
+        {
+            scaled *= (6f + Mathf.Pow(wave, 1.04f) * 0.4f);
+        }
 
-        currentHealth = scaledHealth;
+        currentHealth = Mathf.RoundToInt(scaled);
     }
 
     public void TakeDamage(int damage)

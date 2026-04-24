@@ -294,6 +294,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 20
+  repelDistance: 0.5
+  repelTime: 0.05
 --- !u!114 &5605928621548628235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -489,7 +491,7 @@ MonoBehaviour:
   checkInterval: 0.1
   bossPrefab: {fileID: 1865598692286518, guid: c07ec1075acf8bc42a7f0ef5e239291d, type: 3}
   mergeRing: {fileID: 256192482591812093}
-  defaultRingColor: {r: 0.015686274, g: 1, b: 0.020507982, a: 0.039215688}
+  defaultRingColor: {r: 0.015686274, g: 1, b: 0.020507982, a: 0.011764706}
   spawnSound: {fileID: 8300000, guid: 0994c12e202f342459a4212e7287f7e8, type: 3}
   mergeSound: {fileID: 8300000, guid: 35fbad8cdde724f11ba6481f1e64af71, type: 3}
   spawnVolume: 1
@@ -508,9 +510,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitEmissionColor: {r: 5, g: 5, b: 5, a: 5}
   flashDuration: 0.1
-  knockbackForce: 12
+  knockbackForce: 5
   useBlood: 1
-  bloodIncreasePerHit: 0.15
+  bloodIncreasePerHit: 2.93
 --- !u!1 &332421512899438282
 GameObject:
   m_ObjectHideFlags: 0

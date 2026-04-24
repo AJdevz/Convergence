@@ -8,6 +8,7 @@ public class BulletController : MonoBehaviour
     public float speed;
     public float lifeTime;
     public int GiveDamage;
+    private PlayerHealth player;
 
     [Header("Flags")]
     public bool explosiveShots;
@@ -22,6 +23,7 @@ public class BulletController : MonoBehaviour
     public int pierceCount;
     public float freezeStrength;
     public float freezeDuration;
+    public float freezeChance;
     public float lifestealPercent;
 
     [Header("Scaling")]
@@ -42,6 +44,7 @@ public class BulletController : MonoBehaviour
     void Start()
     {
         currentPierce = pierceCount;
+        player = FindFirstObjectByType<PlayerHealth>();
     }
 
     void Update()
@@ -61,59 +64,61 @@ public class BulletController : MonoBehaviour
 
         EnemyHealth enemy = other.gameObject.GetComponentInParent<EnemyHealth>();
 
-        if (enemy != null)
+        if (enemy == null) return;
+
+        enemy.TakeDamage(GiveDamage);
+        ApplyLifesteal(GiveDamage);
+
+        SoundManager.Instance?.PlayZombieHurt();
+
+        // 🎯 IMPACT DIRECTION
+        Vector3 dir = enemy.transform.position - transform.position;
+        dir.y = 0f;
+
+        if (dir.sqrMagnitude > 0.001f)
+            dir.Normalize();
+
+        // 🔥 FEEDBACK
+        EnemyHitFeedback feedback = enemy.GetComponentInParent<EnemyHitFeedback>();
+
+        if (feedback != null)
         {
-            enemy.TakeDamage(GiveDamage);
+            feedback.PlayHitFeedback(dir);
 
-            SoundManager.Instance?.PlayZombieHurt();
+            if (CameraShake.Instance != null)
+                CameraShake.Instance.Shake(0.12f, 0.35f);
+        }
 
-            // 🎯 TRUE IMPACT DIRECTION (bullet → enemy)
-            Vector3 dir = enemy.transform.position - transform.position;
+        // 💥 KNOCKBACK + STATUS (reuse SAME controller)
+        EnemyController controller = enemy.GetComponentInParent<EnemyController>();
 
-            // keep horizontal push, but allow slight lift
-            dir.y = 0f;
+        if (controller != null)
+        {
+            controller.ApplyRepelFromPlayer();
 
-            if (dir.sqrMagnitude > 0.001f)
-                dir.Normalize();
-
-            // 🔥 FEEDBACK
-            EnemyHitFeedback feedback = enemy.GetComponentInParent<EnemyHitFeedback>();
-
-            if (feedback != null)
-            {
-                feedback.PlayHitFeedback(dir);
-
-                if (CameraShake.Instance != null)
-                    CameraShake.Instance.Shake(0.12f, 0.35f);
-            }
-
-            // 💥 KNOCKBACK (STRONG + CONSISTENT)
-            EnemyController controller = enemy.GetComponentInParent<EnemyController>();
-
-            if (controller != null)
-            {
-                controller.ApplyRepelFromPlayer();
-            }
-
-            // 💣 EXPLOSIVE
-            if (explosiveShots)
-                Explode();
-
-            // ⚡ CHAIN
-            if (chainLightning && !hasChained)
-            {
-                hasChained = true;
-                DoChain(enemy.transform);
-            }
-
-            // ❄️ SLOW
+            // ❄️ FREEZE / SLOW
             if (freezeEffect)
             {
-                EnemyController enemyMove = other.gameObject.GetComponentInParent<EnemyController>();
-                if (enemyMove != null)
-                    enemyMove.ApplySlow(freezeStrength, freezeDuration);
+                if (Random.value < freezeChance)
+                    controller.Freeze(freezeDuration);
+                else
+                    controller.ApplySlow(freezeStrength, freezeDuration);
             }
         }
+
+        // 💣 EXPLOSION
+        if (explosiveShots)
+            Explode();
+
+        // ⚡ CHAIN
+        if (chainLightning && !hasChained)
+        {
+            hasChained = true;
+            DoChain(enemy.transform);
+        }
+
+
+    
 
         // 🧠 TRACK HIT
         if (hitEnemies.Contains(other.gameObject))
@@ -129,6 +134,15 @@ public class BulletController : MonoBehaviour
         }
 
         Destroy(gameObject);
+    }
+
+    void ApplyLifesteal(int damage)
+    {
+        if (lifestealPercent <= 0f || player == null) return;
+
+        int healAmount = Mathf.Max(1, Mathf.RoundToInt(damage * lifestealPercent));
+
+        player.Heal(healAmount);
     }
 
     // 💥 Explosion Function
@@ -224,6 +238,7 @@ public class BulletController : MonoBehaviour
             {
                 int dmg = Mathf.RoundToInt(GiveDamage * chainMultiplier);
                 hp.TakeDamage(dmg);
+                ApplyLifesteal(dmg);
 
                 EnemyHitFeedback feedback = nextTarget.GetComponentInParent<EnemyHitFeedback>();
                 if (feedback != null)

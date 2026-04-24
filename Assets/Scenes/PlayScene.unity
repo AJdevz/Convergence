@@ -620,6 +620,9 @@ MonoBehaviour:
   freezeStrength: 0.5
   freezeDuration: 2
   lifestealPercent: 0
+  freezeChance: 0
+  damageMultiplier: 1
+  fireRateMultiplier: 1
   explosionMultiplier: 0.5
   chainMultiplier: 0.5
 --- !u!65 &150892868
@@ -959,7 +962,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 0.015686275}
+  m_Color: {r: 1, g: 0, b: 0, a: 0.007843138}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1419,7 +1422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.07735002, g: 1, b: 0, a: 0.015686275}
+  m_Color: {r: 0.03210365, g: 0.3584906, b: 0, a: 0.003921569}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2285,11 +2288,14 @@ MonoBehaviour:
   piercing: 0
   freezeEffect: 0
   explosionRadius: 1
-  chainCount: 3
-  pierceCount: 1
+  chainCount: 1
+  pierceCount: 0
   freezeStrength: 0.1
   freezeDuration: 2
   lifestealPercent: 0
+  freezeChance: 0
+  damageMultiplier: 1
+  fireRateMultiplier: 1
   explosionMultiplier: 0.5
   chainMultiplier: 0.5
 --- !u!82 &447599479
@@ -3351,6 +3357,9 @@ MonoBehaviour:
   freezeStrength: 0.5
   freezeDuration: 2
   lifestealPercent: 0
+  freezeChance: 0
+  damageMultiplier: 1
+  fireRateMultiplier: 1
   explosionMultiplier: 0.5
   chainMultiplier: 0.5
 --- !u!1 &640835283
@@ -3809,11 +3818,14 @@ MonoBehaviour:
   piercing: 0
   freezeEffect: 0
   explosionRadius: 1
-  chainCount: 3
-  pierceCount: 1
+  chainCount: 1
+  pierceCount: 0
   freezeStrength: 0.1
   freezeDuration: 2
   lifestealPercent: 0
+  freezeChance: 0
+  damageMultiplier: 1
+  fireRateMultiplier: 1
   explosionMultiplier: 0.5
   chainMultiplier: 0.5
 --- !u!82 &681375799
@@ -5386,8 +5398,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9979f8c49ffa91143951ffebacaded21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
-  currentHealth: 5
+  health: 500
+  currentHealth: 1
   flashLength: 0.07
   redFlashImage: {fileID: 189675725}
   greenFlashImage: {fileID: 252697495}
@@ -7270,6 +7282,9 @@ MonoBehaviour:
   freezeStrength: 0.5
   freezeDuration: 2
   lifestealPercent: 0
+  freezeChance: 0
+  damageMultiplier: 1
+  fireRateMultiplier: 1
   explosionMultiplier: 0.5
   chainMultiplier: 0.5
 --- !u!65 &1343472668
@@ -7681,11 +7696,14 @@ MonoBehaviour:
   piercing: 0
   freezeEffect: 0
   explosionRadius: 1
-  chainCount: 3
-  pierceCount: 1
+  chainCount: 1
+  pierceCount: 0
   freezeStrength: 0.1
   freezeDuration: 2
   lifestealPercent: 0
+  freezeChance: 0
+  damageMultiplier: 1
+  fireRateMultiplier: 1
   explosionMultiplier: 0.5
   chainMultiplier: 0.5
 --- !u!82 &1393329645
@@ -8672,6 +8690,9 @@ MonoBehaviour:
   freezeStrength: 0.5
   freezeDuration: 2
   lifestealPercent: 0
+  freezeChance: 0
+  damageMultiplier: 1
+  fireRateMultiplier: 1
   explosionMultiplier: 0.5
   chainMultiplier: 0.5
 --- !u!65 &1500257000
@@ -10425,7 +10446,8 @@ MonoBehaviour:
   button3Text: {fileID: 1924793271}
   baseDamage: 20
   baseTimeBetweenShots: 0.2
-  maxLevel: 10
+  secretChance: 0.02
+  waveForSecretUnlock: 1
 --- !u!114 &1974422677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10824,6 +10846,9 @@ MonoBehaviour:
   freezeStrength: 0.5
   freezeDuration: 2
   lifestealPercent: 0
+  freezeChance: 0
+  damageMultiplier: 1
+  fireRateMultiplier: 1
   explosionMultiplier: 0.5
   chainMultiplier: 0.5
 --- !u!65 &2060708851
@@ -11061,6 +11086,9 @@ MonoBehaviour:
   freezeStrength: 0.5
   freezeDuration: 2
   lifestealPercent: 0
+  freezeChance: 0
+  damageMultiplier: 1
+  fireRateMultiplier: 1
   explosionMultiplier: 0.5
   chainMultiplier: 0.5
 --- !u!65 &2137891861
@@ -11432,6 +11460,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4911976946139373907, guid: 6325d30a7f6fda04a958c4d0fa0dce6a, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911976946139373907, guid: 6325d30a7f6fda04a958c4d0fa0dce6a, type: 3}
       propertyPath: SizeModule.enabled
       value: 0
       objectReference: {fileID: 0}
@@ -11485,11 +11517,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4911976946139373907, guid: 6325d30a7f6fda04a958c4d0fa0dce6a, type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 25
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 4911976946139373907, guid: 6325d30a7f6fda04a958c4d0fa0dce6a, type: 3}
       propertyPath: InitialModule.startSpeed.scalar
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4911976946139373907, guid: 6325d30a7f6fda04a958c4d0fa0dce6a, type: 3}
       propertyPath: EmissionModule.m_Bursts.Array.size
@@ -11501,7 +11533,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4911976946139373907, guid: 6325d30a7f6fda04a958c4d0fa0dce6a, type: 3}
       propertyPath: InitialModule.startLifetime.scalar
-      value: 0.6
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 4911976946139373907, guid: 6325d30a7f6fda04a958c4d0fa0dce6a, type: 3}
       propertyPath: InitialModule.startRotation.scalar
@@ -11518,6 +11550,10 @@ PrefabInstance:
     - target: {fileID: 4911976946139373907, guid: 6325d30a7f6fda04a958c4d0fa0dce6a, type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911976946139373907, guid: 6325d30a7f6fda04a958c4d0fa0dce6a, type: 3}
+      propertyPath: InitialModule.startLifetime.minScalar
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4911976946139373907, guid: 6325d30a7f6fda04a958c4d0fa0dce6a, type: 3}
       propertyPath: InitialModule.startRotation.minScalar
@@ -11711,6 +11747,18 @@ PrefabInstance:
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minCurve.m_Curve.Array.data[1].outWeight
       value: 0.33333334
       objectReference: {fileID: 0}
+    - target: {fileID: 5766335408165356245, guid: 6325d30a7f6fda04a958c4d0fa0dce6a, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766335408165356245, guid: 6325d30a7f6fda04a958c4d0fa0dce6a, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766335408165356245, guid: 6325d30a7f6fda04a958c4d0fa0dce6a, type: 3}
+      propertyPath: m_MaxParticleSize
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6394675075193219783, guid: 6325d30a7f6fda04a958c4d0fa0dce6a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 971.6234
@@ -11811,6 +11859,14 @@ PrefabInstance:
     - target: {fileID: 5138572941565212362, guid: cab6fde1421b1304aa9e7c6000095283, type: 3}
       propertyPath: m_Name
       value: LightningGameObject
+      objectReference: {fileID: 0}
+    - target: {fileID: 7961688624200268157, guid: cab6fde1421b1304aa9e7c6000095283, type: 3}
+      propertyPath: m_Parameters.textureScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7961688624200268157, guid: cab6fde1421b1304aa9e7c6000095283, type: 3}
+      propertyPath: m_Parameters.textureScale.y
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

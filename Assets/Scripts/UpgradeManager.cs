@@ -26,16 +26,9 @@ public class UpgradeManager : MonoBehaviour
     public int baseDamage = 20;
     public float baseTimeBetweenShots = 0.2f;
 
-    [System.Serializable]
-    public class UpgradeData
-    {
-        public UpgradeType type;
-        public int level = 0;
-    }
-
-    public int maxLevel = 10;
-
-    private Dictionary<UpgradeType, UpgradeData> upgradeLevels = new Dictionary<UpgradeType, UpgradeData>();
+    [Header("Rarity Settings")]
+    public float secretChance = 0.01f; // 1% chance for secret tier
+    public int waveForSecretUnlock = 10; // Wave at which secret becomes available
 
     public enum UpgradeType
     {
@@ -49,16 +42,29 @@ public class UpgradeManager : MonoBehaviour
         XPMagnet,
     }
 
+    public enum Rarity
+    {
+        Common,
+        Rare,
+        Epic,
+        Legendary,
+        Secret
+    }
+
+    [System.Serializable]
+    public class UpgradeInstance
+    {
+        public UpgradeType type;
+        public Rarity rarity;
+        public int timesObtained = 0;
+    }
+
+    private List<UpgradeInstance> obtainedUpgrades = new List<UpgradeInstance>();
+    private int upgradeCount = 0;
+
     void Start()
     {
-        foreach (UpgradeType type in System.Enum.GetValues(typeof(UpgradeType)))
-        {
-            upgradeLevels[type] = new UpgradeData
-            {
-                type = type,
-                level = 0
-            };
-        }
+        // Initialize tracking
     }
 
     void Update()
@@ -75,93 +81,311 @@ public class UpgradeManager : MonoBehaviour
 
     public void GenerateUpgradeChoices()
     {
-        List<UpgradeType> available = GetAvailableUpgrades();
-
-        if (available.Count == 0)
-        {
-            Debug.Log("All upgrades maxed!");
-            CloseUpgradeMenu();
-            return;
-        }
-
-        List<UpgradeType> choices = new List<UpgradeType>();
+        List<UpgradeInstance> choices = new List<UpgradeInstance>();
+        GunController gun = FindFirstObjectByType<GunController>();
 
         for (int i = 0; i < 3; i++)
         {
-            if (available.Count == 0) break;
+            UpgradeInstance upgrade;
+            int attempts = 0;
 
-            int index = Random.Range(0, available.Count);
-            choices.Add(available[index]);
-            available.RemoveAt(index);
+            do
+            {
+                upgrade = GenerateRandomUpgrade();
+                attempts++;
+            }
+            while (gun != null && !IsUpgradeUseful(upgrade.type, gun) && attempts < 10);
+
+            choices.Add(upgrade);
         }
 
-        SetupButton(button1, button1Text, choices[0]);
-
-        if (choices.Count > 1)
-            SetupButton(button2, button2Text, choices[1]);
-        else
-            button2.gameObject.SetActive(false);
-
-        if (choices.Count > 2)
-            SetupButton(button3, button3Text, choices[2]);
-        else
-            button3.gameObject.SetActive(false);
+        SetupButton(button1, button1Text, button1Image, choices[0]);
+        SetupButton(button2, button2Text, button2Image, choices[1]);
+        SetupButton(button3, button3Text, button3Image, choices[2]);
     }
 
-    List<UpgradeType> GetAvailableUpgrades()
+    UpgradeInstance GenerateRandomUpgrade()
     {
-        return upgradeLevels
-            .Where(x => x.Value.level < maxLevel)
-            .Select(x => x.Key)
-            .ToList();
+        UpgradeType type = (UpgradeType)Random.Range(0, System.Enum.GetNames(typeof(UpgradeType)).Length);
+        Rarity rarity = DetermineRarity();
+
+        return new UpgradeInstance
+        {
+            type = type,
+            rarity = rarity,
+            timesObtained = 0
+        };
+    }
+
+    Rarity DetermineRarity()
+    {
+        float roll = Random.value;
+
+        // Secret tier (1% chance or special conditions)
+        if (roll < secretChance && IsSecretUnlocked())
+            return Rarity.Secret;
+
+        // Weighted distribution
+        if (roll < 0.50f) return Rarity.Common;      // 50%
+        if (roll < 0.75f) return Rarity.Rare;        // 25%
+        if (roll < 0.85f) return Rarity.Epic;        // 15%
+        return Rarity.Legendary;                      // 10%
+    }
+
+    bool IsSecretUnlocked()
+    {
+        // Check if player has progressed far enough
+        // You can replace this with wave checking from your game manager
+        return upgradeCount >= 1; 
     }
 
     // =========================
     // 🔘 BUTTON SETUP
     // =========================
 
-    void SetupButton(Button button, TMP_Text text, UpgradeType type)
+    void SetupButton(Button button, TMP_Text text, Image backgroundImage, UpgradeInstance upgrade)
     {
         button.gameObject.SetActive(true);
         button.onClick.RemoveAllListeners();
 
-        UpgradeData data = upgradeLevels[type];
+        // Format text
+        text.text = FormatUI(upgrade);
 
-        text.text = FormatUI(type, data.level);
-
-        Image img = button.GetComponent<Image>();
-        if (img != null)
-            img.color = GetUpgradeColor(type);
+        // Set colors based on rarity
+        backgroundImage.color = GetRarityColor(upgrade.rarity);
 
         button.interactable = true;
 
         button.onClick.AddListener(() =>
         {
-            ApplyUpgrade(type);
+            ApplyUpgrade(upgrade);
         });
     }
 
     // =========================
-    // 🎨 UI COLORS
+    // 🎨 RARITY COLORS
     // =========================
 
-    Color GetUpgradeColor(UpgradeType type)
+    Color GetRarityColor(Rarity rarity)
     {
-        switch (type)
+        switch (rarity)
         {
-            case UpgradeType.Damage: return new Color(0.8f, 0.2f, 0.2f);
-            case UpgradeType.FireRate: return new Color(1f, 0.6f, 0.1f);
-            case UpgradeType.Explosion: return new Color(1f, 0.4f, 0.1f);
-            case UpgradeType.ChainLightning: return new Color(0.2f, 1f, 1f);
-            case UpgradeType.Piercing: return new Color(0.7f, 0.7f, 0.7f);
-            case UpgradeType.Freeze: return new Color(0.4f, 0.7f, 1f);
-            case UpgradeType.Lifesteal: return new Color(0.6f, 0.1f, 0.6f);
-            case UpgradeType.XPMagnet: return new Color(0.9f, 0.9f, 0.2f);
+            case Rarity.Common: return new Color(0.6f, 0.6f, 0.6f);           // Gray
+            case Rarity.Rare: return new Color(0.2f, 0.5f, 1f);               // Blue
+            case Rarity.Epic: return new Color(0.8f, 0.2f, 0.9f);             // Purple
+            case Rarity.Legendary: return new Color(1f, 0.8f, 0.2f);          // Gold
+            case Rarity.Secret: return new Color(1f, 0.2f, 0.2f);             // Red
             default: return Color.white;
         }
     }
 
-    // ⚠️ FIXED ICONS (no emojis → avoids missing font boxes)
+    string GetRarityLabel(Rarity rarity)
+    {
+        switch (rarity)
+        {
+            case Rarity.Common: return "COMMON";
+            case Rarity.Rare: return "RARE";
+            case Rarity.Epic: return "EPIC";
+            case Rarity.Legendary: return "LEGENDARY";
+            case Rarity.Secret: return "SECRET";
+            default: return "";
+        }
+    }
+
+    // =========================
+    // 🎯 UI FORMAT
+    // =========================
+
+    string FormatUI(UpgradeInstance upgrade)
+    {
+        string color = GetRarityHexColor(upgrade.rarity);
+
+        string valueLine = GetUpgradeValueLine(upgrade);
+        string maxLine = GetMaxStatLine(upgrade);
+
+        return
+    $@"<align=center>
+
+<size=110%><b><color={color}>{GetRarityLabel(upgrade.rarity)}</color></b></size>
+
+<size=100%><b>{upgrade.type.ToString().ToUpper()}</b></size>
+
+<size=70%><color=#555555>────────────</color></size>
+
+<size=85%>{valueLine}</size>
+
+<size=75%>
+<color=#FF5555>{GetCurrentStat(upgrade)}</color>
+ →
+<color=#55FF55>{GetNextStat(upgrade)}</color>
+</size>
+
+<size=70%><color=#555555>────────────</color></size>
+
+<size=70%>{maxLine}</size>
+
+</align>";
+    }
+
+    string GetMaxStatLine(UpgradeInstance upgrade)
+{
+    switch (upgrade.type)
+    {
+        case UpgradeType.Damage:
+            return "<color=#AAAAAA>Max: INF</color>";
+
+        case UpgradeType.Lifesteal:
+            return "<color=#AAAAAA>Max: 10%</color>";
+
+        case UpgradeType.Freeze:
+            return "<color=#AAAAAA>Max Slow: 50%</color>";
+
+        default:
+            return "<color=#AAAAAA>Max: -</color>";
+    }
+}
+
+    string GetUpgradeValueLine(UpgradeInstance upgrade)
+    {
+        string color = GetRarityHexColor(upgrade.rarity);
+
+        switch (upgrade.type)
+        {
+            case UpgradeType.Damage:
+                return $"<color={color}>+{(int)(GetDamageBonus(upgrade.rarity) * 100)}% Damage</color>";
+
+            case UpgradeType.FireRate:
+                return $"<color={color}>+{(int)(GetFireRateBonus(upgrade.rarity) * 100)}% Fire Rate</color>";
+
+            case UpgradeType.Explosion:
+                return $"<color={color}>+{(int)(GetExplosionBonus(upgrade.rarity) * 100)}% Explosion Damage</color>";
+
+            case UpgradeType.ChainLightning:
+                return $"<color={color}>Chains +{GetChainCount(upgrade.rarity)}</color>";
+
+            case UpgradeType.Piercing:
+                return $"<color={color}>Pierce +{GetPierceCount(upgrade.rarity)}</color>";
+
+            case UpgradeType.Freeze:
+                var freeze = GetFreezeStats(upgrade.rarity);
+                return $"<color={color}>Slow {Mathf.RoundToInt(freeze.slowStrength * 100)}%</color>";
+
+            case UpgradeType.Lifesteal:
+                return $"<color={color}>+{Mathf.RoundToInt(GetLifestealPercent(upgrade.rarity) * 100)}% Lifesteal</color>";
+
+            case UpgradeType.XPMagnet:
+                return $"<color={color}>+{GetMagnetBonus(upgrade.rarity)} Range</color>";
+
+            default:
+                return "<color=#FFFFFF>Upgrade</color>";
+        }
+    }
+
+    string GetCurrentStat(UpgradeInstance upgrade)
+    {
+        GunController gun = FindFirstObjectByType<GunController>();
+
+        switch (upgrade.type)
+        {
+            case UpgradeType.Damage:
+                return gun.GetCurrentDamage().ToString();
+
+            case UpgradeType.FireRate:
+                return (1f / gun.timeBetweenShots).ToString("F1") + " shots/s";
+
+            case UpgradeType.Explosion:
+                return $"{Mathf.RoundToInt(gun.explosionMultiplier * 100)}%";
+
+            case UpgradeType.ChainLightning:
+                return gun.chainCount.ToString();
+
+            case UpgradeType.Piercing:
+                return gun.pierceCount.ToString();
+
+            case UpgradeType.Freeze:
+                return Mathf.RoundToInt(gun.freezeStrength * 100) + "%";
+
+            case UpgradeType.Lifesteal:
+                return Mathf.RoundToInt(gun.lifestealPercent * 100) + "%";
+
+            case UpgradeType.XPMagnet:
+                XPMagnet magnet = FindFirstObjectByType<XPMagnet>();
+                return magnet != null ? magnet.magnetLevel.ToString() : "-";
+
+            default:
+                return "-";
+        }
+    }
+
+    string GetNextStat(UpgradeInstance upgrade)
+    {
+        GunController gun = FindFirstObjectByType<GunController>();
+
+        switch (upgrade.type)
+        {
+            case UpgradeType.Damage:
+                float dmg = GetDamageBonus(upgrade.rarity);
+                return Mathf.RoundToInt(gun.GetCurrentDamage() * (1f + dmg)).ToString();
+
+            case UpgradeType.FireRate:
+                float fr = GetFireRateBonus(upgrade.rarity);
+                float newDelay = gun.timeBetweenShots * (1f - fr);
+                return (1f / newDelay).ToString("F1") + " shots/s";
+
+            case UpgradeType.Explosion:
+                {
+                    float next = gun.explosionMultiplier + GetExplosionBonus(upgrade.rarity);
+                    return $"{Mathf.RoundToInt(next * 100)}%";
+                }
+
+            case UpgradeType.ChainLightning:
+                return (gun.chainCount + GetChainCount(upgrade.rarity)).ToString();
+
+            case UpgradeType.Piercing:
+                return (gun.pierceCount + GetPierceCount(upgrade.rarity)).ToString();
+
+            case UpgradeType.Freeze:
+                var freeze = GetFreezeStats(upgrade.rarity);
+                return Mathf.RoundToInt(
+                    Mathf.Clamp(gun.freezeStrength + freeze.slowStrength, 0f, 0.5f) * 100
+                ) + "%";
+
+            case UpgradeType.Lifesteal:
+                float ls = Mathf.Clamp(
+                    gun.lifestealPercent + GetLifestealPercent(upgrade.rarity),
+                    0f,
+                    0.10f
+                );
+                return Mathf.RoundToInt(ls * 100) + "%";
+
+            case UpgradeType.XPMagnet:
+                XPMagnet magnet = FindFirstObjectByType<XPMagnet>();
+                if (magnet == null) return "-";
+                return (magnet.magnetLevel + GetMagnetBonus(upgrade.rarity)).ToString();
+
+            default:
+                return "-";
+        }
+    }
+
+    string Separator()
+    {
+        return "<color=#555555>────────────</color>";
+    }
+
+    string GetRarityHexColor(Rarity rarity)
+    {
+        switch (rarity)
+        {
+            case Rarity.Common: return "#999999";
+            case Rarity.Rare: return "#3399FF";
+            case Rarity.Epic: return "#DD33FF";
+            case Rarity.Legendary: return "#FFDD00";
+            case Rarity.Secret: return "#FF3333";
+            default: return "#FFFFFF";
+        }
+    }
+
     string GetUpgradeIcon(UpgradeType type)
     {
         switch (type)
@@ -178,133 +402,73 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
-    string GetUpgradeLabel(UpgradeType type)
+    // =========================
+    // 📈 DESCRIPTION (RARITY-BASED)
+    // =========================
+
+    string GetUpgradeDescription(UpgradeType type, Rarity rarity)
     {
-        switch (type)
-        {
-            case UpgradeType.Damage: return "Damage Bonus";
-            case UpgradeType.FireRate: return "Fire Rate";
-            case UpgradeType.Explosion: return "Explosion Power";
-            case UpgradeType.ChainLightning: return "Chain Count";
-            case UpgradeType.Piercing: return "Pierce Count";
-            case UpgradeType.Freeze: return "Freeze Strength";
-            case UpgradeType.Lifesteal: return "Lifesteal";
-            case UpgradeType.XPMagnet: return "XP Magnet Range";
-            default: return "";
-        }
-    }
+        string rarityColor = GetRarityHexColor(rarity);
 
-    // =========================
-    // 🎯 UI FORMAT (FIXED DUPES + ALIGNMENT)
-    // =========================
-
-    string FormatUI(UpgradeType type, int level)
-    {
-        return
-            $"<size=120%><b>{GetUpgradeIcon(type)} {type.ToString().ToUpper()}</b></size>\n" +
-            $"Level {level}/{maxLevel}\n" +
-            $"────────────\n\n" +
-
-            $"{GetUpgradeLabel(type)}\n" +
-            $"{GetUpgradeDescription(type, level)}\n\n" +
-
-            $"────────────\n" +
-            $"{GetLevelDots(level)}";
-    }
-
-    // =========================
-    // 📊 DOTS (CENTER FIXED)
-    // =========================
-
-    string GetLevelDots(int level)
-    {
-        string dots = "<size=85%><align=center>\n";
-
-        for (int i = 0; i < maxLevel; i++)
-        {
-            dots += (i < level)
-                ? "<color=#ffffff>●</color> "
-                : "<color=#444444>○</color> ";
-        }
-
-        dots += "\n</align></size>";
-        return dots;
-    }
-
-    // =========================
-    // 📈 DESCRIPTION (UNCHANGED LOGIC, CLEANED DUPES REMOVED)
-    // =========================
-
-    string GetUpgradeDescription(UpgradeType type, int level)
-    {
         switch (type)
         {
             case UpgradeType.Damage:
                 {
-                    float currentPercent = 0.30f * level;
-                    float nextPercent = 0.30f * (level + 1);
-
-                    int currentDamage = Mathf.RoundToInt(baseDamage * (1f + currentPercent));
-                    int nextDamage = Mathf.RoundToInt(baseDamage * (1f + nextPercent));
-
-                    return
-                        $"<color=#ff5555>{(int)(currentPercent * 100)}%</color> → <color=#55ff55>{(int)(nextPercent * 100)}%</color>\n" +
-                        $"{currentDamage} → {nextDamage}";
+                    float damageBonus = GetDamageBonus(rarity);
+                    int nextDamage = Mathf.RoundToInt(baseDamage * (1f + damageBonus));
+                    return $"<color={rarityColor}>+{(int)(damageBonus * 100)}% DAMAGE</color>\n" +
+                           $"→ {nextDamage} damage";
                 }
 
             case UpgradeType.FireRate:
                 {
-                    float currentPercent = Mathf.Min(0.05f * level, 0.5f);
-                    float nextPercent = Mathf.Min(0.05f * (level + 1), 0.5f);
-
-                    float currentDelay = baseTimeBetweenShots * (1f - currentPercent);
-                    float nextDelay = baseTimeBetweenShots * (1f - nextPercent);
-
-                    float currentShots = 1f / currentDelay;
-                    float nextShots = 1f / nextDelay;
-
-                    return
-                        $"<color=#ff5555>{(int)(currentPercent * 100)}%</color> → <color=#55ff55>{(int)(nextPercent * 100)}%</color>\n" +
-                        $"{currentShots:F1}/s → {nextShots:F1}/s";
+                    float fireRateBonus = GetFireRateBonus(rarity);
+                    float newDelay = baseTimeBetweenShots * (1f - fireRateBonus);
+                    float shotsPerSecond = 1f / newDelay;
+                    return $"<color={rarityColor}>+{(int)(fireRateBonus * 100)}% FIRE RATE</color>\n" +
+                           $"→ {shotsPerSecond:F1} shots/sec";
                 }
 
             case UpgradeType.Explosion:
                 {
-                    float current = level * 0.05f;
-                    float next = (level + 1) * 0.05f;
-
-                    return $"<color=#ff5555>{(int)(current * 100)}%</color> → <color=#55ff55>{(int)(next * 100)}%</color>";
+                    float explosionBonus = GetExplosionBonus(rarity);
+                    return $"<color={rarityColor}>+{(int)(explosionBonus * 100)}% EXPLOSION</color>\n" +
+                           $"Shots explode on impact";
                 }
 
             case UpgradeType.ChainLightning:
                 {
-                    return $"{level} → {level + 1}";
+                    int chainCount = GetChainCount(rarity);
+                    return $"<color={rarityColor}>CHAIN TO {chainCount} ENEMIES</color>\n" +
+                           $"Lightning chains between targets";
                 }
 
             case UpgradeType.Piercing:
                 {
-                    return $"{level} → {level + 1}";
+                    int pierceCount = GetPierceCount(rarity);
+                    return $"<color={rarityColor}>PIERCE {pierceCount} ENEMIES</color>\n" +
+                           $"Shots go through enemies";
                 }
 
             case UpgradeType.Freeze:
                 {
-                    float current = level * 0.1f;
-                    float next = (level + 1) * 0.1f;
-
-                    return $"<color=#ff5555>{(int)(current * 100)}%</color> → <color=#55ff55>{(int)(next * 100)}%</color>";
+                    (float slowStrength, float freezeChance) = GetFreezeStats(rarity);
+                    return $"<color={rarityColor}>SLOW {(int)(slowStrength * 100)}% + {(int)(freezeChance * 100)}% FREEZE CHANCE</color>\n" +
+                           $"Freeze rare but devastating";
                 }
 
             case UpgradeType.Lifesteal:
                 {
-                    float current = level * 0.02f;
-                    float next = (level + 1) * 0.02f;
-
-                    return $"<color=#ff5555>{(int)(current * 100)}%</color> → <color=#55ff55>{(int)(next * 100)}%</color>";
+                    float lifesteal = GetLifestealPercent(rarity);
+                    return $"<color={rarityColor}>+{Mathf.RoundToInt(lifesteal * 100f)}% LIFESTEAL</color>\n" +
+                         $"Heal on hit";
                 }
 
             case UpgradeType.XPMagnet:
                 {
-                    return $"Range +10 per level";
+                    int magnetBonus = GetMagnetBonus(rarity);
+                    return $"<color={rarityColor}>MAGNET RANGE +{magnetBonus}</color>\n" +
+                           $"Pull XP from further away";
                 }
 
             default:
@@ -313,82 +477,317 @@ public class UpgradeManager : MonoBehaviour
     }
 
     // =========================
-    // 🟢 APPLY UPGRADES (UNCHANGED)
+    // 📊 RARITY-BASED STAT CALCULATIONS
     // =========================
 
-    void ApplyUpgrade(UpgradeType type)
+    float GetDamageBonus(Rarity rarity)
     {
-        GunController gun = FindFirstObjectByType<GunController>();
-        UpgradeData data = upgradeLevels[type];
+        switch (rarity)
+        {
+            case Rarity.Common: return 0.10f;
+            case Rarity.Rare: return 0.20f;
+            case Rarity.Epic: return 0.35f;
+            case Rarity.Legendary: return 0.60f;
+            case Rarity.Secret: return 1.00f;
+            default: return 0f;
+        }
+    }
 
-        if (data.level >= maxLevel) return;
+    float GetFireRateBonus(Rarity rarity)
+    {
+        switch (rarity)
+        {
+            case Rarity.Common: return 0.05f;
+            case Rarity.Rare: return 0.10f;
+            case Rarity.Epic: return 0.20f;
+            case Rarity.Legendary: return 0.35f;
+            case Rarity.Secret: return 0.50f;
+            default: return 0f;
+        }
+    }
 
-        data.level++;
+    float GetExplosionBonus(Rarity rarity)
+    {
+        switch (rarity)
+        {
+            case Rarity.Common: return 0.10f;
+            case Rarity.Rare: return 0.20f;
+            case Rarity.Epic: return 0.40f;
+            case Rarity.Legendary: return 0.70f;
+            case Rarity.Secret: return 1.20f;
+            default: return 0f;
+        }
+    }
 
+    int GetChainCount(Rarity rarity)
+    {
+        switch (rarity)
+        {
+            case Rarity.Common: return 1;
+            case Rarity.Rare: return 2;
+            case Rarity.Epic: return 3;
+            case Rarity.Legendary: return 5;
+            case Rarity.Secret: return 8;
+            default: return 0;
+        }
+    }
+
+    int GetPierceCount(Rarity rarity)
+    {
+        switch (rarity)
+        {
+            case Rarity.Common: return 1;
+            case Rarity.Rare: return 2;
+            case Rarity.Epic: return 3;
+            case Rarity.Legendary: return 5;
+            case Rarity.Secret: return 8;
+            default: return 0;
+        }
+    }
+
+    (float slowStrength, float freezeChance) GetFreezeStats(Rarity rarity)
+    {
+        switch (rarity)
+        {
+            case Rarity.Common: return (0.10f, 0.00f);      // 10% slow, no freeze
+            case Rarity.Rare: return (0.20f, 0.00f);        // 20% slow, no freeze
+            case Rarity.Epic: return (0.30f, 0.05f);        // 30% slow, 5% freeze
+            case Rarity.Legendary: return (0.40f, 0.10f);   // 40% slow, 10% freeze
+            case Rarity.Secret: return (0.50f, 0.25f);      // 50% slow, 25% freeze
+            default: return (0f, 0f);
+        }
+    }
+
+    float GetLifestealPercent(Rarity rarity)
+    {
+        switch (rarity)
+        {
+            case Rarity.Common: return 0.01f;
+            case Rarity.Rare: return 0.02f;
+            case Rarity.Epic: return 0.03f;
+            case Rarity.Legendary: return 0.05f;
+            case Rarity.Secret: return 0.10f;
+            default: return 0f;
+        }
+    }
+
+    int GetMagnetBonus(Rarity rarity)
+    {
+        switch (rarity)
+        {
+            case Rarity.Common: return 2;
+            case Rarity.Rare: return 5;
+            case Rarity.Epic: return 10;
+            case Rarity.Legendary: return 25;
+            case Rarity.Secret: return 50;
+            default: return 0;
+        }
+    }
+
+    bool IsUpgradeUseful(UpgradeType type, GunController gun)
+    {
         switch (type)
         {
+            case UpgradeType.FireRate:
+                return gun.timeBetweenShots > gun.GetFireRateClamp();
+
+            case UpgradeType.Lifesteal:
+                return gun.lifestealPercent < 0.10f;
+
+            case UpgradeType.Explosion:
+                return gun.explosionRadius < 12f;
+
+            case UpgradeType.XPMagnet:
+                XPMagnet magnet = FindFirstObjectByType<XPMagnet>();
+                return magnet != null && magnet.magnetLevel < 40;
+
+            case UpgradeType.Freeze:
+                return gun.freezeStrength < 0.5f || gun.freezeChance < 1f;
+
+            case UpgradeType.ChainLightning:
+                return gun.chainCount < 12;
+
+            case UpgradeType.Piercing:
+                return gun.pierceCount < 10;
+
+            default:
+                return true;
+        }
+    }
+
+    // =========================
+    // 🟢 APPLY UPGRADES
+    // =========================
+
+    void ApplyUpgrade(UpgradeInstance upgrade)
+    {
+        GunController gun = FindFirstObjectByType<GunController>();
+
+        if (gun == null)
+        {
+            Debug.LogError("GunController not found!");
+            return;
+        }
+
+        obtainedUpgrades.Add(upgrade);
+        upgradeCount++;
+
+        switch (upgrade.type)
+        {
+            // =========================
+            // 🟥 DAMAGE (MULTIPLICATIVE)
+            // =========================
             case UpgradeType.Damage:
                 {
-                    float percent = 0.30f * data.level;
-                    gun.damage = Mathf.RoundToInt(gun.baseDamage * (1f + percent));
+                    float bonus = GetDamageBonus(upgrade.rarity);
+
+                    gun.damageMultiplier *= (1f + bonus);
+
+                    gun.RecalculateStats();
+
+                    Debug.Log($"[STACK] DAMAGE x{1f + bonus} → Total Mult: {gun.damageMultiplier}");
                     break;
                 }
 
+            // =========================
+            // 🔫 FIRE RATE (MULTIPLICATIVE)
+            // =========================
             case UpgradeType.FireRate:
                 {
-                    float percent = Mathf.Min(0.05f * data.level, 0.5f);
-                    gun.timeBetweenShots = gun.baseTimeBetweenShots * (1f - percent);
+                    float bonus = GetFireRateBonus(upgrade.rarity);
+
+                    gun.fireRateMultiplier *= (1f - bonus);
+
+                    gun.RecalculateStats();
+
+                    Debug.Log($"[STACK] FIRE RATE x{1f - bonus} → Total Mult: {gun.fireRateMultiplier}");
                     break;
                 }
 
+            // =========================
+            // 💥 EXPLOSION (HYBRID)
+            // damage scales, radius capped
+            // =========================
             case UpgradeType.Explosion:
                 {
                     gun.explosiveShots = true;
 
-                    gun.explosionMultiplier = Mathf.Min(0.05f * data.level, 1f);
-                    gun.explosionRadius = 3f + data.level * 0.5f;
+                    float bonus = GetExplosionBonus(upgrade.rarity);
 
+                    gun.explosionMultiplier += bonus;
+
+                    gun.explosionRadius = Mathf.Clamp(
+                        gun.explosionRadius + (bonus * 1.2f),
+                        2f,
+                        12f
+                    );
+
+                    Debug.Log($"[STACK] EXPLOSION +{bonus * 100}% → Radius: {gun.explosionRadius}");
                     break;
                 }
 
+            // =========================
+            // ⚡ CHAIN (ADD + SOFT CAP)
+            // =========================
             case UpgradeType.ChainLightning:
                 {
                     gun.chainLightning = true;
 
-                    // FIXED: absolute value, NOT additive
-                    gun.chainCount = data.level; // or Mathf.Max(1, data.level)
+                    int bonus = GetChainCount(upgrade.rarity);
 
-                    gun.chainMultiplier = data.level * 0.05f;
+                    gun.chainCount += bonus;
 
+                    gun.chainCount = Mathf.Min(gun.chainCount, 12); // soft cap
+
+                    Debug.Log($"[STACK] CHAIN +{bonus} → Total: {gun.chainCount}");
                     break;
                 }
 
+            // =========================
+            // 🔫 PIERCING (ADD + CAP)
+            // =========================
             case UpgradeType.Piercing:
-                gun.piercing = true;
-                gun.pierceCount += 1;
-                break;
+                {
+                    gun.piercing = true;
 
+                    int bonus = GetPierceCount(upgrade.rarity);
+
+                    gun.pierceCount += bonus;
+
+                    gun.pierceCount = Mathf.Min(gun.pierceCount, 10);
+
+                    Debug.Log($"[STACK] PIERCE +{bonus} → Total: {gun.pierceCount}");
+                    break;
+                }
+
+            // =========================
+            // ❄️ FREEZE (ADD + HARD CAP)
+            // =========================
             case UpgradeType.Freeze:
-                gun.freezeEffect = true;
-                gun.freezeStrength += 0.1f;
-                break;
+                {
+                    gun.freezeEffect = true;
 
+                    var stats = GetFreezeStats(upgrade.rarity);
+
+                    gun.freezeStrength += stats.slowStrength;
+                    gun.freezeChance += stats.freezeChance;
+
+                    // HARD CAPS (important for balance)
+                    gun.freezeStrength = Mathf.Clamp(gun.freezeStrength, 0f, 0.5f);
+                    gun.freezeChance = Mathf.Clamp01(gun.freezeChance);
+
+                    Debug.Log($"[STACK] FREEZE → Slow: {gun.freezeStrength}, Chance: {gun.freezeChance}");
+                    break;
+                }
+
+            // =========================
+            // 🩸 LIFESTEAL (HARD CAP)
+            // =========================
             case UpgradeType.Lifesteal:
-                gun.lifestealPercent += 0.02f;
-                break;
+                {
+                    float bonus = GetLifestealPercent(upgrade.rarity);
 
+                    gun.lifestealPercent += bonus;
+
+                    // HARD CAP
+                    gun.lifestealPercent = Mathf.Clamp(gun.lifestealPercent, 0f, 0.10f);
+
+                    Debug.Log($"[STACK] LIFESTEAL → {gun.lifestealPercent * 100f}% (CAPPED 10%)");
+                    break;
+                }
+
+            // =========================
+            // 🧲 XP MAGNET (ADDITIVE)
+            // =========================
             case UpgradeType.XPMagnet:
                 {
                     XPMagnet magnet = FindFirstObjectByType<XPMagnet>();
+                    if (magnet == null) break;
 
-                    if (magnet != null)
+                    int bonus = GetMagnetBonus(upgrade.rarity);
+                    int max = 40;
+
+                    if (magnet.magnetLevel >= max)
                     {
-                        magnet.magnetLevel++;
-                        Debug.Log("Magnet Level UP → " + magnet.magnetLevel);
+                        XPManager.Instance.AddXP(bonus * 5);
+                        Debug.Log($"[CONVERT] MAGNET MAXED → XP ONLY +{bonus}");
+                        break;
+                    }
+
+                    int spaceLeft = max - magnet.magnetLevel;
+
+                    if (bonus <= spaceLeft)
+                    {
+                        magnet.magnetLevel += bonus;
+                        Debug.Log($"[STACK] XP MAGNET +{bonus} → {magnet.magnetLevel}");
                     }
                     else
                     {
-                        Debug.LogError("NO XPMagnet FOUND");
+                        magnet.magnetLevel = max;
+                        int overflow = bonus - spaceLeft;
+
+                        XPManager.Instance.AddXP(overflow * 5);
+                        Debug.Log($"[CONVERT] XP MAGNET MAXED → overflow XP +{overflow}");
                     }
 
                     break;

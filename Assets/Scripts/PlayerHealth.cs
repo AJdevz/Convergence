@@ -99,16 +99,15 @@ public class PlayerHealth : MonoBehaviour
     }
 
     // Called when player heals
-    public void Heal(int healAmount)
+    public void Heal(float healAmount)
     {
-        currentHealth += healAmount;
+        currentHealth += Mathf.RoundToInt(healAmount);
 
         SoundManager.Instance?.PlayHeal();
 
         if (currentHealth > health)
             currentHealth = health;
 
-        // Start flash
         flashCounter = flashLength;
         isHealing = true;
     }

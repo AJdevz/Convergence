@@ -5,9 +5,10 @@ public class CameraShake : MonoBehaviour
     public static CameraShake Instance;
 
     private float shakeTime;
+    private float shakeDuration;
     private float shakeMagnitude;
 
-    private Vector3 shakeOffset;
+    private Vector3 currentOffset;
 
     void Awake()
     {
@@ -20,26 +21,29 @@ public class CameraShake : MonoBehaviour
         {
             shakeTime -= Time.deltaTime;
 
-            shakeOffset = new Vector3(
+            float strength = shakeMagnitude * (shakeTime / shakeDuration);
+
+            currentOffset = new Vector3(
                 Random.Range(-1f, 1f),
                 Random.Range(-1f, 1f),
                 0f
-            ) * shakeMagnitude;
+            ) * strength;
         }
         else
         {
-            shakeOffset = Vector3.zero;
+            currentOffset = Vector3.zero;
         }
     }
 
     public void Shake(float duration, float magnitude)
     {
-        shakeTime = Mathf.Max(shakeTime, duration);
-        shakeMagnitude = Mathf.Clamp(shakeMagnitude + magnitude, 0f, 1.2f);
+        shakeDuration = duration;
+        shakeTime = duration;
+        shakeMagnitude = magnitude;
     }
 
     public Vector3 GetOffset()
     {
-        return shakeOffset;
+        return currentOffset;
     }
 }

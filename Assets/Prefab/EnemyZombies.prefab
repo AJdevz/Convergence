@@ -1682,8 +1682,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 20
-  repelDistance: 3
-  repelTime: 0.15
+  repelDistance: 1
+  repelTime: 0.1
 --- !u!114 &3236374407976370856
 MonoBehaviour:
   m_ObjectHideFlags: 0

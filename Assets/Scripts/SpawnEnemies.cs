@@ -84,7 +84,7 @@ public class SpawnEnemies : MonoBehaviour
         for (int i = 0; i < enemiesInWave; i++)
         {
             SpawnEnemy(useMerge);
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.04f);
         }
 
         if (waveNumber % 5 == 0)

@@ -8,23 +8,19 @@ public class CameraFollow : MonoBehaviour
 
     void LateUpdate()
     {
-        if (target == null)
-            return;
+        if (target == null) return;
 
-        Vector3 desiredPosition = target.position + offset;
+        Vector3 basePos = target.position + offset;
 
-        // ✅ ADD CAMERA SHAKE OFFSET HERE
         if (CameraShake.Instance != null)
         {
-            desiredPosition += CameraShake.Instance.GetOffset();
+            basePos += CameraShake.Instance.GetOffset();
         }
 
-        Vector3 smoothedPosition = Vector3.Lerp(
+        transform.position = Vector3.Lerp(
             transform.position,
-            desiredPosition,
+            basePos,
             smoothSpeed * Time.deltaTime
         );
-
-        transform.position = smoothedPosition;
     }
 }

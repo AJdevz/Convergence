@@ -103,6 +103,8 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth += healAmount;
 
+        SoundManager.Instance?.PlayHeal();
+
         if (currentHealth > health)
             currentHealth = health;
 

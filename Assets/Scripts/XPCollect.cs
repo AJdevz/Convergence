@@ -62,6 +62,7 @@ public class XPCollect : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            SoundManager.Instance?.PlayXP();
             XPManager.Instance.AddXP(xpAmount);
             Destroy(gameObject);
         }

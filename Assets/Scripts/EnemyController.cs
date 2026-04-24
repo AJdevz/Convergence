@@ -20,6 +20,8 @@ public class EnemyController : MonoBehaviour
     private Vector3 repelVelocity;
     private float repelTimer;
 
+    private float growlTimer;
+
     void Start()
     {
         enemyRB = GetComponent<Rigidbody>();
@@ -32,20 +34,33 @@ public class EnemyController : MonoBehaviour
         if (thePlayer == null) return;
 
         transform.LookAt(thePlayer.transform.position);
-
-        if (slowTimer > 0)
         {
-            slowTimer -= Time.deltaTime;
-            if (slowTimer <= 0)
-                moveSpeed = originalSpeed;
-        }
+            if (thePlayer == null) return;
 
-        if (isRepelling)
-        {
-            repelTimer -= Time.deltaTime;
+            growlTimer -= Time.deltaTime;
 
-            if (repelTimer <= 0f)
-                isRepelling = false;
+            if (growlTimer <= 0f)
+            {
+                SoundManager.Instance?.PlayZombieGrowl();
+                growlTimer = Random.Range(3f, 6f); // random delay
+            }
+
+            transform.LookAt(thePlayer.transform.position);
+
+            if (slowTimer > 0)
+            {
+                slowTimer -= Time.deltaTime;
+                if (slowTimer <= 0)
+                    moveSpeed = originalSpeed;
+            }
+
+            if (isRepelling)
+            {
+                repelTimer -= Time.deltaTime;
+
+                if (repelTimer <= 0f)
+                    isRepelling = false;
+            }
         }
     }
 

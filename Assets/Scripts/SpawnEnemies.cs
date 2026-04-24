@@ -74,6 +74,7 @@ public class SpawnEnemies : MonoBehaviour
             yield return new WaitUntil(() => enemiesAlive <= 0);
 
             waveNumber++;
+            SoundManager.Instance?.PlayNextWave();
         }
     }
 
@@ -124,6 +125,7 @@ public class SpawnEnemies : MonoBehaviour
     public void EnemyDied()
     {
         enemiesAlive--;
+        SoundManager.Instance?.PlayZombieDeath();
     }
 
     Vector3 GetValidSpawnPosition()

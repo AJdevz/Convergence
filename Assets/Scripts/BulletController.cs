@@ -65,6 +65,8 @@ public class BulletController : MonoBehaviour
         {
             enemy.TakeDamage(GiveDamage);
 
+            SoundManager.Instance?.PlayZombieHurt();
+
             // 🎯 TRUE IMPACT DIRECTION (bullet → enemy)
             Vector3 dir = enemy.transform.position - transform.position;
 
@@ -133,6 +135,7 @@ public class BulletController : MonoBehaviour
     void Explode()
     {
         float radius = explosionRadius;
+        SoundManager.Instance?.PlayExplosion();
 
         if (explosionPrefab != null)
         {
@@ -178,6 +181,8 @@ public class BulletController : MonoBehaviour
 
         HashSet<GameObject> hitTargets = new HashSet<GameObject>();
         hitTargets.Add(currentTarget.gameObject);
+
+        SoundManager.Instance?.PlayLightning();
 
         int maxJumps = chainCount;
 

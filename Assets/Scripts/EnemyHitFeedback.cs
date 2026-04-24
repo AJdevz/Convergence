@@ -50,6 +50,8 @@ public class EnemyHitFeedback : MonoBehaviour
     {
         StopAllCoroutines();
         StartCoroutine(Flash());
+
+        SoundManager.Instance?.PlayZombieHurt();
     }
 
     IEnumerator Flash()

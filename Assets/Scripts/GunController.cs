@@ -47,7 +47,7 @@ public class GunController : MonoBehaviour
 
     [Header("Upgrade Values")]
     public float explosionRadius = 3f;
-    public int chainCount = 3;
+    public int chainCount = 1;
     public int pierceCount = 2;
     public float freezeStrength = 0.5f;
     public float freezeDuration = 2f;

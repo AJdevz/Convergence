@@ -110,13 +110,13 @@ MonoBehaviour:
   freezeEffect: 0
   explosionRadius: 1
   chainCount: 1
-  chainRange: 100
+  chainRange: 200
   pierceCount: 1
   freezeStrength: 0.1
   freezeDuration: 2
   lifestealPercent: 0
-  explosionMultiplier: 0
-  chainMultiplier: 0
+  explosionMultiplier: 0.5
+  chainMultiplier: 0.5
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64

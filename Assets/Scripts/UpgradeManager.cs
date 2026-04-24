@@ -343,10 +343,16 @@ public class UpgradeManager : MonoBehaviour
                 }
 
             case UpgradeType.ChainLightning:
-                gun.chainLightning = true;
-                gun.chainCount += 1;
-                gun.chainMultiplier = upgradeLevels[UpgradeType.ChainLightning].level * 0.05f;
-                break;
+                {
+                    gun.chainLightning = true;
+
+                    // FIXED: absolute value, NOT additive
+                    gun.chainCount = data.level; // or Mathf.Max(1, data.level)
+
+                    gun.chainMultiplier = data.level * 0.05f;
+
+                    break;
+                }
 
             case UpgradeType.Piercing:
                 gun.piercing = true;

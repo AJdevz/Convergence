@@ -74,7 +74,7 @@ public class BulletController : MonoBehaviour
             if (chainLightning && !hasChained)
             {
                 hasChained = true;
-                StartCoroutine(ChainLightning(enemy.transform));
+                DoChain(enemy.transform);
             }
 
             // ❄️ Freeze
@@ -148,92 +148,96 @@ public class BulletController : MonoBehaviour
     }
 
     // ⚡ Chain Lightning Function
-    IEnumerator ChainLightning(Transform firstTarget)
+    void DoChain(Transform startTarget)
     {
-        Transform currentTarget = firstTarget;
+        Transform currentTarget = startTarget;
 
         HashSet<GameObject> hitTargets = new HashSet<GameObject>();
-        hitTargets.Add(firstTarget.gameObject);
+        hitTargets.Add(currentTarget.gameObject);
 
-        for (int i = 0; i < chainCount; i++)
+        int maxJumps = chainCount;
+
+        for (int i = 0; i < maxJumps; i++)
         {
-            if (currentTarget == null) yield break;
+            if (currentTarget == null) return;
 
             Collider[] hits = Physics.OverlapSphere(currentTarget.position, chainRange);
-
-            List<Transform> validTargets = new List<Transform>();
-
-            foreach (Collider hit in hits)
-            {
-                if (!hit.CompareTag("Enemy")) continue;
-
-                Transform t = hit.transform;
-
-                if (hitTargets.Contains(t.gameObject)) continue;
-
-                validTargets.Add(t);
-            }
-
-            if (validTargets.Count == 0) yield break;
 
             Transform nextTarget = null;
             float closest = Mathf.Infinity;
 
-            foreach (Transform t in validTargets)
+            // 🔥 STRICT FILTERING
+            for (int h = 0; h < hits.Length; h++)
             {
-                float dist = Vector3.Distance(currentTarget.position, t.position);
+                Collider hit = hits[h];
+
+                if (!hit.CompareTag("Enemy")) continue;
+
+                GameObject enemyObj = hit.gameObject;
+
+                if (hitTargets.Contains(enemyObj)) continue;
+
+                float dist = Vector3.Distance(currentTarget.position, hit.transform.position);
+
                 if (dist < closest)
                 {
                     closest = dist;
-                    nextTarget = t;
+                    nextTarget = hit.transform;
                 }
             }
 
-            if (nextTarget == null) yield break; // ✅ safety fix
+            // ❌ STOP IF NO VALID TARGET
+            if (nextTarget == null) return;
 
-            // ⚡ VFX
+            hitTargets.Add(nextTarget.gameObject);
+
+            // 💥 DAMAGE
+            EnemyHealth hp = nextTarget.GetComponent<EnemyHealth>();
+            if (hp != null)
+            {
+                int dmg = Mathf.RoundToInt(GiveDamage * chainMultiplier);
+                hp.TakeDamage(dmg);
+            }
+
+            // ⚡ ZIG ZAG LIGHTNING
             if (lightningLinePrefab != null)
             {
                 LineRenderer line = Instantiate(lightningLinePrefab);
 
-                int segments = 7;
+                int segments = 8;
                 line.positionCount = segments;
 
                 Vector3 start = currentTarget.position;
                 Vector3 end = nextTarget.position;
 
+                Vector3 dir = (end - start).normalized;
+                Vector3 right = Vector3.Cross(dir, Vector3.up);
+
                 for (int j = 0; j < segments; j++)
                 {
                     float t = j / (float)(segments - 1);
+
                     Vector3 point = Vector3.Lerp(start, end, t);
 
                     if (j != 0 && j != segments - 1)
                     {
+                        float zigzag = Mathf.Sin(t * 10f) * 0.35f;
+                        point += right * zigzag;
+
                         point += new Vector3(
-                            Random.Range(-1f, 1f),
-                            Random.Range(-0.5f, 0.5f),
-                            Random.Range(-1f, 1f)
+                            Random.Range(-0.1f, 0.1f),
+                            Random.Range(-0.05f, 0.05f),
+                            Random.Range(-0.1f, 0.1f)
                         );
                     }
 
                     line.SetPosition(j, point);
                 }
 
-                Destroy(line.gameObject, 0.2f);
+                Destroy(line.gameObject, 0.15f);
             }
 
-            // 💥 DAMAGE
-            EnemyHealth enemy = nextTarget.GetComponent<EnemyHealth>();
-            if (enemy != null)
-            {
-                int finalDamage = Mathf.RoundToInt(GiveDamage * chainMultiplier);
-                enemy.TakeDamage(finalDamage);
-            }
-
-            hitTargets.Add(nextTarget.gameObject);
             currentTarget = nextTarget;
-
-            yield return new WaitForSeconds(0.04f);
         }
     }
 }

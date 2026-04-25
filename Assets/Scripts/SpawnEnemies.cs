@@ -73,6 +73,12 @@ public class SpawnEnemies : MonoBehaviour
 
             yield return new WaitUntil(() => enemiesAlive <= 0);
 
+            // 💰 Wave reward BEFORE increasing wave
+            int waveReward = 10 + (waveNumber * 3);
+            CoinsManager.Instance.AddCoins(waveReward);
+
+            Debug.Log($"Wave {waveNumber} complete → +{waveReward} coins");
+
             waveNumber++;
             SoundManager.Instance?.PlayNextWave();
         }

@@ -51,6 +51,47 @@ public class UpgradeManager : MonoBehaviour
         Secret
     }
 
+    bool IsMaxed(UpgradeType type, GunController gun)
+    {
+        switch (type)
+        {
+            case UpgradeType.Lifesteal:
+                return gun.lifestealPercent >= 0.10f;
+
+            case UpgradeType.Freeze:
+                return gun.freezeStrength >= 0.5f;
+
+            case UpgradeType.Explosion:
+                return gun.explosionRadius >= 12f;
+
+            case UpgradeType.ChainLightning:
+                return gun.chainCount >= 12;
+
+            case UpgradeType.Piercing:
+                return gun.pierceCount >= 10;
+
+            case UpgradeType.XPMagnet:
+                XPMagnet magnet = FindFirstObjectByType<XPMagnet>();
+                return magnet != null && magnet.magnetLevel >= 40;
+
+            default:
+                return false;
+        }
+    }
+
+    int GetCoinReward(Rarity rarity)
+    {
+        switch (rarity)
+        {
+            case Rarity.Common: return 5;
+            case Rarity.Rare: return 15;
+            case Rarity.Epic: return 40;
+            case Rarity.Legendary: return 100;
+            case Rarity.Secret: return 250;
+            default: return 0;
+        }
+    }
+
     [System.Serializable]
     public class UpgradeInstance
     {
@@ -198,10 +239,29 @@ public class UpgradeManager : MonoBehaviour
 
     string FormatUI(UpgradeInstance upgrade)
     {
+        GunController gun = FindFirstObjectByType<GunController>();
         string color = GetRarityHexColor(upgrade.rarity);
 
+        bool isMaxed = gun != null && IsMaxed(upgrade.type, gun);
+
         string valueLine = GetUpgradeValueLine(upgrade);
-        string maxLine = GetMaxStatLine(upgrade);
+
+        string statLine;
+
+        if (isMaxed)
+        {
+            int coinsReward = GetCoinReward(upgrade.rarity);
+
+            statLine = $"<color={color}><b>MAX</b></color>\n" +
+                       $"<color=#FFD700>+{coinsReward} Coins</color>";
+        }
+        else
+        {
+            statLine =
+                $"<color=#FF5555>{GetCurrentStat(upgrade)}</color> " +
+                $"→ " +
+                $"<color=#55FF55>{GetNextStat(upgrade)}</color>";
+        }
 
         return
     $@"<align=center>
@@ -210,19 +270,11 @@ public class UpgradeManager : MonoBehaviour
 
 <size=100%><b>{upgrade.type.ToString().ToUpper()}</b></size>
 
-<size=70%><color=#555555>────────────</color></size>
+<size=75%><color=#555555>────────────</color></size>
 
-<size=85%>{valueLine}</size>
+<size=90%><color={color}>{valueLine}</color></size>
 
-<size=75%>
-<color=#FF5555>{GetCurrentStat(upgrade)}</color>
- →
-<color=#55FF55>{GetNextStat(upgrade)}</color>
-</size>
-
-<size=70%><color=#555555>────────────</color></size>
-
-<size=70%>{maxLine}</size>
+<size=85%>{statLine}</size>
 
 </align>";
     }
@@ -401,6 +453,7 @@ public class UpgradeManager : MonoBehaviour
             default: return "";
         }
     }
+
 
     // =========================
     // 📈 DESCRIPTION (RARITY-BASED)
@@ -626,6 +679,18 @@ public class UpgradeManager : MonoBehaviour
         if (gun == null)
         {
             Debug.LogError("GunController not found!");
+            return;
+        }
+
+        if (IsMaxed(upgrade.type, gun))
+        {
+            int coinsReward = GetCoinReward(upgrade.rarity);
+            CoinsManager.Instance.AddCoins(coinsReward);
+
+            Debug.Log($"[MAXED] +{coinsReward} Coins");
+
+            CloseUpgradeMenu();
+            GenerateUpgradeChoices();
             return;
         }
 

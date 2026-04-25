@@ -38,6 +38,8 @@ public class EnemyHealth : MonoBehaviour
 
     public event Action OnEnemyDeath;
 
+    [SerializeField] int coinReward = 2;
+
     void Start()
     {
             SpawnEnemies spawnManager = FindFirstObjectByType<SpawnEnemies>();
@@ -158,6 +160,13 @@ public class EnemyHealth : MonoBehaviour
     {
         if (isDead) return;
         isDead = true;
+
+        int reward = coinReward;
+
+        if (isBoss)
+            reward *= 5;
+
+        CoinsManager.Instance.AddCoins(reward);
 
         DropLoot();
         OnEnemyDeath?.Invoke();

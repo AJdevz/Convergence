@@ -685,7 +685,7 @@ public class UpgradeManager : MonoBehaviour
         if (IsMaxed(upgrade.type, gun))
         {
             int coinsReward = GetCoinReward(upgrade.rarity);
-            CoinsManager.Instance.AddCoins(coinsReward);
+            CoinsManager.Instance.AddRunCoins(coinsReward);
 
             Debug.Log($"[MAXED] +{coinsReward} Coins");
 

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
@@ -63,25 +63,38 @@ public class PauseMenu : MonoBehaviour
     // Restart the current game scene
     public void RestartGame()
     {
-        Time.timeScale = 1f; // Ensure time is running before restarting
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload the current scene
+        SaveRunProgress(); // ✅ SAVE BEFORE RESTART
+
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     // Go back to the main menu safely
     public void GoToMainMenu()
     {
-        Time.timeScale = 1f; // Reset time scale
+        SaveRunProgress(); // ✅ SAVE BEFORE EXIT
 
-        // Reset the GameManager's selected mode so next selection works correctly
+        Time.timeScale = 1f;
+
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.SelectedMode = GameMode.Escalation; // default value
+            GameManager.Instance.SelectedMode = GameMode.Escalation;
         }
 
-        // Clear any mode saved in PlayerPrefs to prevent UI from auto-showing ModeMenu
         PlayerPrefs.DeleteKey("SelectedMode");
 
-        // Load main menu scene (adjust index if needed)
         SceneManager.LoadScene("MainMenu");
+    }
+
+    bool hasSaved = false;
+
+    void SaveRunProgress()
+    {
+        if (hasSaved) return;
+
+        hasSaved = true;
+
+        CoinsManager.Instance?.AddToTotal();
+        GameManager.Instance?.SaveGame();
     }
 }

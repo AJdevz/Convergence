@@ -75,7 +75,7 @@ public class SpawnEnemies : MonoBehaviour
 
             // 💰 Wave reward BEFORE increasing wave
             int waveReward = 10 + (waveNumber * 3);
-            CoinsManager.Instance.AddCoins(waveReward);
+            CoinsManager.Instance.AddRunCoins(waveReward);
 
             Debug.Log($"Wave {waveNumber} complete → +{waveReward} coins");
 

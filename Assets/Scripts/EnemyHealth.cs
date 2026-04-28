@@ -166,7 +166,7 @@ public class EnemyHealth : MonoBehaviour
         if (isBoss)
             reward *= 5;
 
-        CoinsManager.Instance.AddCoins(reward);
+        CoinsManager.Instance.AddRunCoins(isBoss ? 50 : 5);
 
         DropLoot();
         OnEnemyDeath?.Invoke();

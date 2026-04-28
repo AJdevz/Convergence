@@ -9,6 +9,8 @@ public class XPManager : MonoBehaviour
     public int playerLevel = 1;
     public int xpToNextLevel = 100;
 
+    public float xpMultiplier = 1.5f;
+
     public UpgradeMenu upgradeMenuScript; // Reference to UpgradeMenu
 
     public TextMeshProUGUI levelText;
@@ -37,7 +39,9 @@ public class XPManager : MonoBehaviour
 
     public void AddXP(int amount)
     {
-        playerXP += amount;
+        playerXP += Mathf.RoundToInt(amount * xpMultiplier);
+        amount = Mathf.RoundToInt(amount * GameManager.Instance.playerData.xpMultiplier);
+
         if (playerXP >= xpToNextLevel)
         {
             LevelUp();

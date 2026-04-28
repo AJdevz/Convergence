@@ -123,8 +123,29 @@ public class GunController : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        ApplyPlayerStats();
+    }
+
+    void ApplyPlayerStats()
+    {
+        if (GameManager.Instance == null) return;
+
+        var data = GameManager.Instance.playerData;
+
+        damageMultiplier = data.damageMultiplier;
+        fireRateMultiplier = data.fireRateMultiplier;
+        lifestealPercent = data.lifesteal;
+
+        RecalculateStats();
+
+        Debug.Log("Gun stats applied from PlayerData");
+    }
+
     void FireSingleBullet()
     {
+        Debug.Log("FINAL DAMAGE: " + Mathf.RoundToInt(damage * damageMultiplier));
         BulletController b = Instantiate(bullet, firePoint.position, firePoint.rotation);
         b.speed = shootSpeed;
         b.GiveDamage = Mathf.RoundToInt(damage * damageMultiplier);

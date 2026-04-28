@@ -9,6 +9,10 @@ public class StartMenuController : MonoBehaviour
     public GameObject ModeCanvas;         // Mode canvas panel
     public GameObject ModeMenu;           // Mode buttons container (inside ModeCanvas)
 
+    [Header("Skill Tree")]
+    public GameObject SkillTreeCanvas;
+    public GameObject SkillTreeBackground;
+
     [Header("Backgrounds")]
     public GameObject MainMenuBackground;
     public GameObject GunCanvasBackground;
@@ -40,16 +44,35 @@ public class StartMenuController : MonoBehaviour
 
     void OnEnable()
     {
-        // Always start with MainMenu active and ModeCanvas inactive
         MainMenu.SetActive(true);
         ModeCanvas.SetActive(false);
         GunCanvas.SetActive(false);
+        SkillTreeCanvas.SetActive(false);
 
         MainMenuBackground.SetActive(true);
         ModeCanvasBackground.SetActive(false);
         GunCanvasBackground.SetActive(false);
+        SkillTreeBackground.SetActive(false);
 
         ModeMenu.SetActive(false);
+    }
+
+    public void OpenSkillTree()
+    {
+        MainMenu.SetActive(false);
+        SkillTreeCanvas.SetActive(true);
+
+        MainMenuBackground.SetActive(false);
+        SkillTreeBackground.SetActive(true);
+    }
+
+    public void BackToMainMenuFromSkillTree()
+    {
+        SkillTreeCanvas.SetActive(false);
+        MainMenu.SetActive(true);
+
+        SkillTreeBackground.SetActive(false);
+        MainMenuBackground.SetActive(true);
     }
 
 

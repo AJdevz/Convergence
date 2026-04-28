@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
@@ -21,6 +21,8 @@ public class PlayerHealth : MonoBehaviour
     public GameObject greenFlashImage; // UI flash for healing
     public GameObject endGamePanel;
 
+    private bool isDead = false;
+
     void Start()
     {
         currentHealth = health;
@@ -40,12 +42,17 @@ public class PlayerHealth : MonoBehaviour
     void Update()
     {
         // Check for death
-        if (currentHealth <= 0)
+        if (currentHealth <= 0 && !isDead)
         {
-            if (endGamePanel != null)
-                endGamePanel.SetActive(true); // Show the end game panel
+            isDead = true;
 
-            gameObject.SetActive(false); // Disable the player object
+            if (endGamePanel != null)
+                endGamePanel.SetActive(true);
+
+            CoinsManager.Instance.AddToTotal();
+            GameManager.Instance.SaveGame();
+
+            gameObject.SetActive(false);
         }
 
         // Handle flash timer

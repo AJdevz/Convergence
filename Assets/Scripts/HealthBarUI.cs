@@ -3,38 +3,24 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-    public Slider slider; // Reference to the UI Slider
-    private PlayerHealth playerHealth; // Reference to PlayerHealth
+    public Slider slider;
+
+    private PlayerHealth playerHealth;
 
     void Start()
     {
-        // Find the PlayerHealth script in the scene
-        playerHealth = Object.FindFirstObjectByType<PlayerHealth>();
-
-        if (playerHealth != null)
-        {
-            // Set the max health when the game starts
-            SetMaxHealth(playerHealth.health);
-        }
+        playerHealth = FindFirstObjectByType<PlayerHealth>();
     }
 
     void Update()
     {
-        if (playerHealth != null)
-        {
-            // Update the slider value based on current health
-            SetHealth(playerHealth.currentHealth);
-        }
-    }
+        if (playerHealth == null)
+            return;
 
-    public void SetMaxHealth(int health)
-    {
-        slider.maxValue = health;
-        slider.value = health;
-    }
+        // Update max HP dynamically
+        slider.maxValue = playerHealth.maxHealth;
 
-    public void SetHealth(int health)
-    {
-        slider.value = health;
+        // Update current HP
+        slider.value = playerHealth.currentHealth;
     }
 }

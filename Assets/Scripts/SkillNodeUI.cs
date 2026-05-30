@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
@@ -20,6 +21,7 @@ public class SkillNodeUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public float tweenSpeed = 10f;
 
     private bool isHovering = false;
+    private Color originalColor;
 
     void Start()
     {
@@ -41,6 +43,7 @@ public class SkillNodeUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         nameText.text = skill.displayName;
 
         originalScale = transform.localScale;
+        originalColor = background.color;
 
         UpdateVisual();
     }
@@ -91,30 +94,33 @@ public class SkillNodeUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public bool IsUnlocked()
     {
         if (GameManager.Instance == null)
-        {
-            Debug.LogWarning("GameManager missing");
             return false;
-        }
 
         if (GameManager.Instance.playerData == null)
-        {
-            Debug.LogWarning("PlayerData missing");
             return false;
-        }
 
         if (GameManager.Instance.playerData.unlockedSkills == null)
-        {
-            Debug.LogWarning("UnlockedSkills list missing");
             return false;
-        }
 
         if (skill == null)
-        {
-            Debug.LogWarning("SkillData missing on node: " + gameObject.name);
             return false;
-        }
 
         return GameManager.Instance.playerData.unlockedSkills.Contains(skill.skillID);
+    }
+
+    void OnEnable()
+    {
+        StartCoroutine(DelayedVisualUpdate());
+    }
+
+    IEnumerator DelayedVisualUpdate()
+    {
+        while (GameManager.Instance == null)
+            yield return null;
+
+        yield return new WaitForSeconds(0.05f);
+
+        UpdateVisual();
     }
 
     public void UpdateVisual()
@@ -122,9 +128,14 @@ public class SkillNodeUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         bool unlocked = IsUnlocked();
         bool available = previousNode == null || previousNode.IsUnlocked();
 
-        if (unlocked || available)
+        if (unlocked)
         {
-            background.enabled = true;   // show your original pastel color
+            background.color = Color.green;
+            button.interactable = false;
+        }
+        else if (available)
+        {
+            background.color = originalColor;
             button.interactable = true;
         }
         else
@@ -132,10 +143,5 @@ public class SkillNodeUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             background.color = Color.gray;
             button.interactable = false;
         }
-    }
-
-    void OnEnable()
-    {
-        UpdateVisual();
     }
 }

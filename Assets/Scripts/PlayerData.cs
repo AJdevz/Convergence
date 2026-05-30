@@ -8,26 +8,54 @@ public class PlayerData
 
     public List<string> unlockedSkills = new List<string>();
 
-    // DAMAGE
-    public float damageMultiplier = 1f;
-    public float fireRateMultiplier = 1f;
+    // =====================
+    // RUNTIME STATS ONLY
+    // =====================
 
-    public float critChance = 0f;
-    public float critMultiplier = 2f;
+    [HideInInspector] public float damageMultiplier;
+    [HideInInspector] public float fireRateMultiplier;
 
-    // DEFENSE
-    public float maxHPBonus = 0f;
-    public float damageReduction = 0f;
-    public float lifesteal = 0f; // ✅ FIXED (lowercase)
+    [HideInInspector] public float critChance;
+    [HideInInspector] public float critMultiplier;
 
-    // UTILITY
-    public float xpMultiplier = 1f;
-    public int magnetLevel = 0;  // ✅ ADD THIS
+    [HideInInspector] public float maxHPBonus;
+    [HideInInspector] public float damageReduction;
+    [HideInInspector] public float lifesteal;
 
-    public float coinMultiplier = 1f;
+    [HideInInspector] public float xpMultiplier;
+    [HideInInspector] public int magnetLevel;
 
-    public float luck = 0f;
-    public float secretChance = 0f;
+    [HideInInspector] public float coinMultiplier;
 
-    public float moveSpeedBonus = 0f;
+    [HideInInspector] public float luck;
+    [HideInInspector] public float secretChance;
+
+    [HideInInspector] public float moveSpeedBonus;
+
+    // =====================
+    // RESET STATS
+    // =====================
+
+    public void ResetRuntimeStats()
+    {
+        damageMultiplier = 1f;
+        fireRateMultiplier = 1f;
+
+        critChance = 0f;
+        critMultiplier = 2f;
+
+        maxHPBonus = 0f;
+        damageReduction = 0f;
+        lifesteal = 0f;
+
+        xpMultiplier = 1f;
+        magnetLevel = 0;
+
+        coinMultiplier = 1f;
+
+        luck = 0f;
+        secretChance = 0f;
+
+        moveSpeedBonus = 0f;
+    }
 }

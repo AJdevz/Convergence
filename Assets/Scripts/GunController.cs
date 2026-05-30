@@ -11,6 +11,18 @@ public class GunController : MonoBehaviour
     public int baseDamage = 20;
     public float baseTimeBetweenShots = 0.2f;
 
+    [Header("Assault Rifle")]
+    public int assaultDamage = 20;
+    public float assaultFireRate = 0.2f;
+
+    [Header("Shotgun")]
+    public int shotgunDamage = 12;
+    public float shotgunFireRate = 0.5f;
+
+    [Header("Sniper")]
+    public int sniperDamage = 80;
+    public float sniperFireRate = 1.2f;
+
     [Header("Runtime Stats")]
     public int damage;
     public float timeBetweenShots;
@@ -73,6 +85,8 @@ public class GunController : MonoBehaviour
 
         if (audioSource != null)
             audioSource.outputAudioMixerGroup = gunMixerGroup;
+
+        ApplyGunBaseStats();
 
         UpdateGunModel();
     }
@@ -148,8 +162,7 @@ public class GunController : MonoBehaviour
         Debug.Log("FINAL DAMAGE: " + Mathf.RoundToInt(damage * damageMultiplier));
         BulletController b = Instantiate(bullet, firePoint.position, firePoint.rotation);
         b.speed = shootSpeed;
-        b.GiveDamage = Mathf.RoundToInt(damage * damageMultiplier);
-
+        b.GiveDamage = damage;
         ApplyUpgrades(b);
         muzzleFlash.Play();
     }
@@ -162,7 +175,7 @@ public class GunController : MonoBehaviour
 
             BulletController b = Instantiate(bullet, firePoint.position, firePoint.rotation * spread);
             b.speed = shootSpeed;
-            b.GiveDamage = Mathf.RoundToInt(damage * damageMultiplier);
+            b.GiveDamage = damage;
 
             ApplyUpgrades(b);
         }
@@ -174,7 +187,7 @@ public class GunController : MonoBehaviour
     {
         BulletController b = Instantiate(bullet, firePoint.position, firePoint.rotation);
         b.speed = shootSpeed;
-        b.GiveDamage = Mathf.RoundToInt(damage * sniperDamageMultiplier * damageMultiplier);
+        b.GiveDamage = Mathf.RoundToInt(damage * sniperDamageMultiplier);
 
         ApplyUpgrades(b);
         muzzleFlash.Play();
@@ -212,6 +225,27 @@ public class GunController : MonoBehaviour
 
         b.explosionMultiplier = explosionMultiplier;
         b.chainMultiplier = chainMultiplier;
+    }
+
+    void ApplyGunBaseStats()
+    {
+        switch (currentGun)
+        {
+            case GunType.AssaultRifle:
+                baseDamage = assaultDamage;
+                baseTimeBetweenShots = assaultFireRate;
+                break;
+
+            case GunType.Shotgun:
+                baseDamage = shotgunDamage;
+                baseTimeBetweenShots = shotgunFireRate;
+                break;
+
+            case GunType.Sniper:
+                baseDamage = sniperDamage;
+                baseTimeBetweenShots = sniperFireRate;
+                break;
+        }
     }
 
     public int GetCurrentDamage()

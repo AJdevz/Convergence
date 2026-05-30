@@ -74,7 +74,7 @@ public class SoundManager : MonoBehaviour
     // 💣 EXPLOSION
     public void PlayExplosion()
     {
-        PlaySound(explosion, 0.01f, 0.9f, 1f);
+        PlaySound(explosion, 0.02f, 0.9f, 1f);
     }
 
     // ⚡ LIGHTNING

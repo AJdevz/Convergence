@@ -232,6 +232,7 @@ GameObject:
   - component: {fileID: 5046049936257338695}
   - component: {fileID: 7864987742030242244}
   - component: {fileID: 2162320184558418642}
+  - component: {fileID: -8779338512977691936}
   m_Layer: 6
   m_Name: ZombieMerge
   m_TagString: Enemy
@@ -294,7 +295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 20
-  repelDistance: 0.5
+  repelDistance: 0.1
   repelTime: 0.05
 --- !u!114 &5605928621548628235
 MonoBehaviour:
@@ -318,8 +319,9 @@ MonoBehaviour:
   healthDropPrefab: {fileID: 1493365865480228, guid: b97f49433f6d8974d8bd4daa015396ac, type: 3}
   normalXpAmount: 10
   bossXpAmount: 250
-  healthDropChance: 0.2
+  healthDropChance: 0.022
   damageCombineWindow: 0.15
+  coinReward: 2
 --- !u!54 &3746889752719164951
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -510,9 +512,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitEmissionColor: {r: 5, g: 5, b: 5, a: 5}
   flashDuration: 0.1
-  knockbackForce: 5
+  knockbackForce: 1
   useBlood: 1
-  bloodIncreasePerHit: 2.93
+  bloodIncreasePerHit: 6.99
+--- !u!114 &-8779338512977691936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 332356240984641808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb0c6e93a8a603749a725ab9a9d6313e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDamage: 5
+  damageIncreasePerWave: 0.12
+  isBoss: 0
+  bossDamageMultiplier: 3
+  damageInterval: 1
 --- !u!1 &332421512899438282
 GameObject:
   m_ObjectHideFlags: 0
@@ -707,7 +726,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb0c6e93a8a603749a725ab9a9d6313e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GiveDamage: 1
+  baseDamage: 12
+  damageIncreasePerWave: 0.12
+  isBoss: 0
+  bossDamageMultiplier: 3
   damageInterval: 1
 --- !u!1 &828861631581486254
 GameObject:

@@ -1,34 +1,49 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DamageManager : MonoBehaviour
 {
-    public int GiveDamage = 10; // Amount of damage dealt to the player
-    public float damageInterval = 0.2f; // Time between each damage tick
+    [Header("Base Damage")]
+    public int baseDamage = 5;
 
-    private bool isTouchingPlayer = false; // Tracks whether the enemy is touching the player
-    private Coroutine damageCoroutine; // Stores the damage coroutine instance
+    [Header("Scaling")]
+    public float damageIncreasePerWave = 0.12f;
+
+    [Header("Boss Settings")]
+    public bool isBoss = false;
+    public float bossDamageMultiplier = 3f;
+
+    [Header("Attack Speed")]
+    public float damageInterval = 1f;
+
+    private bool isTouchingPlayer = false;
+    private Coroutine damageCoroutine;
+
+    private SpawnEnemies waveManager;
+
+    void Start()
+    {
+        waveManager = FindFirstObjectByType<SpawnEnemies>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        // Check if the collided object is the player
-        if (other.gameObject.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
-            isTouchingPlayer = true; // Set flag to true
-            damageCoroutine = StartCoroutine(DealDamageOverTime(other.gameObject)); // Start damaging the player over time
+            isTouchingPlayer = true;
+            damageCoroutine = StartCoroutine(DealDamageOverTime(other.gameObject));
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        // Check if the player exits the damage zone
-        if (other.gameObject.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
-            isTouchingPlayer = false; // Set flag to false
+            isTouchingPlayer = false;
+
             if (damageCoroutine != null)
             {
-                StopCoroutine(damageCoroutine); // Stop the ongoing damage coroutine
+                StopCoroutine(damageCoroutine);
                 damageCoroutine = null;
             }
         }
@@ -36,13 +51,23 @@ public class DamageManager : MonoBehaviour
 
     private IEnumerator DealDamageOverTime(GameObject player)
     {
-        PlayerHealth playerHealth = player.GetComponent<PlayerHealth>(); // Get the player's health component
+        PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
 
-        // Continue dealing damage as long as the player is in contact and has a health component
         while (isTouchingPlayer && playerHealth != null)
         {
-            playerHealth.TakeDamage(GiveDamage); // Apply damage to the player
-            yield return new WaitForSeconds(damageInterval); // Wait for the next damage tick
+            int currentWave = waveManager.waveNumber;
+
+            // Wave scaling
+            float scaledDamage =
+                baseDamage * (1 + (currentWave * damageIncreasePerWave));
+
+            // Boss multiplier
+            if (isBoss)
+                scaledDamage *= bossDamageMultiplier;
+
+            playerHealth.TakeDamage(Mathf.RoundToInt(scaledDamage));
+
+            yield return new WaitForSeconds(damageInterval);
         }
     }
 }

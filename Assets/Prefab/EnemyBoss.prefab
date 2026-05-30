@@ -7284,6 +7284,7 @@ GameObject:
   - component: {fileID: -3548234482873502364}
   - component: {fileID: -7524704809417098236}
   - component: {fileID: 1243692769379797993}
+  - component: {fileID: -514561948919195012}
   m_Layer: 6
   m_Name: EnemyBoss
   m_TagString: Enemy
@@ -7441,7 +7442,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 35
-  repelDistance: 0.5
+  repelDistance: 0.1
   repelTime: 0.05
 --- !u!114 &-7524704809417098236
 MonoBehaviour:
@@ -7465,8 +7466,9 @@ MonoBehaviour:
   healthDropPrefab: {fileID: 1493365865480228, guid: b97f49433f6d8974d8bd4daa015396ac, type: 3}
   normalXpAmount: 10
   bossXpAmount: 250
-  healthDropChance: 0.3
+  healthDropChance: 0.06
   damageCombineWindow: 0.15
+  coinReward: 2
 --- !u!114 &1243692769379797993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7481,9 +7483,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitEmissionColor: {r: 20, g: 20, b: 20, a: 20}
   flashDuration: 0.1
-  knockbackForce: 20
+  knockbackForce: 1
   useBlood: 1
   bloodIncreasePerHit: 4.61
+--- !u!114 &-514561948919195012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1865598692286518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb0c6e93a8a603749a725ab9a9d6313e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDamage: 8
+  damageIncreasePerWave: 0.12
+  isBoss: 1
+  bossDamageMultiplier: 3
+  damageInterval: 1
 --- !u!1 &1880272353152670
 GameObject:
   m_ObjectHideFlags: 0
@@ -8780,5 +8799,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb0c6e93a8a603749a725ab9a9d6313e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GiveDamage: 1
+  baseDamage: 12
+  damageIncreasePerWave: 0.12
+  isBoss: 0
+  bossDamageMultiplier: 3
   damageInterval: 1

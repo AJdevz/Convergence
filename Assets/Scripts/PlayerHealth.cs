@@ -3,31 +3,39 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [Header("Health Settings")]
-    public int health; // Max health
+    [Header("Base Health")]
+    public int baseHealth = 100;
+
+    [Header("Runtime Health")]
+    public int maxHealth;
     public int currentHealth;
 
     [Header("Flash Settings")]
-    public float flashLength = 0.1f; // Duration of flash
+    public float flashLength = 0.1f;
+
     private float flashCounter;
     private Renderer rend;
+
     private Color normalColor;
     private Color damageColor = Color.red;
     private Color healColor = Color.green;
-    private bool isHealing = false; // Track if currently healing for color flash
+
+    private bool isHealing = false;
+    private bool isDead = false;
 
     [Header("UI References")]
-    public GameObject redFlashImage;   // UI flash for damage
-    public GameObject greenFlashImage; // UI flash for healing
+    public GameObject redFlashImage;
+    public GameObject greenFlashImage;
     public GameObject endGamePanel;
-
-    private bool isDead = false;
 
     void Start()
     {
-        currentHealth = health;
         rend = GetComponent<Renderer>();
-        normalColor = rend.material.GetColor("_Color");
+
+        if (rend != null)
+            normalColor = rend.material.GetColor("_Color");
+
+        ApplyHealthStats();
 
         if (endGamePanel != null)
             endGamePanel.SetActive(false);
@@ -39,9 +47,29 @@ public class PlayerHealth : MonoBehaviour
             greenFlashImage.SetActive(false);
     }
 
+    // =========================
+    // APPLY SKILL TREE HP
+    // =========================
+    public void ApplyHealthStats()
+    {
+        float bonusHP = 0f;
+
+        if (GameManager.Instance != null)
+            bonusHP = GameManager.Instance.playerData.maxHPBonus;
+
+        maxHealth = baseHealth + Mathf.RoundToInt(bonusHP);
+
+        // FULL HEAL when stats update
+        currentHealth = maxHealth;
+
+        Debug.Log("MAX HP UPDATED: " + maxHealth);
+    }
+
     void Update()
     {
-        // Check for death
+        // =========================
+        // DEATH
+        // =========================
         if (currentHealth <= 0 && !isDead)
         {
             isDead = true;
@@ -50,23 +78,26 @@ public class PlayerHealth : MonoBehaviour
                 endGamePanel.SetActive(true);
 
             CoinsManager.Instance.AddToTotal();
-            GameManager.Instance.SaveGame();
+
+            if (GameManager.Instance != null)
+                GameManager.Instance.SaveGame();
 
             gameObject.SetActive(false);
         }
 
-        // Handle flash timer
+        // =========================
+        // DAMAGE/HEAL FLASH
+        // =========================
         if (flashCounter > 0)
         {
             flashCounter -= Time.deltaTime;
 
-            // Update renderer color based on flash type
-            if (isHealing)
-                rend.material.color = healColor;
-            else
-                rend.material.color = damageColor;
+            if (rend != null)
+            {
+                rend.material.color =
+                    isHealing ? healColor : damageColor;
+            }
 
-            // Activate the correct flash UI
             if (isHealing)
             {
                 if (greenFlashImage != null)
@@ -78,10 +109,10 @@ public class PlayerHealth : MonoBehaviour
                     redFlashImage.SetActive(true);
             }
 
-            // Reset after flash ends
             if (flashCounter <= 0)
             {
-                rend.material.color = normalColor;
+                if (rend != null)
+                    rend.material.color = normalColor;
 
                 if (redFlashImage != null)
                     redFlashImage.SetActive(false);
@@ -92,7 +123,9 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    // Called when player takes damage
+    // =========================
+    // TAKE DAMAGE
+    // =========================
     public void TakeDamage(int damageAmount)
     {
         currentHealth -= damageAmount;
@@ -100,22 +133,28 @@ public class PlayerHealth : MonoBehaviour
         if (currentHealth < 0)
             currentHealth = 0;
 
-        // Start flash
         flashCounter = flashLength;
         isHealing = false;
+
+        Debug.Log("PLAYER TOOK DAMAGE: " + damageAmount);
+        Debug.Log("CURRENT HP: " + currentHealth + "/" + maxHealth);
     }
 
-    // Called when player heals
+    // =========================
+    // HEAL
+    // =========================
     public void Heal(float healAmount)
     {
         currentHealth += Mathf.RoundToInt(healAmount);
 
-        SoundManager.Instance?.PlayHeal();
+        if (currentHealth > maxHealth)
+            currentHealth = maxHealth;
 
-        if (currentHealth > health)
-            currentHealth = health;
+        SoundManager.Instance?.PlayHeal();
 
         flashCounter = flashLength;
         isHealing = true;
+
+        Debug.Log("PLAYER HEALED: " + healAmount);
     }
 }

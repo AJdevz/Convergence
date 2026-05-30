@@ -27,7 +27,6 @@ public class XPCollect : MonoBehaviour
 
             if (magnet != null)
             {
-                Debug.Log("Magnet FOUND");
                 CancelInvoke(nameof(FindPlayer));
             }
         }
@@ -35,12 +34,6 @@ public class XPCollect : MonoBehaviour
 
     void Update()
     {
-        if (magnet != null)
-        {
-            Debug.Log("Magnet Level: " + magnet.magnetLevel);
-            Debug.Log("Range: " + magnet.GetRange());
-        }
-
         if (player == null || magnet == null) return;
 
         float range = magnet.GetRange();

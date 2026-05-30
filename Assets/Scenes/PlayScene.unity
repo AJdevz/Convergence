@@ -5337,7 +5337,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinsText: {fileID: 1728774499}
-  coins: 0
+  runCoins: 0
+  totalCoins: 0
+  displayType: 0
 --- !u!4 &974199251
 Transform:
   m_ObjectHideFlags: 0
@@ -5698,7 +5700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9979f8c49ffa91143951ffebacaded21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 500
+  health: 100
   currentHealth: 1
   flashLength: 0.07
   redFlashImage: {fileID: 189675725}
@@ -5832,7 +5834,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseRange: 0
   rangePerLevel: 5
-  pullSpeed: 60
+  pullSpeed: 70
   magnetLevel: 0
 --- !u!1 &1108971452
 GameObject:
@@ -10914,6 +10916,7 @@ MonoBehaviour:
   playerXP: 0
   playerLevel: 1
   xpToNextLevel: 50
+  xpMultiplier: 1.5
   upgradeMenuScript: {fileID: 1974422677}
   levelText: {fileID: 1225132774}
 --- !u!114 &1974422679

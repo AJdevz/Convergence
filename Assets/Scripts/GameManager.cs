@@ -51,21 +51,26 @@ public class GameManager : MonoBehaviour
 
         if (SkillTreeManager.Instance == null)
         {
-            Debug.LogError("SkillTreeManager missing in scene!");
+            Debug.LogError("SkillTreeManager missing!");
             yield break;
         }
+
+        // 🔥 IMPORTANT
+        playerData.ResetRuntimeStats();
 
         foreach (string id in playerData.unlockedSkills)
         {
             SkillData skill = FindSkillByID(id);
+
             if (skill != null)
+            {
                 SkillTreeManager.Instance.ApplySkillEffect(skill);
+            }
         }
 
-        // 🔥 APPLY FINAL STATS TO RUNTIME OBJECTS
         ApplyStatsToScene();
 
-        Debug.Log("All skills applied successfully.");
+        Debug.Log("Skills rebuilt successfully.");
     }
 
     public void ApplyStatsToScene()
@@ -98,9 +103,7 @@ public class GameManager : MonoBehaviour
 
         if (player != null)
         {
-            int bonusHP = Mathf.RoundToInt(data.maxHPBonus);
-            player.health += bonusHP;
-            player.currentHealth += bonusHP;
+            player.ApplyHealthStats();
         }
     }
 

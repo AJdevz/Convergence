@@ -23,7 +23,11 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // Get movement input from the player
-        moveInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
+        moveInput = new Vector3(
+            Input.GetKey(KeyCode.D) ? 1 : Input.GetKey(KeyCode.A) ? -1 : 0,
+            0f,
+            Input.GetKey(KeyCode.W) ? 1 : Input.GetKey(KeyCode.S) ? -1 : 0
+        );
         moveVelocity = moveInput * moveSpeed; // Multiply input by moveSpeed to determine velocity
 
         // Create a ray from the camera to the mouse position

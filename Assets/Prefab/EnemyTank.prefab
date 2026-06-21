@@ -7285,8 +7285,9 @@ GameObject:
   - component: {fileID: -7524704809417098236}
   - component: {fileID: 1243692769379797993}
   - component: {fileID: -514561948919195012}
+  - component: {fileID: 997367828559696910}
   m_Layer: 6
-  m_Name: EnemyBoss
+  m_Name: EnemyTank
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7357,6 +7358,7 @@ Transform:
   - {fileID: 4981592061391492}
   - {fileID: 4341232266600890}
   - {fileID: 4311744241526352}
+  - {fileID: 8958699798659683496}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &95494898318645128
@@ -7457,8 +7459,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseHealth: 300
-  isBoss: 1
-  waveHealthIncrease: 50
+  isTankBoss: 1
+  isMainBoss: 0
+  waveHealthIncrease: 100
   levelHealthIncrease: 0
   healthBarPrefab: {fileID: 9176267920048675078, guid: 23d25a1ed3a1299418d0622650bdc7f3, type: 3}
   xpDropPrefab: {fileID: 1493365865480228, guid: 8c7f1d862b57898438b2fe630133ed38, type: 3}
@@ -7466,9 +7469,9 @@ MonoBehaviour:
   healthDropPrefab: {fileID: 1493365865480228, guid: b97f49433f6d8974d8bd4daa015396ac, type: 3}
   normalXpAmount: 10
   bossXpAmount: 250
-  healthDropChance: 0.06
+  healthDropChance: 0.049
   damageCombineWindow: 0.15
-  coinReward: 2
+  coinReward: 25
 --- !u!114 &1243692769379797993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7503,6 +7506,21 @@ MonoBehaviour:
   isBoss: 1
   bossDamageMultiplier: 3
   damageInterval: 1
+--- !u!114 &997367828559696910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1865598692286518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcdafbd4e32f9a34bbe9a8dd9a151ec7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireballPrefab: {fileID: 1493365865480228, guid: 370883cd9c8b015459bda68f1ddbf50c, type: 3}
+  shootInterval: 5
+  firePoint: {fileID: 8958699798659683496}
 --- !u!1 &1880272353152670
 GameObject:
   m_ObjectHideFlags: 0
@@ -8804,3 +8822,34 @@ MonoBehaviour:
   isBoss: 0
   bossDamageMultiplier: 3
   damageInterval: 1
+--- !u!1 &6969451519729831918
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8958699798659683496}
+  m_Layer: 6
+  m_Name: Firepoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8958699798659683496
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6969451519729831918}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.46113664, y: -0.5360532, z: -0.46113664, w: 0.5360532}
+  m_LocalPosition: {x: 0, y: 0.87627614, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4631319367140754}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

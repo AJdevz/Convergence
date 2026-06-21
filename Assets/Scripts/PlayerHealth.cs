@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using TMPro;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class PlayerHealth : MonoBehaviour
     [Header("Runtime Health")]
     public int maxHealth;
     public int currentHealth;
+    public TMP_Text hpText;
 
     [Header("Flash Settings")]
     public float flashLength = 0.1f;
@@ -37,6 +39,10 @@ public class PlayerHealth : MonoBehaviour
 
         ApplyHealthStats();
 
+        currentHealth = maxHealth;
+
+        UpdateHealthText();
+
         if (endGamePanel != null)
             endGamePanel.SetActive(false);
 
@@ -59,7 +65,6 @@ public class PlayerHealth : MonoBehaviour
 
         maxHealth = baseHealth + Mathf.RoundToInt(bonusHP);
 
-        // FULL HEAL when stats update
         currentHealth = maxHealth;
 
         Debug.Log("MAX HP UPDATED: " + maxHealth);
@@ -93,21 +98,12 @@ public class PlayerHealth : MonoBehaviour
             flashCounter -= Time.deltaTime;
 
             if (rend != null)
-            {
-                rend.material.color =
-                    isHealing ? healColor : damageColor;
-            }
+                rend.material.color = isHealing ? healColor : damageColor;
 
-            if (isHealing)
-            {
-                if (greenFlashImage != null)
-                    greenFlashImage.SetActive(true);
-            }
-            else
-            {
-                if (redFlashImage != null)
-                    redFlashImage.SetActive(true);
-            }
+            if (isHealing && greenFlashImage != null)
+                greenFlashImage.SetActive(true);
+            else if (!isHealing && redFlashImage != null)
+                redFlashImage.SetActive(true);
 
             if (flashCounter <= 0)
             {
@@ -123,9 +119,6 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    // =========================
-    // TAKE DAMAGE
-    // =========================
     public void TakeDamage(int damageAmount)
     {
         currentHealth -= damageAmount;
@@ -136,13 +129,9 @@ public class PlayerHealth : MonoBehaviour
         flashCounter = flashLength;
         isHealing = false;
 
-        Debug.Log("PLAYER TOOK DAMAGE: " + damageAmount);
-        Debug.Log("CURRENT HP: " + currentHealth + "/" + maxHealth);
+        UpdateHealthText();
     }
 
-    // =========================
-    // HEAL
-    // =========================
     public void Heal(float healAmount)
     {
         currentHealth += Mathf.RoundToInt(healAmount);
@@ -150,11 +139,18 @@ public class PlayerHealth : MonoBehaviour
         if (currentHealth > maxHealth)
             currentHealth = maxHealth;
 
-        SoundManager.Instance?.PlayHeal();
-
         flashCounter = flashLength;
         isHealing = true;
 
-        Debug.Log("PLAYER HEALED: " + healAmount);
+        UpdateHealthText();
+    }
+
+    // =========================
+    // FIXED HEALTH TEXT SYSTEM
+    // =========================
+    public void UpdateHealthText()
+    {
+        if (hpText != null)
+            hpText.text = currentHealth + " / " + maxHealth;
     }
 }

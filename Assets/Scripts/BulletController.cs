@@ -84,9 +84,6 @@ public class BulletController : MonoBehaviour
         if (feedback != null)
         {
             feedback.PlayHitFeedback(dir);
-
-            if (CameraShake.Instance != null)
-                CameraShake.Instance.Shake(0.12f, 0.35f);
         }
 
         // 💥 KNOCKBACK + STATUS (reuse SAME controller)

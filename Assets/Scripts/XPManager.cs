@@ -10,87 +10,62 @@ public class XPManager : MonoBehaviour
     public int xpToNextLevel = 100;
 
     public float xpMultiplier = 1.5f;
-
-    public UpgradeMenu upgradeMenuScript; // Reference to UpgradeMenu
-
+    public UpgradeMenu upgradeMenuScript;
     public TextMeshProUGUI levelText;
 
     void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    void Start()
-    {
-        if (upgradeMenuScript == null)
-        {
-            Debug.LogError("XPManager: upgradeMenuScript is NULL. Make sure the UpgradeMenu GameObject is set in the Inspector.");
-        }
-
-        UpdateLevelUI();
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
     }
 
     public void AddXP(int amount)
     {
-        playerXP += Mathf.RoundToInt(amount * xpMultiplier);
         amount = Mathf.RoundToInt(amount * GameManager.Instance.playerData.xpMultiplier);
+        playerXP += amount;
 
-        if (playerXP >= xpToNextLevel)
+        while (playerXP >= xpToNextLevel)
         {
+            playerXP -= xpToNextLevel;
             LevelUp();
         }
+
+        UpdateXPUI();
+    }
+
+    void UpdateXPUI()
+    {
+        XPBar bar = FindFirstObjectByType<XPBar>();
+        if (bar == null) return;
     }
 
     void LevelUp()
     {
-        playerXP = 0; // Reset XP after leveling up
         playerLevel++;
-        xpToNextLevel += 50; // Increase XP needed for the next level
+        xpToNextLevel =
+            Mathf.RoundToInt(xpToNextLevel * 1.25f);
 
-        // Update XP UI
-        XPBar xpBar = Object.FindFirstObjectByType<XPBar>();
-        if (xpBar != null)
-        {
-            xpBar.SetMaxXP(xpToNextLevel); // Set new max XP when leveling up
-            xpBar.UpdateXP(playerXP); // Reset the XP bar to 0
-        }
+        UpdateXPUI();
 
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-
         if (player != null)
         {
             VFXManager.Instance.PlayVFX(
                 VFXManager.Instance.levelUpEffect,
                 player.transform,
-                new Vector3(0, 1.5f, 0) // offset so it's around the body
+                new Vector3(0, 1.5f, 0)
             );
         }
 
-        UpdateLevelUI();
-
         if (upgradeMenuScript != null)
-        {
             upgradeMenuScript.OpenUpgradeMenu();
-        }
-        else
-        {
-            Debug.LogError("XPManager: upgradeMenuScript is NULL. Assign it in the Inspector.");
-        }
-    }
 
+        UpdateLevelUI();
+    }
 
     void UpdateLevelUI()
     {
         if (levelText != null)
-        {
-            levelText.text = "Level: " + playerLevel;
-        }
+            levelText.text = $"Level: {playerLevel}";
     }
 }

@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using UnityEngine;
+using TMPro;
 
 public class SpawnEnemies : MonoBehaviour
 {
     [Header("Prefabs")]
     public GameObject EnemyZombies;
     public GameObject ZombieMerge;
-    public GameObject bossEnemy;
+    public GameObject tankBoss;
+    public GameObject mainBoss;
 
     [Header("Wave Settings")]
     public int enemiesPerWave = 0;
@@ -19,6 +21,7 @@ public class SpawnEnemies : MonoBehaviour
     public GameObject floor;
 
     private WaveTextDisplay waveTextDisplay;
+    public TMP_Text waveHudText;
     private bool firstWaveMessageShown = false;
     private Bounds floorBounds;
     private int enemiesAlive = 0;
@@ -47,6 +50,8 @@ public class SpawnEnemies : MonoBehaviour
         {
             Debug.LogWarning("DESYNC! Tracked: " + enemiesAlive + " | Actual: " + actualEnemies);
         }
+
+        waveHudText.text = $"Wave {waveNumber} | Enemies Left: {enemiesAlive}";
     }
 
 
@@ -88,14 +93,39 @@ public class SpawnEnemies : MonoBehaviour
     {
         int enemiesInWave = enemiesPerWave + (waveNumber * 5);
 
+        bool isBossWave = waveNumber % 5 == 0;
+
+        // 1. Spawn normal enemies first
         for (int i = 0; i < enemiesInWave; i++)
         {
             SpawnEnemy(useMerge);
             yield return new WaitForSeconds(0.04f);
         }
 
-        if (waveNumber % 5 == 0)
-            SpawnBoss();
+        // 2. Spawn bosses AFTER enemies
+        if (isBossWave)
+        {
+            SpawnMainBossOnce();  // main boss
+        }
+    }
+
+    void SpawnMainBossOnce()
+    {
+        if (mainBoss == null) return;
+
+        Vector3 pos = GetValidSpawnPosition();
+
+        GameObject boss = Instantiate(mainBoss, pos, Quaternion.identity);
+
+        EnemyHealth hp = boss.GetComponent<EnemyHealth>();
+
+        if (hp != null)
+        {
+            hp.isMainBoss = true;
+            hp.showBossUI = true;
+        }
+
+        RegisterEnemy(boss);
     }
 
     void SpawnEnemy(bool useMerge)
@@ -111,10 +141,10 @@ public class SpawnEnemies : MonoBehaviour
 
     void SpawnBoss()
     {
-        if (bossEnemy == null) return;
+        if (tankBoss == null) return;
 
-        Vector3 spawnPos = GetValidSpawnPosition();
-        GameObject boss = Instantiate(bossEnemy, spawnPos, Quaternion.identity);
+        Vector3 pos = GetValidSpawnPosition();
+        GameObject boss = Instantiate(tankBoss, pos, Quaternion.identity);
 
         RegisterEnemy(boss);
     }

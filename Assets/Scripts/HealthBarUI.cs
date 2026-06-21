@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +7,7 @@ public class HealthBar : MonoBehaviour
     public Slider slider;
 
     private PlayerHealth playerHealth;
+    public TMP_Text hpText;
 
     void Start()
     {
@@ -14,13 +16,12 @@ public class HealthBar : MonoBehaviour
 
     void Update()
     {
-        if (playerHealth == null)
-            return;
+        if (playerHealth == null) return;
 
-        // Update max HP dynamically
         slider.maxValue = playerHealth.maxHealth;
-
-        // Update current HP
         slider.value = playerHealth.currentHealth;
+
+        if (hpText != null)
+            hpText.text = $"{playerHealth.currentHealth} / {playerHealth.maxHealth}";
     }
 }

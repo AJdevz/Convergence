@@ -20,6 +20,5 @@ public class PlayerStats : MonoBehaviour
     public void AddXP(int amount)
     {
         currentXP += amount;
-        Debug.Log("XP Added: " + amount + " | Total XP: " + currentXP);
     }
 }

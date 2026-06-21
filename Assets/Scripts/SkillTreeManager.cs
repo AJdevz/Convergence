@@ -47,20 +47,20 @@ public class SkillTreeManager : MonoBehaviour
 
         GameManager.Instance.playerData.unlockedSkills.Add(skill.skillID);
 
-        // ✅ APPLY TO PLAYER DATA
+        // APPLY TO PLAYER DATA
         ApplySkillEffect(skill);
 
-        // 🔥 APPLY TO SCENE IMMEDIATELY (THIS IS WHAT YOU WERE MISSING)
+        // APPLY TO SCENE IMMEDIATELY (THIS IS WHAT YOU WERE MISSING)
         GameManager.Instance.ApplyStatsToScene();
 
-        // 💾 SAVE PROGRESS
+        // SAVE PROGRESS
         GameManager.Instance.SaveGame();
 
-        // 💰 UPDATE UI
+        // UPDATE UI
         if (CoinsManager.Instance != null)
             CoinsManager.Instance.UpdateUI();
 
-        // 🔄 refresh UI nodes
+        // refresh UI nodes
         RefreshAllNodes();
     }
 

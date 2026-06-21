@@ -5,7 +5,11 @@ public class EnemyHealth : MonoBehaviour
 {
     [Header("Base Stats")]
     public int baseHealth = 100;
-    public bool isBoss = false;
+
+    [Header("Enemy Type")]
+    public bool isTankBoss = false;   // merged boss
+    public bool isMainBoss = false;   // wave boss
+    private int maxHealth;
 
     [Header("Scaling")]
     public int waveHealthIncrease = 20;
@@ -13,8 +17,10 @@ public class EnemyHealth : MonoBehaviour
 
     [Header("Health Bar")]
     public GameObject healthBarPrefab;
-
     private EnemyHealthBar healthBarInstance;
+
+    [Header("Boss UI")]
+    public bool showBossUI = false;
 
     [Header("Drops")]
     public GameObject xpDropPrefab;
@@ -22,16 +28,15 @@ public class EnemyHealth : MonoBehaviour
     public GameObject healthDropPrefab;
 
     public int normalXpAmount = 10;
-    public int bossXpAmount = 5000;
+    public int bossXpAmount = 100;
 
     [Range(0f, 1f)]
     public float healthDropChance = 0.4f;
 
     private int currentHealth;
     private int currentWave;
-    private bool isDead = false; // ✅ Death protection
+    private bool isDead = false;
 
-    [Header("Damage Popup Buffer")]
     private int pendingDamage = 0;
     private float damageTimer = 0f;
     public float damageCombineWindow = 0.15f;
@@ -42,12 +47,8 @@ public class EnemyHealth : MonoBehaviour
 
     void Start()
     {
-            SpawnEnemies spawnManager = FindFirstObjectByType<SpawnEnemies>();
-
-        if (spawnManager != null)
-            currentWave = spawnManager.waveNumber;
-        else
-            currentWave = 1;
+        SpawnEnemies spawnManager = FindFirstObjectByType<SpawnEnemies>();
+        currentWave = spawnManager != null ? spawnManager.waveNumber : 1;
 
         ApplyScaling();
 
@@ -55,22 +56,16 @@ public class EnemyHealth : MonoBehaviour
         {
             GameObject bar = Instantiate(healthBarPrefab, transform);
             bar.transform.localPosition = new Vector3(0, 2.5f, 0);
-            bar.transform.localRotation = Quaternion.identity; 
 
             healthBarInstance = bar.GetComponent<EnemyHealthBar>();
 
             if (healthBarInstance != null)
-            {
                 healthBarInstance.Setup(transform, currentHealth);
-            }
-            else
-            {
-                Debug.LogError("EnemyHealthBar script missing on prefab!");
-            }
         }
-        else
+
+        if (isMainBoss)
         {
-            Debug.LogError("HealthBarPrefab is NULL");
+            BossUIManager.Instance?.SetBoss(this);
         }
     }
 
@@ -86,34 +81,41 @@ public class EnemyHealth : MonoBehaviour
         float linear = 1f + (wave - 1) * 0.12f;
         float exponential = Mathf.Pow(1.15f, wave - 1);
         float levelScale = 1f + (level - 1) * 0.05f;
-
         float burstProtection = 1f + Mathf.Log10(wave) * 0.6f;
 
         float scaled = baseHp * linear * exponential * levelScale * burstProtection;
 
-        if (isBoss)
-        {
-            scaled *= (6f + Mathf.Pow(wave, 1.04f) * 0.4f);
-        }
+        if (isMainBoss)
+            scaled *= 4f;
 
-        currentHealth = Mathf.RoundToInt(scaled);
+        if (isTankBoss)
+            scaled *= 2f;
+
+        maxHealth = Mathf.RoundToInt(scaled);
+        currentHealth = maxHealth;
+    }
+
+    public int GetMaxHealth()
+    {
+        return maxHealth;
+    }
+
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
     }
 
     public void TakeDamage(int damage)
     {
-        Debug.Log("Enemy took damage: " + damage);
         if (isDead) return;
 
         currentHealth -= damage;
-
         pendingDamage += damage;
 
-        // 💀 IF THIS HIT KILLS → SHOW ONCE
         if (currentHealth <= 0)
         {
-            ShowDamageNumber(); // 👈 just call once
+            ShowDamageNumber();
             pendingDamage = 0;
-
             Die();
             return;
         }
@@ -132,7 +134,7 @@ public class EnemyHealth : MonoBehaviour
 
             if (damageTimer <= 0f)
             {
-                ShowDamageNumber(); // ✅ FIXED CALL
+                ShowDamageNumber();
                 pendingDamage = 0;
             }
         }
@@ -141,17 +143,13 @@ public class EnemyHealth : MonoBehaviour
     void ShowDamageNumber()
     {
         if (DamageNumberManager.Instance == null) return;
-
-        if (pendingDamage <= 0) return; // 🚫 prevents 0
+        if (pendingDamage <= 0) return;
 
         Vector3 spawnPos = transform.position;
 
         Collider col = GetComponentInChildren<Collider>();
         if (col != null)
             spawnPos = col.bounds.center + Vector3.up * col.bounds.extents.y;
-
-        // optional offset tweak (top-down feel)
-        spawnPos += new Vector3(-0.3f, 0.5f, 0f);
 
         DamageNumberManager.Instance.ShowDamage(pendingDamage, spawnPos);
     }
@@ -163,10 +161,12 @@ public class EnemyHealth : MonoBehaviour
 
         int reward = coinReward;
 
-        if (isBoss)
+        if (isMainBoss)
+            reward *= 10;
+        else if (isTankBoss)
             reward *= 5;
 
-        CoinsManager.Instance.AddRunCoins(isBoss ? 50 : 5);
+        CoinsManager.Instance.AddRunCoins(reward);
 
         DropLoot();
         OnEnemyDeath?.Invoke();
@@ -179,19 +179,25 @@ public class EnemyHealth : MonoBehaviour
 
     void DropLoot()
     {
-        // XP Drop
-        GameObject xpPrefab = isBoss ? bossXpDropPrefab : xpDropPrefab;
+        GameObject xpPrefab =
+            isMainBoss ? bossXpDropPrefab :
+            isTankBoss ? bossXpDropPrefab :
+            xpDropPrefab;
+
+        int xpValue =
+            isMainBoss ? bossXpAmount * 3 :
+            isTankBoss ? bossXpAmount * 2 :
+            normalXpAmount;
 
         if (xpPrefab != null)
         {
-            GameObject droppedXP = Instantiate(xpPrefab, transform.position, Quaternion.identity);
+            GameObject drop = Instantiate(xpPrefab, transform.position, Quaternion.identity);
 
-            XPCollect xpScript = droppedXP.GetComponent<XPCollect>();
-            if (xpScript != null)
-                xpScript.SetXP(isBoss ? bossXpAmount : normalXpAmount);
+            XPCollect xp = drop.GetComponent<XPCollect>();
+            if (xp != null)
+                xp.SetXP(xpValue);
         }
 
-        // Health Drop (chance-based)
         if (healthDropPrefab != null && UnityEngine.Random.value <= healthDropChance)
         {
             Instantiate(healthDropPrefab, transform.position, Quaternion.identity);

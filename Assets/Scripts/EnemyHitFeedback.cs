@@ -51,8 +51,6 @@ public class EnemyHitFeedback : MonoBehaviour
         StopAllCoroutines();
         StartCoroutine(Flash());
 
-        CameraShake.Instance.Shake(0.1f, 0.2f);
-
         SoundManager.Instance?.PlayZombieHurt();
     }
 

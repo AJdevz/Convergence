@@ -68,31 +68,31 @@ public class SoundManager : MonoBehaviour
     // ☠️ ZOMBIE DEATH
     public void PlayZombieDeath()
     {
-        PlayRandom(zombieDeath, 0.3f, 0.9f, 1.05f);
+        PlayRandom(zombieDeath, 0f, 0.9f, 1.05f);
     }
 
     // 💣 EXPLOSION
     public void PlayExplosion()
     {
-        PlaySound(explosion, 0.02f, 0.9f, 1f);
+        PlaySound(explosion, 0.005f, 0.9f, 1f);
     }
 
     // ⚡ LIGHTNING
     public void PlayLightning()
     {
-        PlaySound(lightning, 0.02f, 0.9f, 1.05f);
+        PlaySound(lightning, 0.01f, 0.9f, 1.05f);
     }
 
     // ❤️ HEAL
     public void PlayHeal()
     {
-        PlaySound(heal, 0.02f, 0.95f, 1.05f);
+        PlaySound(heal, 0.005f, 0.95f, 1.05f);
     }
 
     // ✨ XP
     public void PlayXP()
     {
-        PlaySound(xpCollect, 0.02f, 0.95f, 1.05f);
+        PlaySound(xpCollect, 0.01f, 0.95f, 1.05f);
     }
 
     // 🌊 NEXT WAVE

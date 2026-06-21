@@ -27,8 +27,12 @@ public class ZombieMerge : MonoBehaviour
     private float mergeProgress = 0f;
     private Vector3 startPosition;
 
+    private SpawnEnemies spawnManager;
+
     void Start()
     {
+        spawnManager = FindFirstObjectByType<SpawnEnemies>();
+
         spawnAudioSource = GetComponent<AudioSource>();
         if (spawnAudioSource == null)
             spawnAudioSource = gameObject.AddComponent<AudioSource>();
@@ -69,6 +73,29 @@ public class ZombieMerge : MonoBehaviour
                 FinishMerge();
             }
         }
+    }
+
+    void TrySpawnMainBoss(Vector3 position)
+    {
+        if (spawnManager == null) return;
+        if (GameManager.Instance == null) return;
+
+        // ONLY Evolution mode
+        if (GameManager.Instance.SelectedMode != GameMode.Evolution)
+            return;
+
+        if (spawnManager.waveNumber % 5 != 0)
+            return;
+
+        if (spawnManager.mainBoss == null) return;
+
+        GameObject boss = Instantiate(
+            spawnManager.mainBoss,
+            position,
+            Quaternion.identity
+        );
+
+        spawnManager.RegisterEnemy(boss);
     }
 
     void CheckForMerge()
@@ -139,7 +166,7 @@ public class ZombieMerge : MonoBehaviour
 
         Destroy(targetZombie.gameObject);
 
-        // Spawn boss (health scaling handled automatically by EnemyHealth)
+        // Tank boss (merged enemy boss)
         if (bossPrefab != null)
         {
             GameObject boss = Instantiate(bossPrefab, mergePosition, Quaternion.identity);

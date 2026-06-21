@@ -12,11 +12,6 @@ public class CameraFollow : MonoBehaviour
 
         Vector3 basePos = target.position + offset;
 
-        if (CameraShake.Instance != null)
-        {
-            basePos += CameraShake.Instance.GetOffset();
-        }
-
         transform.position = Vector3.Lerp(
             transform.position,
             basePos,

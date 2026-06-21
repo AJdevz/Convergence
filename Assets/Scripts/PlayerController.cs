@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
         if (Floor.Raycast(cameraRay, out rayLength))
         {
             Vector3 pointToLook = cameraRay.GetPoint(rayLength); // Get the intersection point
-            Debug.DrawLine(cameraRay.origin, pointToLook, Color.blue); // Draw a debug line for visualization
+            Debug.DrawLine(cameraRay.origin, pointToLook, Color.blue);
 
             // Rotate the player to face the point where the ray intersects the plane
             transform.LookAt(new Vector3(pointToLook.x, transform.position.y, pointToLook.z));

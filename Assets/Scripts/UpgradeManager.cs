@@ -119,9 +119,7 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
-    // =========================
-    // 🎲 GENERATE UPGRADES
-    // =========================
+    // GENERATE UPGRADES
 
     public void GenerateUpgradeChoices()
     {
@@ -182,9 +180,7 @@ public class UpgradeManager : MonoBehaviour
         return upgradeCount >= 1; 
     }
 
-    // =========================
-    // 🔘 BUTTON SETUP
-    // =========================
+    //  BUTTON SETUP
 
     void SetupButton(Button button, TMP_Text text, Image backgroundImage, UpgradeInstance upgrade)
     {
@@ -205,9 +201,8 @@ public class UpgradeManager : MonoBehaviour
         });
     }
 
-    // =========================
-    // 🎨 RARITY COLORS
-    // =========================
+
+    //  RARITY COLORS
 
     Color GetRarityColor(Rarity rarity)
     {
@@ -235,9 +230,9 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
-    // =========================
-    // 🎯 UI FORMAT
-    // =========================
+
+    // UI FORMAT
+
 
     string FormatUI(UpgradeInstance upgrade)
     {
@@ -464,10 +459,7 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
-
-    // =========================
-    // 📈 DESCRIPTION (RARITY-BASED)
-    // =========================
+    // DESCRIPTION (RARITY-BASED)
 
     string GetUpgradeDescription(UpgradeType type, Rarity rarity)
     {
@@ -541,9 +533,7 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
-    // =========================
-    // 📊 RARITY-BASED STAT CALCULATIONS
-    // =========================
+    // RARITY-BASED STAT CALCULATIONS
 
     float GetDamageBonus(Rarity rarity)
     {
@@ -627,11 +617,11 @@ public class UpgradeManager : MonoBehaviour
     {
         switch (rarity)
         {
-            case Rarity.Common: return 0.01f;
-            case Rarity.Rare: return 0.02f;
-            case Rarity.Epic: return 0.03f;
-            case Rarity.Legendary: return 0.05f;
-            case Rarity.Secret: return 0.10f;
+            case Rarity.Common: return 0.001f;
+            case Rarity.Rare: return 0.002f;
+            case Rarity.Epic: return 0.003f;
+            case Rarity.Legendary: return 0.005f;
+            case Rarity.Secret: return 0.01f;
             default: return 0f;
         }
     }
@@ -684,9 +674,7 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
-    // =========================
-    // 🟢 APPLY UPGRADES
-    // =========================
+    //  APPLY UPGRADES
 
     void ApplyUpgrade(UpgradeInstance upgrade)
     {
@@ -715,9 +703,8 @@ public class UpgradeManager : MonoBehaviour
 
         switch (upgrade.type)
         {
-            // =========================
-            // 🟥 DAMAGE (MULTIPLICATIVE)
-            // =========================
+
+            // DAMAGE (MULTIPLICATIVE)
             case UpgradeType.Damage:
                 {
                     float bonus = GetDamageBonus(upgrade.rarity);
@@ -730,9 +717,8 @@ public class UpgradeManager : MonoBehaviour
                     break;
                 }
 
-            // =========================
-            // 🔫 FIRE RATE (MULTIPLICATIVE)
-            // =========================
+            // FIRE RATE (MULTIPLICATIVE)
+
             case UpgradeType.FireRate:
                 {
                     float bonus = GetFireRateBonus(upgrade.rarity);
@@ -745,10 +731,9 @@ public class UpgradeManager : MonoBehaviour
                     break;
                 }
 
-            // =========================
-            // 💥 EXPLOSION (HYBRID)
+            //  EXPLOSION (HYBRID)
             // damage scales, radius capped
-            // =========================
+
             case UpgradeType.Explosion:
                 {
                     gun.explosiveShots = true;
@@ -767,9 +752,8 @@ public class UpgradeManager : MonoBehaviour
                     break;
                 }
 
-            // =========================
-            // ⚡ CHAIN (ADD + SOFT CAP)
-            // =========================
+            // CHAIN (ADD + SOFT CAP)
+
             case UpgradeType.ChainLightning:
                 {
                     gun.chainLightning = true;
@@ -784,9 +768,8 @@ public class UpgradeManager : MonoBehaviour
                     break;
                 }
 
-            // =========================
-            // 🔫 PIERCING (ADD + CAP)
-            // =========================
+            //  PIERCING (ADD + CAP)
+
             case UpgradeType.Piercing:
                 {
                     gun.piercing = true;
@@ -801,9 +784,9 @@ public class UpgradeManager : MonoBehaviour
                     break;
                 }
 
-            // =========================
-            // ❄️ FREEZE (ADD + HARD CAP)
-            // =========================
+
+            // Health (ADD + HARD CAP)
+
             case UpgradeType.Health:
                 {
                     PlayerHealth player = FindFirstObjectByType<PlayerHealth>();
@@ -824,9 +807,9 @@ public class UpgradeManager : MonoBehaviour
                     break;
                 }
 
-            // =========================
-            // 🩸 LIFESTEAL (HARD CAP)
-            // =========================
+
+            // LIFESTEAL (HARD CAP)
+
             case UpgradeType.Lifesteal:
                 {
                     float bonus = GetLifestealPercent(upgrade.rarity);
@@ -834,15 +817,14 @@ public class UpgradeManager : MonoBehaviour
                     gun.lifestealPercent += bonus;
 
                     // HARD CAP
-                    gun.lifestealPercent = Mathf.Clamp(gun.lifestealPercent, 0f, 0.10f);
+                    gun.lifestealPercent = Mathf.Clamp(gun.lifestealPercent, 0f, 0.01f);
 
                     Debug.Log($"[STACK] LIFESTEAL → {gun.lifestealPercent * 100f}% (CAPPED 10%)");
                     break;
                 }
 
-            // =========================
-            // 🧲 XP MAGNET (ADDITIVE)
-            // =========================
+            //  XP MAGNET (ADDITIVE)
+
             case UpgradeType.XPMagnet:
                 {
                     XPMagnet magnet = FindFirstObjectByType<XPMagnet>();

@@ -45,7 +45,7 @@ public class EnemyHitFeedback : MonoBehaviour
         }
     }
 
-    // 🔥 CALL THIS WHEN ENEMY GETS HIT
+    // CALL THIS WHEN ENEMY GETS HIT
     public void PlayHitFeedback(Vector3 hitDirection)
     {
         StopAllCoroutines();

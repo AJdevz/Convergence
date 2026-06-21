@@ -16,7 +16,7 @@ public class DamageNumberManager : MonoBehaviour
     {
         if (damage <= 0)
         {
-            Debug.Log("Blocked 0 damage"); // 👈 keep this to confirm
+            Debug.Log("Blocked 0 damage");
             return;
         }
 

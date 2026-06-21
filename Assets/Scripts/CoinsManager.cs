@@ -6,11 +6,11 @@ public class CoinsManager : MonoBehaviour
     public static CoinsManager Instance;
 
     [Header("UI")]
-    public TMP_Text coinsText; // 🔥 THIS = run coins HUD (in-game)
+    public TMP_Text coinsText; // THIS = run coins HUD (in-game)
 
     [Header("Coins")]
-    public int runCoins = 0;     // 💥 coins earned THIS RUN ONLY
-    public int totalCoins = 0;   // 💾 permanent coins (saved)
+    public int runCoins = 0;     // coins earned THIS RUN ONLY
+    public int totalCoins = 0;   // permanent coins (saved)
 
     void Awake()
     {
@@ -30,7 +30,7 @@ public class CoinsManager : MonoBehaviour
 
 
     // =========================
-    // 💥 ADD COINS (DURING RUN)
+    //  ADD COINS (DURING RUN)
     // =========================
     public void AddRunCoins(int amount)
     {
@@ -47,7 +47,7 @@ public class CoinsManager : MonoBehaviour
     }
 
     // =========================
-    // 🔄 RESET RUN (NEW GAME)
+    //  RESET RUN (NEW GAME)
     // =========================
     public void ResetRunCoins()
     {
@@ -64,7 +64,7 @@ public class CoinsManager : MonoBehaviour
     public CoinDisplayType displayType;
 
     // =========================
-    // 🎨 UPDATE HUD (RUN ONLY)
+    //  UPDATE HUD (RUN ONLY)
     // =========================
     public void UpdateUI()
     {

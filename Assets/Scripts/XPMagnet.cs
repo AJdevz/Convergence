@@ -4,7 +4,7 @@ public class XPMagnet : MonoBehaviour
 {
     [Header("Magnet Settings")]
     public float baseRange = 5f;
-    public float rangePerLevel = 10f; // BIG increase
+    public float rangePerLevel = 10f;
 
     public float pullSpeed = 12f;
 

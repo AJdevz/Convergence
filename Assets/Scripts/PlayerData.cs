@@ -8,9 +8,7 @@ public class PlayerData
 
     public List<string> unlockedSkills = new List<string>();
 
-    // =====================
     // RUNTIME STATS ONLY
-    // =====================
 
     [HideInInspector] public float damageMultiplier;
     [HideInInspector] public float fireRateMultiplier;
@@ -32,9 +30,8 @@ public class PlayerData
 
     [HideInInspector] public float moveSpeedBonus;
 
-    // =====================
+
     // RESET STATS
-    // =====================
 
     public void ResetRuntimeStats()
     {

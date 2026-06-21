@@ -16,9 +16,9 @@ public class SoundManager : MonoBehaviour
     public AudioClip nextWave;
 
     [Header("Zombie Sounds")]
-    public AudioClip[] zombieGrowls;   // idle / ambient
-    public AudioClip[] zombieHurt;     // when hit
-    public AudioClip[] zombieDeath;    // optional (future)
+    public AudioClip[] zombieGrowls;
+    public AudioClip[] zombieHurt;
+    public AudioClip[] zombieDeath;
 
     void Awake()
     {
@@ -26,7 +26,7 @@ public class SoundManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    // 🔊 Generic play
+    // Generic play
     public void PlaySound(AudioClip clip, float volume = 1f, float pitchMin = 0.95f, float pitchMax = 1.05f)
     {
         if (clip == null) return;
@@ -35,7 +35,7 @@ public class SoundManager : MonoBehaviour
         sfxSource.PlayOneShot(clip, volume);
     }
 
-    // 🔥 RANDOM ARRAY PLAY (IMPORTANT)
+    // RANDOM ARRAY PLAY
     public void PlayRandom(AudioClip[] clips, float volume = 1f, float pitchMin = 0.95f, float pitchMax = 1.05f)
     {
         if (clips == null || clips.Length == 0) return;
@@ -46,56 +46,55 @@ public class SoundManager : MonoBehaviour
         sfxSource.PlayOneShot(clip, volume);
     }
 
-    // 🔥 HIT ENEMY
-    // 🔥 HIT ENEMY
+    // HIT ENEMY
     public void PlayHitEnemy()
     {
         PlaySound(hitEnemy, 0.01f, 0.9f, 1.05f);
     }
 
-    // 🧟 ZOMBIE GROWL (random)
+    // ZOMBIE GROWL
     public void PlayZombieGrowl()
     {
         PlayRandom(zombieGrowls, 0.01f, 0.85f, 1f);
     }
 
-    // 💥 ZOMBIE HURT (random)
+    // ZOMBIE HURT
     public void PlayZombieHurt()
     {
         PlayRandom(zombieHurt, 0.01f, 0.9f, 1.05f);
     }
 
-    // ☠️ ZOMBIE DEATH
+    // ZOMBIE DEATH
     public void PlayZombieDeath()
     {
         PlayRandom(zombieDeath, 0f, 0.9f, 1.05f);
     }
 
-    // 💣 EXPLOSION
+    // EXPLOSION
     public void PlayExplosion()
     {
         PlaySound(explosion, 0.005f, 0.9f, 1f);
     }
 
-    // ⚡ LIGHTNING
+    // LIGHTNING
     public void PlayLightning()
     {
         PlaySound(lightning, 0.01f, 0.9f, 1.05f);
     }
 
-    // ❤️ HEAL
+    // HEAL
     public void PlayHeal()
     {
         PlaySound(heal, 0.005f, 0.95f, 1.05f);
     }
 
-    // ✨ XP
+    // XP
     public void PlayXP()
     {
         PlaySound(xpCollect, 0.01f, 0.95f, 1.05f);
     }
 
-    // 🌊 NEXT WAVE
+    // NEXT WAVE
     public void PlayNextWave()
     {
         PlaySound(nextWave, 0.5f, 0.95f, 1.05f);

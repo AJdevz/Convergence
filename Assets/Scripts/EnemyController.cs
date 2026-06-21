@@ -11,7 +11,7 @@ public class EnemyController : MonoBehaviour
     private PlayerController thePlayer;
 
     // =========================
-    // 🧊 STATUS SYSTEM (NEW)
+    // STATUS SYSTEM
     // =========================
     private float slowMultiplier = 1f;
     private float freezeMultiplier = 1f;
@@ -41,7 +41,7 @@ public class EnemyController : MonoBehaviour
 
         transform.LookAt(thePlayer.transform.position);
 
-        // 🎧 Growl system
+        // Growl system
         growlTimer -= Time.deltaTime;
         if (growlTimer <= 0f)
         {
@@ -49,16 +49,7 @@ public class EnemyController : MonoBehaviour
             growlTimer = Random.Range(3f, 6f);
         }
 
-        // ⏳ Slow timer
-        if (slowTimer > 0)
-        {
-            slowTimer -= Time.deltaTime;
-
-            if (slowTimer <= 0)
-                slowMultiplier = 1f;
-        }
-
-        // ⏳ Repel timer
+        // Repel timer
         if (isRepelling)
         {
             repelTimer -= Time.deltaTime;
@@ -76,21 +67,14 @@ public class EnemyController : MonoBehaviour
             return;
         }
 
-        // 🔥 REPULSION OVERRIDE
+        // REPULSION OVERRIDE
         if (isRepelling)
         {
             enemyRB.linearVelocity = repelVelocity;
             return;
         }
 
-        // ❄️ FREEZE OVERRIDE
-        if (isFrozen)
-        {
-            enemyRB.linearVelocity = Vector3.zero;
-            return;
-        }
-
-        // 🧠 NORMAL CHASE
+        // NORMAL CHASE
         Vector3 moveDir = (thePlayer.transform.position - transform.position).normalized;
 
         float finalSpeed = moveSpeed * slowMultiplier * freezeMultiplier;
@@ -99,7 +83,7 @@ public class EnemyController : MonoBehaviour
     }
 
     // =========================
-    // 💥 REPULSION
+    // REPULSION
     // =========================
     public void ApplyRepelFromPlayer()
     {
@@ -113,34 +97,5 @@ public class EnemyController : MonoBehaviour
 
         isRepelling = true;
         repelTimer = repelTime;
-    }
-
-    // =========================
-    // 🧊 SLOW SYSTEM (FIXED)
-    // =========================
-    public void ApplySlow(float slowPercent, float duration)
-    {
-        slowMultiplier = 1f - slowPercent;
-        slowTimer = duration;
-    }
-
-    // =========================
-    // ❄️ FREEZE SYSTEM (FIXED)
-    // =========================
-    public void Freeze(float duration)
-    {
-        StopCoroutine("FreezeRoutine");
-        StartCoroutine(FreezeRoutine(duration));
-    }
-
-    IEnumerator FreezeRoutine(float duration)
-    {
-        isFrozen = true;
-        freezeMultiplier = 0f;
-
-        yield return new WaitForSeconds(duration);
-
-        freezeMultiplier = 1f;
-        isFrozen = false;
     }
 }

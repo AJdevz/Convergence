@@ -67,14 +67,14 @@ public class BulletController : MonoBehaviour
 
         SoundManager.Instance?.PlayZombieHurt();
 
-        // 🎯 IMPACT DIRECTION
+        // IMPACT DIRECTION
         Vector3 dir = enemy.transform.position - transform.position;
         dir.y = 0f;
 
         if (dir.sqrMagnitude > 0.001f)
             dir.Normalize();
 
-        // 🔥 FEEDBACK
+        // FEEDBACK
         EnemyHitFeedback feedback = enemy.GetComponentInParent<EnemyHitFeedback>();
 
         if (feedback != null)
@@ -82,7 +82,7 @@ public class BulletController : MonoBehaviour
             feedback.PlayHitFeedback(dir);
         }
 
-        // 💥 KNOCKBACK + STATUS (reuse SAME controller)
+        // KNOCKBACK + STATUS
         EnemyController controller = enemy.GetComponentInParent<EnemyController>();
 
         if (controller != null)
@@ -90,11 +90,11 @@ public class BulletController : MonoBehaviour
             controller.ApplyRepelFromPlayer();
         }
 
-        // 💣 EXPLOSION
+        // EXPLOSION
         if (explosiveShots)
             Explode();
 
-        // ⚡ CHAIN
+        // CHAIN
         if (chainLightning && !hasChained)
         {
             hasChained = true;
@@ -104,13 +104,13 @@ public class BulletController : MonoBehaviour
 
     
 
-        // 🧠 TRACK HIT
+        // TRACK HIT
         if (hitEnemies.Contains(other.gameObject))
             return;
 
         hitEnemies.Add(other.gameObject);
 
-        // 🧩 PIERCE
+        // PIERCE
         if (piercing && currentPierce > 0)
         {
             currentPierce--;
@@ -129,7 +129,7 @@ public class BulletController : MonoBehaviour
         player.Heal(healAmount);
     }
 
-    // 💥 Explosion Function
+    // Explosion Function
     void Explode()
     {
         float radius = explosionRadius;
@@ -172,7 +172,7 @@ public class BulletController : MonoBehaviour
         }
     }
 
-    // ⚡ Chain Lightning Function
+    // Chain Lightning Function
     void DoChain(Transform startTarget)
     {
         Transform currentTarget = startTarget;

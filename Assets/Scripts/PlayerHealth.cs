@@ -145,9 +145,6 @@ public class PlayerHealth : MonoBehaviour
         UpdateHealthText();
     }
 
-    // =========================
-    // FIXED HEALTH TEXT SYSTEM
-    // =========================
     public void UpdateHealthText()
     {
         if (hpText != null)

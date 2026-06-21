@@ -95,14 +95,14 @@ public class SpawnEnemies : MonoBehaviour
 
         bool isBossWave = waveNumber % 5 == 0;
 
-        // 1. Spawn normal enemies first
+        // Spawn normal enemies first
         for (int i = 0; i < enemiesInWave; i++)
         {
             SpawnEnemy(useMerge);
             yield return new WaitForSeconds(0.04f);
         }
 
-        // 2. Spawn bosses AFTER enemies
+        //Spawn bosses AFTER enemies
         if (isBossWave)
         {
             SpawnMainBossOnce();  // main boss

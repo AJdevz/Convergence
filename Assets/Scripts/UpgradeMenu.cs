@@ -15,7 +15,7 @@ public class UpgradeMenu : MonoBehaviour
         upgradePanel.SetActive(true);
         Time.timeScale = 0;
 
-        // 🔥 Generate new upgrades when opened
+        // Generate new upgrades when opened
         if (upgradeManager != null)
         {
             upgradeManager.GenerateUpgradeChoices();

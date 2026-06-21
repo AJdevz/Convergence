@@ -63,7 +63,7 @@ public class PauseMenu : MonoBehaviour
     // Restart the current game scene
     public void RestartGame()
     {
-        SaveRunProgress(); // ✅ SAVE BEFORE RESTART
+        SaveRunProgress(); // SAVE BEFORE RESTART
 
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -72,7 +72,7 @@ public class PauseMenu : MonoBehaviour
     // Go back to the main menu safely
     public void GoToMainMenu()
     {
-        SaveRunProgress(); // ✅ SAVE BEFORE EXIT
+        SaveRunProgress(); // SAVE BEFORE EXIT
 
         Time.timeScale = 1f;
 

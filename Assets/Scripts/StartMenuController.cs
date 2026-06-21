@@ -139,7 +139,6 @@ public class StartMenuController : MonoBehaviour
 
     public void PlayGame()
     {
-        // This is used only if you skip mode selection and go directly to PlayScene
         PlayerPrefs.SetInt("SelectedGun", selectedGun);
         PlayerPrefs.SetInt("SelectedMode", selectedMode);
         SceneManager.LoadScene("PlayScene");

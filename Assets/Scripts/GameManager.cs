@@ -35,16 +35,9 @@ public class GameManager : MonoBehaviour
         if (CoinsManager.Instance != null)
             CoinsManager.Instance.totalCoins = playerData.totalCoins;
 
-        // ❌ OLD:
-        // ApplyAllSkills();
-
-        // ✅ FIXED:
         StartCoroutine(ApplySkillsDelayed());
     }
 
-    // =========================
-    // 🔥 FIXED SKILL LOADING
-    // =========================
     IEnumerator ApplySkillsDelayed()
     {
         yield return new WaitForSeconds(0.1f);
@@ -55,7 +48,6 @@ public class GameManager : MonoBehaviour
             yield break;
         }
 
-        // 🔥 IMPORTANT
         playerData.ResetRuntimeStats();
 
         foreach (string id in playerData.unlockedSkills)
@@ -108,7 +100,7 @@ public class GameManager : MonoBehaviour
     }
 
     // =========================
-    // 🔍 FIND SKILL BY ID
+    //  FIND SKILL BY ID
     // =========================
     SkillData FindSkillByID(string id)
     {
@@ -124,7 +116,7 @@ public class GameManager : MonoBehaviour
     }
 
     // =========================
-    // 💾 SAVE GAME
+    //  SAVE GAME
     // =========================
     public void SaveGame()
     {
@@ -137,7 +129,7 @@ public class GameManager : MonoBehaviour
     }
 
     // =========================
-    // 🎮 MODE SELECTION
+    //  MODE SELECTION
     // =========================
     public void SetModeEscalation()
     {

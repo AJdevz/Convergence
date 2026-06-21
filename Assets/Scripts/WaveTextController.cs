@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro; // Import TextMeshPro namespace
+using TMPro;
 
 public class WaveTextDisplay : MonoBehaviour
 {
-    public TextMeshProUGUI waveText; // Reference to the UI TextMeshProUGUI element
+    public TextMeshProUGUI waveText; 
     private bool isDisplayingText = false;
 
     void Start()
@@ -16,7 +16,6 @@ public class WaveTextDisplay : MonoBehaviour
         }
     }
 
-    // Now takes a **string message** instead of just a number
     public void DisplayWaveText(string message)
     {
         if (!isDisplayingText)
@@ -30,7 +29,7 @@ public class WaveTextDisplay : MonoBehaviour
         isDisplayingText = true;
 
         waveText.text = message;
-        waveText.gameObject.SetActive(true); // Makes sure the text is visible
+        waveText.gameObject.SetActive(true); 
 
         yield return new WaitForSeconds(2f); // Wait for 2 seconds to display the text
 

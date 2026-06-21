@@ -7,7 +7,7 @@ public class VFXManager : MonoBehaviour
     [Header("VFX")]
     public GameObject bloodEffect;
     public GameObject levelUpEffect;
-    public GameObject hitFlashEffect; // optional extra
+    public GameObject hitFlashEffect;
 
     void Awake()
     {

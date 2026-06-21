@@ -55,15 +55,11 @@ public class GunController : MonoBehaviour
     public bool explosiveShots;
     public bool chainLightning;
     public bool piercing;
-    public bool freezeEffect;
 
     public float explosionRadius = 3f;
     public int chainCount = 1;
     public int pierceCount = 2;
-    public float freezeStrength = 0.5f;
-    public float freezeDuration = 2f;
     public float lifestealPercent;
-    public float freezeChance = 0f;
 
     [Header("Scaling (STACKING SYSTEM)")]
     public float damageMultiplier = 1f;
@@ -211,17 +207,12 @@ public class GunController : MonoBehaviour
         b.explosiveShots = explosiveShots;
         b.chainLightning = chainLightning;
         b.piercing = piercing;
-        b.freezeEffect = freezeEffect;
 
         b.lifestealPercent = lifestealPercent;
 
         b.explosionRadius = explosionRadius;
         b.chainCount = chainCount;
         b.pierceCount = pierceCount;
-
-        b.freezeStrength = freezeStrength;
-        b.freezeDuration = freezeDuration;
-        b.freezeChance = freezeChance;
 
         b.explosionMultiplier = explosionMultiplier;
         b.chainMultiplier = chainMultiplier;

@@ -43,7 +43,7 @@ public class XPManager : MonoBehaviour
     {
         playerLevel++;
         xpToNextLevel =
-            Mathf.RoundToInt(xpToNextLevel * 1.25f);
+            Mathf.RoundToInt(xpToNextLevel * 1.18f);
 
         UpdateXPUI();
 

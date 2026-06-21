@@ -80,13 +80,13 @@ public class EnemyHealth : MonoBehaviour
 
         float linear = 1f + (wave - 1) * 0.12f;
         float exponential = Mathf.Pow(1.15f, wave - 1);
-        float levelScale = 1f + (level - 1) * 0.05f;
-        float burstProtection = 1f + Mathf.Log10(wave) * 0.6f;
+        float levelScale = 1f + (level - 1) * 0.04f;
+        float burstProtection = 1f + Mathf.Log10(wave) * 0.5f;
 
         float scaled = baseHp * linear * exponential * levelScale * burstProtection;
 
         if (isMainBoss)
-            scaled *= 4f;
+            scaled *= 5f;
 
         if (isTankBoss)
             scaled *= 2f;

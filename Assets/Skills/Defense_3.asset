@@ -16,4 +16,4 @@ MonoBehaviour:
   displayName: LifeSteal
   cost: 1500
   effectType: 6
-  value: 1
+  value: 0.1

@@ -14,16 +14,12 @@ public class BulletController : MonoBehaviour
     public bool explosiveShots;
     public bool chainLightning;
     public bool piercing;
-    public bool freezeEffect;
 
     [Header("Stats")]
     public float explosionRadius;
     public int chainCount;
     public float chainRange = 9f;
     public int pierceCount;
-    public float freezeStrength;
-    public float freezeDuration;
-    public float freezeChance;
     public float lifestealPercent;
 
     [Header("Scaling")]
@@ -92,15 +88,6 @@ public class BulletController : MonoBehaviour
         if (controller != null)
         {
             controller.ApplyRepelFromPlayer();
-
-            // ❄️ FREEZE / SLOW
-            if (freezeEffect)
-            {
-                if (Random.value < freezeChance)
-                    controller.Freeze(freezeDuration);
-                else
-                    controller.ApplySlow(freezeStrength, freezeDuration);
-            }
         }
 
         // 💣 EXPLOSION

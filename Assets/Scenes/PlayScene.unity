@@ -619,14 +619,10 @@ MonoBehaviour:
   explosiveShots: 0
   chainLightning: 0
   piercing: 0
-  freezeEffect: 0
   explosionRadius: 3
   chainCount: 3
   pierceCount: 2
-  freezeStrength: 0.5
-  freezeDuration: 2
   lifestealPercent: 0
-  freezeChance: 0
   damageMultiplier: 1
   fireRateMultiplier: 1
   explosionMultiplier: 0.5
@@ -1951,7 +1947,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -389, y: -462.8}
+  m_AnchoredPosition: {x: -138.5, y: -502.7}
   m_SizeDelta: {x: 190.0399, y: 56.798}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &375363253
@@ -1983,8 +1979,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294954496
-  m_fontColor: {r: 0, g: 0.8078432, b: 1, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2001,10 +1997,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
+  m_fontSize: 21.4
   m_fontSizeBase: 40
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
@@ -2039,7 +2035,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -73.428955, w: 0}
+  m_margin: {x: -80.70325, y: 38.857773, z: -358.43134, w: -5.9878864}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2299,14 +2295,10 @@ MonoBehaviour:
   explosiveShots: 0
   chainLightning: 0
   piercing: 0
-  freezeEffect: 0
   explosionRadius: 1
   chainCount: 1
   pierceCount: 0
-  freezeStrength: 0.1
-  freezeDuration: 2
   lifestealPercent: 0
-  freezeChance: 0
   damageMultiplier: 1
   fireRateMultiplier: 1
   explosionMultiplier: 0.5
@@ -3534,14 +3526,10 @@ MonoBehaviour:
   explosiveShots: 0
   chainLightning: 0
   piercing: 0
-  freezeEffect: 0
   explosionRadius: 3
   chainCount: 3
   pierceCount: 2
-  freezeStrength: 0.5
-  freezeDuration: 2
   lifestealPercent: 0
-  freezeChance: 0
   damageMultiplier: 1
   fireRateMultiplier: 1
   explosionMultiplier: 0.5
@@ -4006,14 +3994,10 @@ MonoBehaviour:
   explosiveShots: 0
   chainLightning: 0
   piercing: 0
-  freezeEffect: 0
   explosionRadius: 1
   chainCount: 1
   pierceCount: 0
-  freezeStrength: 0.1
-  freezeDuration: 2
   lifestealPercent: 0
-  freezeChance: 0
   damageMultiplier: 1
   fireRateMultiplier: 1
   explosionMultiplier: 0.5
@@ -4479,7 +4463,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 373}
-  m_SizeDelta: {x: 400, y: 50}
+  m_SizeDelta: {x: 500, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &747193589
 MonoBehaviour:
@@ -5976,7 +5960,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1090348721}
   serializedVersion: 4
-  m_Mass: 10
+  m_Mass: 20
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -7765,14 +7749,10 @@ MonoBehaviour:
   explosiveShots: 0
   chainLightning: 0
   piercing: 0
-  freezeEffect: 0
   explosionRadius: 3
   chainCount: 3
   pierceCount: 2
-  freezeStrength: 0.5
-  freezeDuration: 2
   lifestealPercent: 0
-  freezeChance: 0
   damageMultiplier: 1
   fireRateMultiplier: 1
   explosionMultiplier: 0.5
@@ -8190,14 +8170,10 @@ MonoBehaviour:
   explosiveShots: 0
   chainLightning: 0
   piercing: 0
-  freezeEffect: 0
   explosionRadius: 1
   chainCount: 1
   pierceCount: 0
-  freezeStrength: 0.1
-  freezeDuration: 2
   lifestealPercent: 0
-  freezeChance: 0
   damageMultiplier: 1
   fireRateMultiplier: 1
   explosionMultiplier: 0.5
@@ -9186,14 +9162,10 @@ MonoBehaviour:
   explosiveShots: 0
   chainLightning: 0
   piercing: 0
-  freezeEffect: 0
   explosionRadius: 3
   chainCount: 3
   pierceCount: 2
-  freezeStrength: 0.5
-  freezeDuration: 2
   lifestealPercent: 0
-  freezeChance: 0
   damageMultiplier: 1
   fireRateMultiplier: 1
   explosionMultiplier: 0.5
@@ -10016,7 +9988,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -14, y: -5}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 300, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1671865621
 MonoBehaviour:
@@ -10038,7 +10010,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Boss HP
+  m_text: 242424 / 242424
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
@@ -10065,10 +10037,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 53.3
+  m_fontSizeBase: 40
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
@@ -11818,7 +11790,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Wave 1 / Enemies remaining: '
+  m_text: ' 250 / 250'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
@@ -11845,7 +11817,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 23.4
+  m_fontSize: 36.15
   m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -11990,14 +11962,10 @@ MonoBehaviour:
   explosiveShots: 0
   chainLightning: 0
   piercing: 0
-  freezeEffect: 0
   explosionRadius: 3
   chainCount: 3
   pierceCount: 2
-  freezeStrength: 0.5
-  freezeDuration: 2
   lifestealPercent: 0
-  freezeChance: 0
   damageMultiplier: 1
   fireRateMultiplier: 1
   explosionMultiplier: 0.5
@@ -12236,14 +12204,10 @@ MonoBehaviour:
   explosiveShots: 0
   chainLightning: 0
   piercing: 0
-  freezeEffect: 0
   explosionRadius: 3
   chainCount: 3
   pierceCount: 2
-  freezeStrength: 0.5
-  freezeDuration: 2
   lifestealPercent: 0
-  freezeChance: 0
   damageMultiplier: 1
   fireRateMultiplier: 1
   explosionMultiplier: 0.5

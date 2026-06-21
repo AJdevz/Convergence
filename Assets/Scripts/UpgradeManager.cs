@@ -37,7 +37,7 @@ public class UpgradeManager : MonoBehaviour
         Explosion,
         ChainLightning,
         Piercing,
-        Freeze,
+        Health,
         Lifesteal,
         XPMagnet,
     }
@@ -58,8 +58,11 @@ public class UpgradeManager : MonoBehaviour
             case UpgradeType.Lifesteal:
                 return gun.lifestealPercent >= 0.10f;
 
-            case UpgradeType.Freeze:
-                return gun.freezeStrength >= 0.5f;
+            case UpgradeType.Health:
+                {
+                    PlayerHealth player = FindFirstObjectByType<PlayerHealth>();
+                    return player != null && player.maxHealth >= 5000;
+                }
 
             case UpgradeType.Explosion:
                 return gun.explosionRadius >= 12f;
@@ -176,7 +179,6 @@ public class UpgradeManager : MonoBehaviour
     bool IsSecretUnlocked()
     {
         // Check if player has progressed far enough
-        // You can replace this with wave checking from your game manager
         return upgradeCount >= 1; 
     }
 
@@ -289,8 +291,8 @@ public class UpgradeManager : MonoBehaviour
         case UpgradeType.Lifesteal:
             return "<color=#AAAAAA>Max: 10%</color>";
 
-        case UpgradeType.Freeze:
-            return "<color=#AAAAAA>Max Slow: 50%</color>";
+        case UpgradeType.Health:
+            return "<color=#AAAAAA>Max Health: 5000</color>";
 
         default:
             return "<color=#AAAAAA>Max: -</color>";
@@ -318,9 +320,10 @@ public class UpgradeManager : MonoBehaviour
             case UpgradeType.Piercing:
                 return $"<color={color}>Pierce +{GetPierceCount(upgrade.rarity)}</color>";
 
-            case UpgradeType.Freeze:
-                var freeze = GetFreezeStats(upgrade.rarity);
-                return $"<color={color}>Slow {Mathf.RoundToInt(freeze.slowStrength * 100)}%</color>";
+            case UpgradeType.Health:
+                {
+                    return $"<color={color}>+{GetHealthBonus(upgrade.rarity)} Max HP</color>";
+                }
 
             case UpgradeType.Lifesteal:
                 return $"<color={color}>+{Mathf.RoundToInt(GetLifestealPercent(upgrade.rarity) * 100)}% Lifesteal</color>";
@@ -354,8 +357,11 @@ public class UpgradeManager : MonoBehaviour
             case UpgradeType.Piercing:
                 return gun.pierceCount.ToString();
 
-            case UpgradeType.Freeze:
-                return Mathf.RoundToInt(gun.freezeStrength * 100) + "%";
+            case UpgradeType.Health:
+                {
+                    PlayerHealth player = FindFirstObjectByType<PlayerHealth>();
+                    return player != null ? player.maxHealth.ToString() : "-";
+                }
 
             case UpgradeType.Lifesteal:
                 return Mathf.RoundToInt(gun.lifestealPercent * 100) + "%";
@@ -396,11 +402,15 @@ public class UpgradeManager : MonoBehaviour
             case UpgradeType.Piercing:
                 return (gun.pierceCount + GetPierceCount(upgrade.rarity)).ToString();
 
-            case UpgradeType.Freeze:
-                var freeze = GetFreezeStats(upgrade.rarity);
-                return Mathf.RoundToInt(
-                    Mathf.Clamp(gun.freezeStrength + freeze.slowStrength, 0f, 0.5f) * 100
-                ) + "%";
+            case UpgradeType.Health:
+                {
+                    PlayerHealth player = FindFirstObjectByType<PlayerHealth>();
+
+                    if (player == null)
+                        return "-";
+
+                    return (player.maxHealth + GetHealthBonus(upgrade.rarity)).ToString();
+                }
 
             case UpgradeType.Lifesteal:
                 float ls = Mathf.Clamp(
@@ -447,7 +457,7 @@ public class UpgradeManager : MonoBehaviour
             case UpgradeType.Explosion: return "[AOE]";
             case UpgradeType.ChainLightning: return "[CHAIN]";
             case UpgradeType.Piercing: return "[PEN]";
-            case UpgradeType.Freeze: return "[ICE]";
+            case UpgradeType.Health: return "[HP]";
             case UpgradeType.Lifesteal: return "[VAMP]";
             case UpgradeType.XPMagnet: return "[MAG]";
             default: return "";
@@ -503,11 +513,13 @@ public class UpgradeManager : MonoBehaviour
                            $"Shots go through enemies";
                 }
 
-            case UpgradeType.Freeze:
+            case UpgradeType.Health:
                 {
-                    (float slowStrength, float freezeChance) = GetFreezeStats(rarity);
-                    return $"<color={rarityColor}>SLOW {(int)(slowStrength * 100)}% + {(int)(freezeChance * 100)}% FREEZE CHANCE</color>\n" +
-                           $"Freeze rare but devastating";
+                    int hp = GetHealthBonus(rarity);
+
+                    return
+                        $"<color={rarityColor}>+{hp} MAX HP</color>\n" +
+                        $"Become harder to kill";
                 }
 
             case UpgradeType.Lifesteal:
@@ -598,16 +610,16 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
-    (float slowStrength, float freezeChance) GetFreezeStats(Rarity rarity)
+    int GetHealthBonus(Rarity rarity)
     {
         switch (rarity)
         {
-            case Rarity.Common: return (0.10f, 0.00f);      // 10% slow, no freeze
-            case Rarity.Rare: return (0.20f, 0.00f);        // 20% slow, no freeze
-            case Rarity.Epic: return (0.30f, 0.05f);        // 30% slow, 5% freeze
-            case Rarity.Legendary: return (0.40f, 0.10f);   // 40% slow, 10% freeze
-            case Rarity.Secret: return (0.50f, 0.25f);      // 50% slow, 25% freeze
-            default: return (0f, 0f);
+            case Rarity.Common: return 10;
+            case Rarity.Rare: return 20;
+            case Rarity.Epic: return 35;
+            case Rarity.Legendary: return 60;
+            case Rarity.Secret: return 100;
+            default: return 0;
         }
     }
 
@@ -654,8 +666,12 @@ public class UpgradeManager : MonoBehaviour
                 XPMagnet magnet = FindFirstObjectByType<XPMagnet>();
                 return magnet != null && magnet.magnetLevel < 40;
 
-            case UpgradeType.Freeze:
-                return gun.freezeStrength < 0.5f || gun.freezeChance < 1f;
+            case UpgradeType.Health:
+                {
+                    PlayerHealth player = FindFirstObjectByType<PlayerHealth>();
+
+                    return player != null && player.maxHealth < 5000;
+                }
 
             case UpgradeType.ChainLightning:
                 return gun.chainCount < 12;
@@ -788,20 +804,23 @@ public class UpgradeManager : MonoBehaviour
             // =========================
             // ❄️ FREEZE (ADD + HARD CAP)
             // =========================
-            case UpgradeType.Freeze:
+            case UpgradeType.Health:
                 {
-                    gun.freezeEffect = true;
+                    PlayerHealth player = FindFirstObjectByType<PlayerHealth>();
 
-                    var stats = GetFreezeStats(upgrade.rarity);
+                    if (player == null)
+                        break;
 
-                    gun.freezeStrength += stats.slowStrength;
-                    gun.freezeChance += stats.freezeChance;
+                    int bonus = GetHealthBonus(upgrade.rarity);
 
-                    // HARD CAPS (important for balance)
-                    gun.freezeStrength = Mathf.Clamp(gun.freezeStrength, 0f, 0.5f);
-                    gun.freezeChance = Mathf.Clamp01(gun.freezeChance);
+                    player.maxHealth += bonus;
+                    player.currentHealth += bonus;
 
-                    Debug.Log($"[STACK] FREEZE → Slow: {gun.freezeStrength}, Chance: {gun.freezeChance}");
+                    if (player.currentHealth > player.maxHealth)
+                        player.currentHealth = player.maxHealth;
+
+                    Debug.Log($"[STACK] HEALTH +{bonus} HP → Total: {player.maxHealth}");
+
                     break;
                 }
 

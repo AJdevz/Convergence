@@ -16,4 +16,4 @@ MonoBehaviour:
   displayName: Upgrade Luck
   cost: 350
   effectType: 10
-  value: 0.5
+  value: 0.2

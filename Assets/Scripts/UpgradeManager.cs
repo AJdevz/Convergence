@@ -539,10 +539,10 @@ public class UpgradeManager : MonoBehaviour
     {
         switch (rarity)
         {
-            case Rarity.Common: return 0.10f;
-            case Rarity.Rare: return 0.20f;
-            case Rarity.Epic: return 0.35f;
-            case Rarity.Legendary: return 0.60f;
+            case Rarity.Common: return 0.20f;
+            case Rarity.Rare: return 0.40f;
+            case Rarity.Epic: return 0.55f;
+            case Rarity.Legendary: return 0.75f;
             case Rarity.Secret: return 1.00f;
             default: return 0f;
         }
@@ -565,11 +565,11 @@ public class UpgradeManager : MonoBehaviour
     {
         switch (rarity)
         {
-            case Rarity.Common: return 0.10f;
-            case Rarity.Rare: return 0.20f;
-            case Rarity.Epic: return 0.40f;
-            case Rarity.Legendary: return 0.70f;
-            case Rarity.Secret: return 1.20f;
+            case Rarity.Common: return 0.50f;
+            case Rarity.Rare: return 1.00f;
+            case Rarity.Epic: return 1.50f;
+            case Rarity.Legendary: return 2.00f;
+            case Rarity.Secret: return 3.00f;
             default: return 0f;
         }
     }
@@ -604,11 +604,11 @@ public class UpgradeManager : MonoBehaviour
     {
         switch (rarity)
         {
-            case Rarity.Common: return 10;
-            case Rarity.Rare: return 20;
-            case Rarity.Epic: return 35;
-            case Rarity.Legendary: return 60;
-            case Rarity.Secret: return 100;
+            case Rarity.Common: return 50;
+            case Rarity.Rare: return 150;
+            case Rarity.Epic: return 350;
+            case Rarity.Legendary: return 600;
+            case Rarity.Secret: return 1000;
             default: return 0;
         }
     }
@@ -631,10 +631,10 @@ public class UpgradeManager : MonoBehaviour
         switch (rarity)
         {
             case Rarity.Common: return 2;
-            case Rarity.Rare: return 5;
-            case Rarity.Epic: return 10;
-            case Rarity.Legendary: return 25;
-            case Rarity.Secret: return 50;
+            case Rarity.Rare: return 4;
+            case Rarity.Epic: return 8;
+            case Rarity.Legendary: return 15;
+            case Rarity.Secret: return 25;
             default: return 0;
         }
     }
@@ -647,14 +647,14 @@ public class UpgradeManager : MonoBehaviour
                 return gun.timeBetweenShots > gun.GetFireRateClamp();
 
             case UpgradeType.Lifesteal:
-                return gun.lifestealPercent < 0.10f;
+                return gun.lifestealPercent < 0.01f;
 
             case UpgradeType.Explosion:
                 return gun.explosionRadius < 12f;
 
             case UpgradeType.XPMagnet:
                 XPMagnet magnet = FindFirstObjectByType<XPMagnet>();
-                return magnet != null && magnet.magnetLevel < 40;
+                return magnet != null && magnet.magnetLevel < 50;
 
             case UpgradeType.Health:
                 {
@@ -664,7 +664,7 @@ public class UpgradeManager : MonoBehaviour
                 }
 
             case UpgradeType.ChainLightning:
-                return gun.chainCount < 12;
+                return gun.chainCount < 20;
 
             case UpgradeType.Piercing:
                 return gun.pierceCount < 10;
@@ -762,7 +762,7 @@ public class UpgradeManager : MonoBehaviour
 
                     gun.chainCount += bonus;
 
-                    gun.chainCount = Mathf.Min(gun.chainCount, 12); // soft cap
+                    gun.chainCount = Mathf.Min(gun.chainCount, 20); // soft cap
 
                     Debug.Log($"[STACK] CHAIN +{bonus} → Total: {gun.chainCount}");
                     break;
@@ -819,7 +819,7 @@ public class UpgradeManager : MonoBehaviour
                     // HARD CAP
                     gun.lifestealPercent = Mathf.Clamp(gun.lifestealPercent, 0f, 0.01f);
 
-                    Debug.Log($"[STACK] LIFESTEAL → {gun.lifestealPercent * 100f}% (CAPPED 10%)");
+                    Debug.Log($"[STACK] LIFESTEAL → {gun.lifestealPercent * 10f}% (CAPPED 10%)");
                     break;
                 }
 
@@ -831,7 +831,7 @@ public class UpgradeManager : MonoBehaviour
                     if (magnet == null) break;
 
                     int bonus = GetMagnetBonus(upgrade.rarity);
-                    int max = 40;
+                    int max = 50;
 
                     if (magnet.magnetLevel >= max)
                     {

@@ -70,6 +70,7 @@ public class ZombieMerge : MonoBehaviour
 
             if (Vector3.Distance(transform.position, targetZombie.transform.position) < 0.05f || mergeProgress >= 1f)
             {
+                FindFirstObjectByType<TelemetryLogger>()?.AddMergeEvent();
                 FinishMerge();
             }
         }

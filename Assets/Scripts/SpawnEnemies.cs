@@ -25,6 +25,8 @@ public class SpawnEnemies : MonoBehaviour
     private bool firstWaveMessageShown = false;
     private Bounds floorBounds;
     private int enemiesAlive = 0;
+    public int CurrentWave => waveNumber;
+    public int ActiveEnemies => enemiesAlive;
 
     void Start()
     {
